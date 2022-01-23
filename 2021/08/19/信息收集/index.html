@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>信息收集 | 1ceC0la's blog</title><meta name="keywords" content="渗透测试,信息收集"><meta name="author" content="1ceC0la"><meta name="copyright" content="1ceC0la"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="article">
+<meta property="og:title" content="信息收集">
+<meta property="og:url" content="http://example.com/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:site_name" content="1ceC0la&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807">
+<meta property="article:published_time" content="2021-08-19T06:32:27.000Z">
+<meta property="article:modified_time" content="2021-08-19T06:32:27.000Z">
+<meta property="article:author" content="1ceC0la">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="信息收集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807"><link rel="shortcut icon" href="/img/avatar.gif"><link rel="canonical" href="http://example.com/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '信息收集',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-08-19 14:32:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">1ceC0la's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">信息收集</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-08-19T06:32:27.000Z" title="发表于 2021-08-19 14:32:27">2021-08-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-08-19T06:32:27.000Z" title="更新于 2021-08-19 14:32:27">2021-08-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8-Web%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0/">小迪安全-Web渗透测试笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">795</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="信息收集"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src="/.com//%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
+<span id="more"></span>
+
+<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
+<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
+<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
+<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
+<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
+<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
+<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
+<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
+<p>通过开放的端口，分析站点开启了哪些服务</p>
+<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
+<p><strong>bbs</strong>.goodlift.net</p>
+<p><strong>www</strong>.goodlift.net</p>
+<p>不同ip：</p>
+<p><a target="_blank" rel="noopener" href="http://www.etiantian.com/">www.etiantian.com</a></p>
+<p>web.etiantian.com</p>
+<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a target="_blank" rel="noopener" href="http://www.a.com/">www.a.com</a></p>
+<p>​            <a target="_blank" rel="noopener" href="http://www.b.com/">www.b.com</a></p>
+<p>可以通过找到b的漏洞来攻击a站点</p>
+<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a target="_blank" rel="noopener" href="http://www.a.com/">www.a.com</a></p>
+<p>​            </p>
+<p>例如：192.168.1.101</p>
+<p>​            <a target="_blank" rel="noopener" href="http://www.b.com/">www.b.com</a></p>
+<p>​            </p>
+<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
+<p>shodan（一款黑暗搜索引擎）</p>
+<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
+<p><a target="_blank" rel="noopener" href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
+<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
+<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
+<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a target="_blank" rel="noopener" href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
+<p>查证书的<a target="_blank" rel="noopener" href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
+<p>查询DNS记录<a target="_blank" rel="noopener" href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
+<p><a target="_blank" rel="noopener" href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">1ceC0la</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">http://example.com/2021/08/19/信息收集/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">1ceC0la's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><a class="post-meta__tags" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></div><div class="post_share"><div class="social-share" data-image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/WeChatPay.png" target="_blank"><img class="post-qr-code-img" src="/img/WeChatPay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"><img class="prev-cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">反序列化</div></div></a></div><div class="next-post pull-right"><a href="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/"><img class="next-cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基础入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/" title="CSRF及SSRF"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-27</div><div class="title">CSRF及SSRF</div></div></a></div><div><a href="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="RCE"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-29</div><div class="title">RCE</div></div></a></div><div><a href="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="文件包含"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-03</div><div class="title">文件包含</div></div></a></div><div><a href="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/" title="文件下载读取"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-04</div><div class="title">文件下载读取</div></div></a></div><div><a href="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/" title="逻辑越权"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-29</div><div class="title">逻辑越权</div></div></a></div><div><a href="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="反序列化"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-25</div><div class="title">反序列化</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDN-%E5%A4%9A%E7%BD%91"><span class="toc-number">1.</span> <span class="toc-text">CDN(多网)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF-Web-Application-Firewall"><span class="toc-number">2.</span> <span class="toc-text">WAF(Web Application Firewall)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS-Content-Management-System"><span class="toc-number">3.</span> <span class="toc-text">CMS(Content Management System)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%99%E7%82%B9%E6%90%AD%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">站点搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%AB%99%E7%82%B9"><span class="toc-number">4.1.</span> <span class="toc-text">目录站点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E7%AB%99%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text">端口站点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E7%AB%99%E7%82%B9"><span class="toc-number">4.3.</span> <span class="toc-text">子域名站点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E4%BC%BC%E5%9F%9F%E5%90%8D%E7%AB%99%E7%82%B9"><span class="toc-number">4.4.</span> <span class="toc-text">类似域名站点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%81%E6%B3%A8%EF%BC%8CC%E6%AE%B5%E7%AB%99%E7%82%B9"><span class="toc-number">4.5.</span> <span class="toc-text">旁注，C段站点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%81%E6%B3%A8%EF%BC%9A%E5%90%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E5%90%8C%E7%AB%99%E7%82%B9"><span class="toc-number">4.5.1.</span> <span class="toc-text">旁注：同服务器不同站点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C%E6%AE%B5%EF%BC%9A%E5%90%8C%E7%BD%91%E6%AE%B5%E4%B8%8D%E5%90%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E5%90%8C%E7%AB%99%E7%82%B9%EF%BC%88%E5%9B%B0%E9%9A%BE%EF%BC%89"><span class="toc-number">4.5.2.</span> <span class="toc-text">C段：同网段不同服务器不同站点（困难）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E8%BD%AF%E4%BB%B6%E7%89%B9%E5%BE%81%E7%AB%99%E7%82%B9"><span class="toc-number">4.6.</span> <span class="toc-text">搭建软件特征站点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APP"><span class="toc-number">5.</span> <span class="toc-text">APP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E6%80%9D%E8%B7%AF"><span class="toc-number">6.</span> <span class="toc-text">信息搜集思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E4%BA%A7%E7%9B%91%E6%8E%A7"><span class="toc-number">7.</span> <span class="toc-text">资产监控</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 1ceC0la</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
