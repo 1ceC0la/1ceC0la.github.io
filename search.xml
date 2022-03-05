@@ -192,55 +192,6 @@
       </tags>
   </entry>
   <entry>
-    <title>文件下载读取</title>
-    <url>/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/</url>
-    <content><![CDATA[<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>显示源代码，则为文件读取漏洞</p>
-<p>提示文件下载，则为文件下载漏洞</p>
-<p>文件被解析成脚本语言，则为文件包含漏洞</p>
-<span id="more"></span>
-
-<h2 id="漏洞检测点"><a href="#漏洞检测点" class="headerlink" title="漏洞检测点"></a>漏洞检测点</h2><h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>read.xxx?filename=</p>
-<p>down.xxx?filename=</p>
-<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>&amp;readpath=    &amp;filepath=    &amp;path=    &amp;inputfile=    &amp;url=    &amp;data=    &amp;readfile=    &amp;menu=    META-INF=    WEB-INF</p>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>参数值有的会用加密算法进行<strong>加密</strong>，所以在下载想要的文件，需要对该文件路径进行加密</p>
-<h3 id="目录符号"><a href="#目录符号" class="headerlink" title="目录符号"></a>目录符号</h3><p><code>../</code>    <code>..\</code>    <code>./</code>    <code>.\</code>等</p>
-<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h2 id="常见文件"><a href="#常见文件" class="headerlink" title="常见文件"></a>常见文件</h2><p>后台首页日志等可见文件</p>
-<h3 id="敏感文件"><a href="#敏感文件" class="headerlink" title="敏感文件"></a>敏感文件</h3><p>数据库配置文件下载或读取及后续</p>
-<p>接口密匙信息文件下载或读取及后续</p>
-<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="pikachu任意文件下载"><a href="#pikachu任意文件下载" class="headerlink" title="pikachu任意文件下载"></a>pikachu任意文件下载</h3><p>访问靶场后查看右键复制图片地址进行查看</p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
-<p>得到图片地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/download/ai.png</code></p>
-<p>右键复制查看下载地址</p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
-<p>得到下载地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=ai.png</code></p>
-<p>现在我们通过漏洞下载<code>execdownload.php</code>文件，查看其源代码，但由于<code>execdownload.php</code>文件在<code>ai.png</code>的上一级目录，所以我们构造的攻击语句为</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=../execdownload.php</span><br></pre></td></tr></table></figure>
-
-<p>得到源码，得到下载漏洞目录是<code>download/</code></p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp3.png" alt="pikachu任意文件下载-wp3"></p>
-<p>接下来我们通过该漏洞去下载<strong>敏感文件</strong>或<strong>配置文件</strong></p>
-<p>但一般这些文件需要知道绝对路径，我们可以使用扫描器去扫，用大一点的字典去跑</p>
-<h3 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a><a href="https://buuoj.cn/challenges#[RoarCTF%202019]Easy%20Java">[RoarCTF 2019]Easy Java</a></h3><p>Java开发的项目文件下载一般用POST传参</p>
-<p>此题读取WEB配置文件WEB-INF/web.xml</p>
-<p><a href="https://blog.csdn.net/ChenZIDu/article/details/103533554">https://blog.csdn.net/ChenZIDu/article/details/103533554</a></p>
-<p><a href="https://blog.csdn.net/silencediors/article/details/102579567">https://blog.csdn.net/silencediors/article/details/102579567</a></p>
-<h3 id="“百度杯”CTF比赛-2017-二月场-Zone"><a href="#“百度杯”CTF比赛-2017-二月场-Zone" class="headerlink" title="“百度杯”CTF比赛 2017 二月场-Zone"></a><a href="https://www.ichunqiu.com/battalion?t=1&r=57475">“百度杯”CTF比赛 2017 二月场-Zone</a></h3><p><a href="https://www.ichunqiu.com/writeup/detail/4941">https://www.ichunqiu.com/writeup/detail/4941</a></p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="小米路由器远程任意文件读取漏洞"><a href="#小米路由器远程任意文件读取漏洞" class="headerlink" title="小米路由器远程任意文件读取漏洞"></a><a href="https://www.seebug.org/vuldb/ssvid-98122">小米路由器远程任意文件读取漏洞</a></h3><h2 id="Java文件下载"><a href="#Java文件下载" class="headerlink" title="Java文件下载"></a>Java文件下载</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
-<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>mvc框架：model view controller</p>
-<p><a href="http://www.baidu.com/link?url=UA_cyTHHSeD2kK_DpzJiSGieQvPpY5mbLBFq_VFEUXTcAOW-Epp3yUjbjrAAWdyD_DrfySzJdTu7haN3brxyUa&wd=&eqid=a8af765e000244620000000661330346"><em>MVC 模式</em> | 菜鸟教程</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>文件下载</tag>
-        <tag>文件读取</tag>
-        <tag>文件操作</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>文件包含</title>
     <url>/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
     <content><![CDATA[<p><img src="/2021/09/03/Web%E6%BC%8F%E6%B4%9E-5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
@@ -356,8 +307,57 @@
       </categories>
       <tags>
         <tag>渗透测试</tag>
-        <tag>文件操作</tag>
         <tag>文件包含</tag>
+        <tag>文件操作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件下载读取</title>
+    <url>/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/</url>
+    <content><![CDATA[<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>显示源代码，则为文件读取漏洞</p>
+<p>提示文件下载，则为文件下载漏洞</p>
+<p>文件被解析成脚本语言，则为文件包含漏洞</p>
+<span id="more"></span>
+
+<h2 id="漏洞检测点"><a href="#漏洞检测点" class="headerlink" title="漏洞检测点"></a>漏洞检测点</h2><h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>read.xxx?filename=</p>
+<p>down.xxx?filename=</p>
+<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>&amp;readpath=    &amp;filepath=    &amp;path=    &amp;inputfile=    &amp;url=    &amp;data=    &amp;readfile=    &amp;menu=    META-INF=    WEB-INF</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>参数值有的会用加密算法进行<strong>加密</strong>，所以在下载想要的文件，需要对该文件路径进行加密</p>
+<h3 id="目录符号"><a href="#目录符号" class="headerlink" title="目录符号"></a>目录符号</h3><p><code>../</code>    <code>..\</code>    <code>./</code>    <code>.\</code>等</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h2 id="常见文件"><a href="#常见文件" class="headerlink" title="常见文件"></a>常见文件</h2><p>后台首页日志等可见文件</p>
+<h3 id="敏感文件"><a href="#敏感文件" class="headerlink" title="敏感文件"></a>敏感文件</h3><p>数据库配置文件下载或读取及后续</p>
+<p>接口密匙信息文件下载或读取及后续</p>
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="pikachu任意文件下载"><a href="#pikachu任意文件下载" class="headerlink" title="pikachu任意文件下载"></a>pikachu任意文件下载</h3><p>访问靶场后查看右键复制图片地址进行查看</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到图片地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/download/ai.png</code></p>
+<p>右键复制查看下载地址</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到下载地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=ai.png</code></p>
+<p>现在我们通过漏洞下载<code>execdownload.php</code>文件，查看其源代码，但由于<code>execdownload.php</code>文件在<code>ai.png</code>的上一级目录，所以我们构造的攻击语句为</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=../execdownload.php</span><br></pre></td></tr></table></figure>
+
+<p>得到源码，得到下载漏洞目录是<code>download/</code></p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp3.png" alt="pikachu任意文件下载-wp3"></p>
+<p>接下来我们通过该漏洞去下载<strong>敏感文件</strong>或<strong>配置文件</strong></p>
+<p>但一般这些文件需要知道绝对路径，我们可以使用扫描器去扫，用大一点的字典去跑</p>
+<h3 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a><a href="https://buuoj.cn/challenges#[RoarCTF%202019]Easy%20Java">[RoarCTF 2019]Easy Java</a></h3><p>Java开发的项目文件下载一般用POST传参</p>
+<p>此题读取WEB配置文件WEB-INF/web.xml</p>
+<p><a href="https://blog.csdn.net/ChenZIDu/article/details/103533554">https://blog.csdn.net/ChenZIDu/article/details/103533554</a></p>
+<p><a href="https://blog.csdn.net/silencediors/article/details/102579567">https://blog.csdn.net/silencediors/article/details/102579567</a></p>
+<h3 id="“百度杯”CTF比赛-2017-二月场-Zone"><a href="#“百度杯”CTF比赛-2017-二月场-Zone" class="headerlink" title="“百度杯”CTF比赛 2017 二月场-Zone"></a><a href="https://www.ichunqiu.com/battalion?t=1&r=57475">“百度杯”CTF比赛 2017 二月场-Zone</a></h3><p><a href="https://www.ichunqiu.com/writeup/detail/4941">https://www.ichunqiu.com/writeup/detail/4941</a></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="小米路由器远程任意文件读取漏洞"><a href="#小米路由器远程任意文件读取漏洞" class="headerlink" title="小米路由器远程任意文件读取漏洞"></a><a href="https://www.seebug.org/vuldb/ssvid-98122">小米路由器远程任意文件读取漏洞</a></h3><h2 id="Java文件下载"><a href="#Java文件下载" class="headerlink" title="Java文件下载"></a>Java文件下载</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>mvc框架：model view controller</p>
+<p><a href="http://www.baidu.com/link?url=UA_cyTHHSeD2kK_DpzJiSGieQvPpY5mbLBFq_VFEUXTcAOW-Epp3yUjbjrAAWdyD_DrfySzJdTu7haN3brxyUa&wd=&eqid=a8af765e000244620000000661330346"><em>MVC 模式</em> | 菜鸟教程</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>文件操作</tag>
+        <tag>文件下载</tag>
+        <tag>文件读取</tag>
       </tags>
   </entry>
   <entry>
@@ -838,9 +838,9 @@
 <h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
 <h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
 <h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
-<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="./%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/http%E4%B8%8Ehttps.png" alt="http与https"></p>
+<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%851.jpg" alt="数据包1"></p>
 <h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
-<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="./%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/https.png" alt="https"></p>
+<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%852.JPG" alt="数据包2"></p>
 <h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
 <p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
 <h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
@@ -886,64 +886,6 @@
       </categories>
       <tags>
         <tag>渗透测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则表达式</title>
-    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
-<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
-</blockquote>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
-<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
-<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
-</li>
-<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
-</li>
-<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
-</li>
-</ul>
-<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
-<p><code>\w</code>单词，匹配字母、数字、下划线</p>
-<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
-<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
-<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
-<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
-<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
-<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
-<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
-<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
-<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
-<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
-<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
-<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
-<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
-<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
-<p><code>|</code>或者条件</p>
-<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
-<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
-<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
-<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
-<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
-<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
-<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
-<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
-<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
-<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
-<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
-<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
-]]></content>
-      <tags>
-        <tag>正则表达式</tag>
       </tags>
   </entry>
   <entry>
@@ -1218,6 +1160,64 @@
       <tags>
         <tag>hexo</tag>
         <tag>yilia</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
+<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
+</blockquote>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
+<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
+<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
+</li>
+<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
+</li>
+<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
+</li>
+</ul>
+<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
+<p><code>\w</code>单词，匹配字母、数字、下划线</p>
+<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
+<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
+<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
+<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
+<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
+<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
+<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
+<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
+<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
+<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
+<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
+<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
+<p><code>|</code>或者条件</p>
+<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
+<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
+<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
+<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
+<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
+<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
+<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
+<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
+<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
+<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
+<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
+]]></content>
+      <tags>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
 </search>
