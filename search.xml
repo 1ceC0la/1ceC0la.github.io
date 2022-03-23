@@ -1,69 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CSRF及SSRF</title>
-    <url>/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/</url>
-    <content><![CDATA[<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
-<p>跨站脚本请求</p>
-<p>Cross-Site Request Forgery</p>
-</blockquote>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF.png" alt="CSRF"></p>
-<p>攻击者在自己的服务器上构造了攻击代码（比如知道添加管理员的数据包），受害者（管理员）用自己的身份权限在自己的浏览器去访问攻击链接</p>
-<span id="more"></span>
-
-<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>利用burp抓包，并且发送至<code>Generate CSRF PoC</code>这个插件</p>
-<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-1.png" alt="CSRF检测-1"></p>
-<p>在这个页面修改信息，并生成攻击代码</p>
-<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-2.png" alt="CSRF检测-2"></p>
-<p>copy攻击代码后，将其放在自己的服务器上</p>
-<p>然后用受害者身份在受害者的环境去访问，若信息修改成功，则存在CSRF</p>
-<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><p><a href="https://blog.csdn.net/Aaron_Miller/article/details/106097698">Pikachu靶场</a></p>
-<h3 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h3><p>1.当用户发送重要的请求时需要输入原始密码</p>
-<p>2.设置随机<code>token</code>，检测数据报的唯一性（最有效）</p>
-<p>3.校验<code>Referer</code>来源，请求时判断请求链接是否是当前管理员正在使用的页面（管理员在编辑文章，黑客发来恶意的修改密码链接，因为修改密码页面管理员并没有在操作，所以攻击失败）</p>
-<p>4.设置验证码</p>
-<p>5.限制请求方式只能为POST</p>
-<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><blockquote>
-<p>服务器请求伪造</p>
-<p>Server-Side Request Forgery</p>
-</blockquote>
-<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9B%BE%E8%A7%A3.png" alt="SSRF图解"></p>
-<p>SSRF形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等</p>
-<p>相当于是可以将存在SSRF的服务器<strong>作为一个代理</strong>，去访问其内网服务端的资源</p>
-<p>利用SSRF能实现以下效果:<br>1.扫描内网（主机信息收集，Web应用指纹识别）<br>2.根据所识别应用发送构造的Payload进行攻击<br>3.Denial of service（拒绝服务DOS）</p>
-<h3 id="各个协议调用探针"><a href="#各个协议调用探针" class="headerlink" title="各个协议调用探针"></a>各个协议调用探针</h3><p>http</p>
-<p>file</p>
-<p>dict</p>
-<p>ftp</p>
-<p>gopher</p>
-<h3 id="漏洞攻击"><a href="#漏洞攻击" class="headerlink" title="漏洞攻击"></a>漏洞攻击</h3><p>端口扫描、指纹识别、漏洞利用、内网探针</p>
-<p><a href="http://192.168.xx.xx/phpmyadmin">http://192.168.xx.xx/phpmyadmin</a></p>
-<p>file:///D:/<a href="http://www.txt/">www.txt</a></p>
-<p>dict://192.168.xx.xx:3306/info</p>
-<p><a href="ftp://192.168.xx.xx/">ftp://192.168.xx.xx:21</a></p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    请输入图片地址：&lt;input type=<span class="string">&#x27;text&#x27;</span> name=<span class="string">&#x27;url&#x27;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">    </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*内网的某台主机村子啊HFS漏洞,这里是通过存在SSRF的服务器对其内网主机进行利用</span></span><br><span class="line"><span class="comment">url=$_POST[&#x27;url&#x27;];</span></span><br><span class="line"><span class="comment">$img = file_get_contents(&#x27;http://192.168.xx.xx:8080/?search==%00&#123;.exec|cmd.exe%20/c%20net%20user%20test1234%201234%20/add.&#125;&#x27;);</span></span><br><span class="line"><span class="comment">echo $url;</span></span><br><span class="line"><span class="comment">echo $img;</span></span><br><span class="line"><span class="comment">//header(&quot;Content-Type: img/jpeg;text/html; charset=utf-8&quot;);</span></span><br><span class="line"><span class="comment">//echo $img;</span></span><br><span class="line"><span class="comment">//$file = fopen(&#x27;x,png, &#x27;w+&#x27;);</span></span><br><span class="line"><span class="comment">//fwrite($file, $img);</span></span><br><span class="line"><span class="comment">//fclose($file);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;URL&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line">curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="SSRF漏洞挖掘"><a href="#SSRF漏洞挖掘" class="headerlink" title="SSRF漏洞挖掘"></a>SSRF漏洞挖掘</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98.png" alt="SSRF漏洞挖掘"></p>
-<h3 id="SSRF在各个编程语言中可以使用的协议"><a href="#SSRF在各个编程语言中可以使用的协议" class="headerlink" title="SSRF在各个编程语言中可以使用的协议"></a>SSRF在各个编程语言中可以使用的协议</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9C%A8%E5%90%84%E4%B8%AA%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE.png" alt="SSRF在各个编程语言中可以使用的协议"></p>
-<h3 id="真实案例"><a href="#真实案例" class="headerlink" title="真实案例"></a>真实案例</h3><p>地址：<a href="https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top">https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top</a></p>
-<p>当输入<code>http://127.0.0.1</code>与直接输入<code>127.0.0.1</code>返回结果有差异，表明可能存在SSRF漏洞</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://pan.baidu.com/s/1bp96ECJ">CSRFTester-1.0</a></p>
-<p><a href="https://www.t00ls.net/articles-41070.html">SSRF漏洞(原理&amp;绕过姿势)</a></p>
-<p><a href="https://blog.csdn.net/Android_wxf/article/details/118582585">CSDN-看我一招征服SSRF</a></p>
-<h2 id="参考视频"><a href="#参考视频" class="headerlink" title="参考视频"></a>参考视频</h2><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=28&spm_id_from=pageDriver">【小迪安全】WEB漏洞-CSRF及SSRF</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>CSRF</tag>
-        <tag>SSRF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RCE</title>
     <url>/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
     <content><![CDATA[<blockquote>
@@ -189,6 +126,69 @@
       <tags>
         <tag>渗透测试</tag>
         <tag>RCE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSRF及SSRF</title>
+    <url>/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/</url>
+    <content><![CDATA[<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
+<p>跨站脚本请求</p>
+<p>Cross-Site Request Forgery</p>
+</blockquote>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF.png" alt="CSRF"></p>
+<p>攻击者在自己的服务器上构造了攻击代码（比如知道添加管理员的数据包），受害者（管理员）用自己的身份权限在自己的浏览器去访问攻击链接</p>
+<span id="more"></span>
+
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>利用burp抓包，并且发送至<code>Generate CSRF PoC</code>这个插件</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-1.png" alt="CSRF检测-1"></p>
+<p>在这个页面修改信息，并生成攻击代码</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-2.png" alt="CSRF检测-2"></p>
+<p>copy攻击代码后，将其放在自己的服务器上</p>
+<p>然后用受害者身份在受害者的环境去访问，若信息修改成功，则存在CSRF</p>
+<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><p><a href="https://blog.csdn.net/Aaron_Miller/article/details/106097698">Pikachu靶场</a></p>
+<h3 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h3><p>1.当用户发送重要的请求时需要输入原始密码</p>
+<p>2.设置随机<code>token</code>，检测数据报的唯一性（最有效）</p>
+<p>3.校验<code>Referer</code>来源，请求时判断请求链接是否是当前管理员正在使用的页面（管理员在编辑文章，黑客发来恶意的修改密码链接，因为修改密码页面管理员并没有在操作，所以攻击失败）</p>
+<p>4.设置验证码</p>
+<p>5.限制请求方式只能为POST</p>
+<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><blockquote>
+<p>服务器请求伪造</p>
+<p>Server-Side Request Forgery</p>
+</blockquote>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9B%BE%E8%A7%A3.png" alt="SSRF图解"></p>
+<p>SSRF形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等</p>
+<p>相当于是可以将存在SSRF的服务器<strong>作为一个代理</strong>，去访问其内网服务端的资源</p>
+<p>利用SSRF能实现以下效果:<br>1.扫描内网（主机信息收集，Web应用指纹识别）<br>2.根据所识别应用发送构造的Payload进行攻击<br>3.Denial of service（拒绝服务DOS）</p>
+<h3 id="各个协议调用探针"><a href="#各个协议调用探针" class="headerlink" title="各个协议调用探针"></a>各个协议调用探针</h3><p>http</p>
+<p>file</p>
+<p>dict</p>
+<p>ftp</p>
+<p>gopher</p>
+<h3 id="漏洞攻击"><a href="#漏洞攻击" class="headerlink" title="漏洞攻击"></a>漏洞攻击</h3><p>端口扫描、指纹识别、漏洞利用、内网探针</p>
+<p><a href="http://192.168.xx.xx/phpmyadmin">http://192.168.xx.xx/phpmyadmin</a></p>
+<p>file:///D:/<a href="http://www.txt/">www.txt</a></p>
+<p>dict://192.168.xx.xx:3306/info</p>
+<p><a href="ftp://192.168.xx.xx/">ftp://192.168.xx.xx:21</a></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    请输入图片地址：&lt;input type=<span class="string">&#x27;text&#x27;</span> name=<span class="string">&#x27;url&#x27;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">    </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*内网的某台主机村子啊HFS漏洞,这里是通过存在SSRF的服务器对其内网主机进行利用</span></span><br><span class="line"><span class="comment">url=$_POST[&#x27;url&#x27;];</span></span><br><span class="line"><span class="comment">$img = file_get_contents(&#x27;http://192.168.xx.xx:8080/?search==%00&#123;.exec|cmd.exe%20/c%20net%20user%20test1234%201234%20/add.&#125;&#x27;);</span></span><br><span class="line"><span class="comment">echo $url;</span></span><br><span class="line"><span class="comment">echo $img;</span></span><br><span class="line"><span class="comment">//header(&quot;Content-Type: img/jpeg;text/html; charset=utf-8&quot;);</span></span><br><span class="line"><span class="comment">//echo $img;</span></span><br><span class="line"><span class="comment">//$file = fopen(&#x27;x,png, &#x27;w+&#x27;);</span></span><br><span class="line"><span class="comment">//fwrite($file, $img);</span></span><br><span class="line"><span class="comment">//fclose($file);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;URL&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line">curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SSRF漏洞挖掘"><a href="#SSRF漏洞挖掘" class="headerlink" title="SSRF漏洞挖掘"></a>SSRF漏洞挖掘</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98.png" alt="SSRF漏洞挖掘"></p>
+<h3 id="SSRF在各个编程语言中可以使用的协议"><a href="#SSRF在各个编程语言中可以使用的协议" class="headerlink" title="SSRF在各个编程语言中可以使用的协议"></a>SSRF在各个编程语言中可以使用的协议</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9C%A8%E5%90%84%E4%B8%AA%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE.png" alt="SSRF在各个编程语言中可以使用的协议"></p>
+<h3 id="真实案例"><a href="#真实案例" class="headerlink" title="真实案例"></a>真实案例</h3><p>地址：<a href="https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top">https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top</a></p>
+<p>当输入<code>http://127.0.0.1</code>与直接输入<code>127.0.0.1</code>返回结果有差异，表明可能存在SSRF漏洞</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://pan.baidu.com/s/1bp96ECJ">CSRFTester-1.0</a></p>
+<p><a href="https://www.t00ls.net/articles-41070.html">SSRF漏洞(原理&amp;绕过姿势)</a></p>
+<p><a href="https://blog.csdn.net/Android_wxf/article/details/118582585">CSDN-看我一招征服SSRF</a></p>
+<h2 id="参考视频"><a href="#参考视频" class="headerlink" title="参考视频"></a>参考视频</h2><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=28&spm_id_from=pageDriver">【小迪安全】WEB漏洞-CSRF及SSRF</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>CSRF</tag>
+        <tag>SSRF</tag>
       </tags>
   </entry>
   <entry>
@@ -772,58 +772,6 @@
       </tags>
   </entry>
   <entry>
-    <title>信息收集</title>
-    <url>/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
-<span id="more"></span>
-
-<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
-<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
-<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
-<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
-<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
-<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
-<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
-<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
-<p>通过开放的端口，分析站点开启了哪些服务</p>
-<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
-<p><strong>bbs</strong>.goodlift.net</p>
-<p><strong>www</strong>.goodlift.net</p>
-<p>不同ip：</p>
-<p><a href="http://www.etiantian.com/">www.etiantian.com</a></p>
-<p>web.etiantian.com</p>
-<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
-<p>例如：192.168.1.100</p>
-<p>​            <a href="http://www.a.com/">www.a.com</a></p>
-<p>​            <a href="http://www.b.com/">www.b.com</a></p>
-<p>可以通过找到b的漏洞来攻击a站点</p>
-<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
-<p>例如：192.168.1.100</p>
-<p>​            <a href="http://www.a.com/">www.a.com</a></p>
-<p>​            </p>
-<p>例如：192.168.1.101</p>
-<p>​            <a href="http://www.b.com/">www.b.com</a></p>
-<p>​            </p>
-<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
-<p>shodan（一款黑暗搜索引擎）</p>
-<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
-<p><a href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
-<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
-<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
-<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
-<p>查证书的<a href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
-<p>查询DNS记录<a href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
-<p><a href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>信息收集</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基础入门</title>
     <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>基础入门</p>
@@ -886,6 +834,58 @@
       </categories>
       <tags>
         <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>信息收集</title>
+    <url>/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
+<span id="more"></span>
+
+<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
+<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
+<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
+<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
+<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
+<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
+<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
+<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
+<p>通过开放的端口，分析站点开启了哪些服务</p>
+<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
+<p><strong>bbs</strong>.goodlift.net</p>
+<p><strong>www</strong>.goodlift.net</p>
+<p>不同ip：</p>
+<p><a href="http://www.etiantian.com/">www.etiantian.com</a></p>
+<p>web.etiantian.com</p>
+<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>可以通过找到b的漏洞来攻击a站点</p>
+<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            </p>
+<p>例如：192.168.1.101</p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>​            </p>
+<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
+<p>shodan（一款黑暗搜索引擎）</p>
+<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
+<p><a href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
+<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
+<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
+<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
+<p>查证书的<a href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
+<p>查询DNS记录<a href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
+<p><a href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>信息收集</tag>
       </tags>
   </entry>
   <entry>
