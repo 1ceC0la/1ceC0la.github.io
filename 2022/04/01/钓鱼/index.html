@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>钓鱼浅尝 | 1ceC0la's blog</title><meta name="keywords" content="社会工程学，钓鱼"><meta name="author" content="1ceC0la"><meta name="copyright" content="1ceC0la"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="原计划是学java的，但写这篇文章的前一天，看了一部叫whoami黑客电影，感觉顶级黑客都是社工大佬，有很多经典台词： “只要敢做就能赢”， “黑客技术就像魔术，处处充满了欺骗”， “每个人都只看到他愿意看到的”， “外面的世界有太多的不确定,但是人可以成为自己想要成为的人,成为任何人”， “人类才是系统中最大的漏洞。” 不知不觉中，让我萌生了社工的想法。 加之今天又是愚人节，是个搞事情的好日子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="钓鱼浅尝">
+<meta property="og:url" content="http://example.com/2022/04/01/%E9%92%93%E9%B1%BC/index.html">
+<meta property="og:site_name" content="1ceC0la&#39;s blog">
+<meta property="og:description" content="原计划是学java的，但写这篇文章的前一天，看了一部叫whoami黑客电影，感觉顶级黑客都是社工大佬，有很多经典台词： “只要敢做就能赢”， “黑客技术就像魔术，处处充满了欺骗”， “每个人都只看到他愿意看到的”， “外面的世界有太多的不确定,但是人可以成为自己想要成为的人,成为任何人”， “人类才是系统中最大的漏洞。” 不知不觉中，让我萌生了社工的想法。 加之今天又是愚人节，是个搞事情的好日子">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2022-04-01T02:17:00.000Z">
+<meta property="article:modified_time" content="2022-04-01T02:17:00.000Z">
+<meta property="article:author" content="1ceC0la">
+<meta property="article:tag" content="社会工程学，钓鱼">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/avatar.gif"><link rel="canonical" href="http://example.com/2022/04/01/%E9%92%93%E9%B1%BC/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '钓鱼浅尝',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-01 10:17:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">1ceC0la's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">钓鱼浅尝</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-01T02:17:00.000Z" title="发表于 2022-04-01 10:17:00">2022-04-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-01T02:17:00.000Z" title="更新于 2022-04-01 10:17:00">2022-04-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A4%BE%E4%BC%9A%E5%B7%A5%E7%A8%8B%E5%AD%A6/">社会工程学</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="钓鱼浅尝"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>原计划是学java的，但写这篇文章的前一天，看了一部叫<strong>whoami</strong>黑客电影，感觉顶级黑客都是社工大佬，有很多经典台词：</p>
+<p>“只要敢做就能赢”，</p>
+<p>“黑客技术就像魔术，处处充满了欺骗”，</p>
+<p>“每个人都只看到他愿意看到的”，</p>
+<p>“外面的世界有太多的不确定,但是人可以成为自己想要成为的人,成为任何人”，</p>
+<p>“人类才是系统中最大的漏洞。”</p>
+<p>不知不觉中，让我萌生了社工的想法。</p>
+<p>加之今天又是愚人节，是个搞事情的好日子🤭</p>
+<p>而且更有意思的是今天凌晨我的室友居然收到了钓鱼邮件，还是他认识的人发的，于是请教了一下用的什么来做的钓鱼，便去学了学</p>
+</blockquote>
+<h2 id="Gophish搭建"><a href="#Gophish搭建" class="headerlink" title="Gophish搭建"></a>Gophish搭建</h2><p>Gophish 是一个功能强大的开源网络钓🐟框架。</p>
+<h3 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:<span class="regexp">//gi</span>thub.com<span class="regexp">/gophish/g</span>ophish<span class="regexp">/releases/</span>download<span class="regexp">/v0.11.0/g</span>ophish-v0.<span class="number">11.0</span>-linux-<span class="number">64</span>bit.zip</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-修改配置文件config-json"><a href="#2-修改配置文件config-json" class="headerlink" title="2.修改配置文件config.json"></a>2.修改配置文件<code>config.json</code></h3><p>要注意：</p>
+<ul>
+<li>admin_server 把 127.0.0.1 改为 0.0.0.0，然后最好不要使用默 认3333 端口，亲测这个端口可能因为某种人为因素不通，改为 443 是最稳的。</li>
+<li>listen_url 也要是 0.0.0.0，如果 80 端口被占用了可以改为其他端口比如 81。</li>
+<li>contact_address 不是一定要加上的，可以加一个。</li>
+</ul>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401105632720.png" alt="image-20220401105632720"></p>
+<h3 id="3-运行"><a href="#3-运行" class="headerlink" title="3.运行"></a>3.运行</h3><p>./gophish 运行（如果不行就加个sudo）</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401114347207.png" alt="image-20220401114347207"></p>
+<p>这里注意一下：</p>
+<p><strong>最新版本的gophsih(v0.11.0)删除了默认密码“ gophish”。取而代之的是，在首次启动Gophish时会随机生成一个初始密码并将其打印在终端中</strong></p>
+<p>初始随机密码：<code>f24c2b1a758b565b</code></p>
+<h3 id="4-后台登录"><a href="#4-后台登录" class="headerlink" title="4.后台登录"></a>4.后台登录</h3><p>这里需要注意，要用https，不然访问不了。<code>https://xxx.xxx.xxx.xxx:443</code></p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401112046516.png" alt="image-20220401112046516"></p>
+<p>使用账号密码 <code>admin</code> <code>f24c2b1a758b565b</code> 来 login</p>
+<p>登入后需要修改，改为<code>f24c2b1a758b565b9</code></p>
+<h2 id="购买近似域名"><a href="#购买近似域名" class="headerlink" title="购买近似域名"></a>购买近似域名</h2><p>我这里因为没钱就没买近似域名，就用之前买的域名，QAQ</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401122417093.png" alt="image-20220401122417093"></p>
+<h2 id="邮件服务器搭建"><a href="#邮件服务器搭建" class="headerlink" title="邮件服务器搭建"></a>邮件服务器搭建</h2><p>其实 QQ 邮箱也有域名邮箱的功能，但是 QQ 邮箱对钓鱼有检测、会被封的，所以我们还是自己搭。</p>
+<p>我们 Ubuntu 还是使用 <code>Postfix</code>+<code>mailutils</code>。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sd4015700/article/details/21454729">https://blog.csdn.net/sd4015700/article/details/21454729</a></p>
+<p>在搭建 gophish 的同一台 VPS 上开始搭建邮件服务器</p>
+<h3 id="1-安装Postfix"><a href="#1-安装Postfix" class="headerlink" title="1.安装Postfix"></a>1.安装Postfix</h3><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="built_in">get</span> install <span class="built_in">postfix</span></span><br></pre></td></tr></table></figure>
+<p>↑↓键来选择，→键会到’ok’</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401121512674.png" alt="image-20220401121512674"></p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401121551682.png" alt="image-20220401121551682"></p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401125019264.png" alt="image-20220401125019264"></p>
+<h3 id="2-安装mailx软件包"><a href="#2-安装mailx软件包" class="headerlink" title="2.安装mailx软件包"></a>2.安装mailx软件包</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="builtin-name">get</span> install mailutils</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-增加测试用户-fmaster"><a href="#3-增加测试用户-fmaster" class="headerlink" title="3.增加测试用户 fmaster"></a>3.增加测试用户 fmaster</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用户一：</span><br><span class="line">useradd -m -s <span class="regexp">/bin/</span>bash fmaster  </span><br><span class="line">passwd fmaster</span><br><span class="line"></span><br><span class="line">用户二</span><br><span class="line">useradd -m -s <span class="regexp">/bin/</span>bash CET报名官方客服</span><br><span class="line">passwd <span class="string">&quot;CET报名官方客服&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>注意这里腾讯云的VPS需要对25端口解封，不然使用telnet来检测时会一直不通</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401141808606.png" alt="image-20220401141808606"></p>
+<h4 id="test1"><a href="#test1" class="headerlink" title="test1"></a>test1</h4><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401142728262.png" alt="image-20220401142728262"></p>
+<h4 id="test2"><a href="#test2" class="headerlink" title="test2"></a>test2</h4><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401143142162.png" alt="image-20220401143142162"></p>
+<p>去QQ邮箱查看，真的收到邮件了！！！</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401143222900.png" alt="image-20220401143222900"></p>
+<p>然后QQ回复一封，看看我们的邮件服务器能不能收到</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401143428358.png" alt="image-20220401143428358"></p>
+<p>服务端也确实能收到回信</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401143657633.png" alt="image-20220401143657633"></p>
+<h2 id="Gophish-活动建立"><a href="#Gophish-活动建立" class="headerlink" title="Gophish 活动建立"></a>Gophish 活动建立</h2><h3 id="Sending-Profiles"><a href="#Sending-Profiles" class="headerlink" title="Sending Profiles"></a>Sending Profiles</h3><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401204550857.png" alt="image-20220401204550857"></p>
+<h3 id="Landing-Pages（钓鱼网址）"><a href="#Landing-Pages（钓鱼网址）" class="headerlink" title="Landing Pages（钓鱼网址）"></a>Landing Pages（钓鱼网址）</h3><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401204724588.png" alt="image-20220401204724588"></p>
+<p>若是import导入乱码，可以用google插件<code>Singlefile</code>来对网页前端进行爬取</p>
+<h4 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h4><p><strong>Capture Submitted Data</strong>:<br>通常，进行钓鱼的目的往往是捕获受害用户的用户名及密码，因此，在点击Save Page之前，记得一定要勾选Capture Submitted Data<br>当勾选了Capture Submitted Data后，页面会多出一个<strong>Capture Passwords</strong>的选项，显然是捕获密码。通常，可以选择勾选上以验证账号的可用性。如果仅仅是测试并统计受害用户是否提交数据而不泄露账号隐私，则可以不用勾选<br>另外，当勾选了Capture Submitted Data后，页面还会多出一个<strong>Redirect to</strong>，其作用是当受害用户点击提交表单后，将页面重定向到指定的URL。可以填写被伪造网站的URL，营造出一种受害用户第一次填写账号密码填错的感觉<br>（一般来说，当一个登录页面提交的表单数据与数据库中不一致时，登录页面的URL会被添加上一个出错参数，以提示用户账号或密码出错，所以在Redirect to中，最好填写带出错参数的URL）</p>
+<h4 id="踩坑汇总"><a href="#踩坑汇总" class="headerlink" title="踩坑汇总"></a>踩坑汇总</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">（必看）经验之谈 · 注意事项</span><br><span class="line">在导入真实网站来作为钓鱼页面时，绝大多数情况下并非仅通过<span class="keyword">Import</span>就能够达到理想下的克隆，通过多次实践，总结出以下几点注意事项</span><br><span class="line"></span><br><span class="line">【捕获不到提交的数据】导入后要在HTML编辑框的非Source模式下观察源码解析情况，如果明显发现存在许多地方未加载，则有可能导入的源码并非页面完全加载后的前端代码，而是一个半成品，需要通过浏览器二次解析，渲染未加载的DOM。这种情况下，除非能够直接爬取页面完全加载后的前端代码，否则无法利用gophish进行钓鱼，造成的原因是不满足第<span class="number">2</span>点。</span><br><span class="line">【捕获不到提交的数据】导入的前端源码，必须存在严格存在&lt;form <span class="keyword">method</span>=&quot;post&quot; ···&gt;&lt;<span class="keyword">input</span> <span class="type">name</span>=&quot;aaa&quot; ··· /&gt; ··· &lt;<span class="keyword">input</span> <span class="keyword">type</span>=&quot;submit&quot; ··· /&gt;&lt;/form&gt;结构，即表单（POST方式）— <span class="keyword">Input</span>标签（具有<span class="type">name</span>属性）<span class="keyword">Input</span>标签（submit类型）— 表单闭合的结构，如果不满足则无法捕获到提交的数据</span><br><span class="line">【捕获不到提交的数据】在满足第<span class="number">2</span>点的结构的情况下，还需要求&lt;form <span class="keyword">method</span>=&quot;post&quot; ···&gt;在浏览器解析渲染后（即预览情况下）不能包含action属性，或者action属性的值为空。否则将会把表单数据提交给action指定的页面，而导致无法被捕获到</span><br><span class="line">【捕获数据不齐全】对于需要被捕获的表单数据，除了<span class="keyword">input</span>标签需要被包含在&lt;form&gt;中，还需满足该&lt;<span class="keyword">input</span>&gt;存在<span class="type">name</span>属性。例如&lt;<span class="keyword">input</span> <span class="type">name</span>=&quot;username&quot;&gt;,否则会因为没有字段名而导致<span class="keyword">value</span>被忽略</span><br><span class="line">【密码被加密】针对https页面的<span class="keyword">import</span>，通常密码会进行加密处理，这时需要通过审计导入的前端代码，找到加密的JavaScript函数（多数情况存在于单独的js文件中，通过src引入），将其在gophish的HTML编辑框中删除，阻止表单数据被加密</span><br><span class="line">以上<span class="number">5</span>点是在实践中总结出来的宝贵经验，或许还有其他许多坑未填，但所有的坑通常都围绕在&lt;form&gt;&lt;<span class="keyword">input</span> /&gt;&lt;/form&gt;结构中，所以如果遇到新坑，先将该结构排查一遍，还是不行，再另辟蹊径</span><br></pre></td></tr></table></figure>
+
+<h3 id="Email-Templates"><a href="#Email-Templates" class="headerlink" title="Email Templates"></a>Email Templates</h3><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401204838592.png" alt="image-20220401204838592"></p>
+<p><code>&#123;&#123;.URL&#125;&#125;</code>这里会自动对应钓鱼网址（Loading Page）</p>
+<p>gophish为编辑邮件内容提供了两种方式，第一种就是Import Email</p>
+<p>用户可以先在自己的邮箱系统中设计好钓鱼邮件，然后发送给自己或其他伙伴，收到设计好的邮件后，打开并选择导出为<strong>eml</strong>文件或者<strong>显示邮件原文</strong>，然后将内容复制到gophish的Import Email中，即可将设计好的钓鱼邮件导入</p>
+<p>内容编辑框是编写邮件内容的第二种模式</p>
+<h3 id="Users-amp-Groups"><a href="#Users-amp-Groups" class="headerlink" title="Users &amp; Groups"></a>Users &amp; Groups</h3><p>导入发送目标</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401205008996.png" alt="image-20220401205008996"></p>
+<h3 id="Campaigns"><a href="#Campaigns" class="headerlink" title="Campaigns"></a>Campaigns</h3><p>制作<code>Campaigns</code>来发送邮箱并监测</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401212100345.png" alt="image-20220401212100345"></p>
+<p>这里没想到居然逮到两个倒霉蛋输入了自己的真实密码（笑死我了🤣），今天的愚人节圆满了</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401212251916.png" alt="image-20220401212251916"></p>
+<h2 id="受害者视角"><a href="#受害者视角" class="headerlink" title="受害者视角"></a>受害者视角</h2><p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401212547713.png" alt="image-20220401212547713"></p>
+<p>输入用户名密码后提交，我的Gophish就会接收到</p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401212628866.png" alt="image-20220401212628866"></p>
+<p><img src="/2022/04/01/%E9%92%93%E9%B1%BC/image-20220401212956468.png" alt="image-20220401212956468"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>历时一天，终于时初次体验了一把社工的乐趣，虽然只是简单的🎣。不得不说，人才是最大的bug，大家一定要有网络安全意识，连接不要随便点，看清网址是什么！</p>
+<p>在网络信息的世界里，重要的是有一双会发现的大👀</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://blog.leanote.com/post/snowming/a6b66097bccd">gophish+自己搭建邮件服务器</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42939527/article/details/107485116">钓鱼工具gophish史上最详细教程</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/god_zzZ/article/details/122610708">Gophish钓鱼平台和邮件服务器搭建</a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.modb.pro/db/324573">钓鱼工具-gophish使用</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">1ceC0la</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/04/01/%E9%92%93%E9%B1%BC/">http://example.com/2022/04/01/钓鱼/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">1ceC0la's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A4%BE%E4%BC%9A%E5%B7%A5%E7%A8%8B%E5%AD%A6%EF%BC%8C%E9%92%93%E9%B1%BC/">社会工程学，钓鱼</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/WeChatPay.png" target="_blank"><img class="post-qr-code-img" src="/img/WeChatPay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/04/24/Vulnstack2%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Vulnstack2靶场内网渗透</div></div></a></div><div class="next-post pull-right"><a href="/2022/03/30/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-MSF%E5%92%8CCS%E8%81%94%E5%8A%A8/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MSF和CS联动</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gophish%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">Gophish搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">1.下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6config-json"><span class="toc-number">1.2.</span> <span class="toc-text">2.修改配置文件config.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8C"><span class="toc-number">1.3.</span> <span class="toc-text">3.运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95"><span class="toc-number">1.4.</span> <span class="toc-text">4.后台登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AD%E4%B9%B0%E8%BF%91%E4%BC%BC%E5%9F%9F%E5%90%8D"><span class="toc-number">2.</span> <span class="toc-text">购买近似域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">邮件服务器搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85Postfix"><span class="toc-number">3.1.</span> <span class="toc-text">1.安装Postfix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85mailx%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">3.2.</span> <span class="toc-text">2.安装mailx软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A2%9E%E5%8A%A0%E6%B5%8B%E8%AF%95%E7%94%A8%E6%88%B7-fmaster"><span class="toc-number">3.3.</span> <span class="toc-text">3.增加测试用户 fmaster</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.</span> <span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#test1"><span class="toc-number">3.4.1.</span> <span class="toc-text">test1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#test2"><span class="toc-number">3.4.2.</span> <span class="toc-text">test2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gophish-%E6%B4%BB%E5%8A%A8%E5%BB%BA%E7%AB%8B"><span class="toc-number">4.</span> <span class="toc-text">Gophish 活动建立</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sending-Profiles"><span class="toc-number">4.1.</span> <span class="toc-text">Sending Profiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Landing-Pages%EF%BC%88%E9%92%93%E9%B1%BC%E7%BD%91%E5%9D%80%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">Landing Pages（钓鱼网址）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9"><span class="toc-number">4.2.1.</span> <span class="toc-text">重点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB"><span class="toc-number">4.2.2.</span> <span class="toc-text">踩坑汇总</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Email-Templates"><span class="toc-number">4.3.</span> <span class="toc-text">Email Templates</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Users-amp-Groups"><span class="toc-number">4.4.</span> <span class="toc-text">Users &amp; Groups</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Campaigns"><span class="toc-number">4.5.</span> <span class="toc-text">Campaigns</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%97%E5%AE%B3%E8%80%85%E8%A7%86%E8%A7%92"><span class="toc-number">5.</span> <span class="toc-text">受害者视角</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 1ceC0la</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

