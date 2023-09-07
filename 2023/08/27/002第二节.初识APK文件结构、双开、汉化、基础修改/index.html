@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>002第二节.初识APK文件结构、双开、汉化、基础修改 | 1ceC0la's blog</title><meta name="keywords" content="re,Android"><meta name="author" content="1ceC0la"><meta name="copyright" content="1ceC0la"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="课程目标 了解APK文件结构 双开APK，简单了解原理 汉化APK 简单修改APK名字、图标  使用到的工具 教程Demo MT管理器&#x2F;NP管理器 开发者助手 雷电模拟器  注意：使用NP管理器需要断网，因为联网后要强制更新，更新后有些功能要登陆才能使用 学习内容APK结构apk 全称 Android Package，它相当于一个压缩文件，只要在电脑上将apk后缀改为zip即可解压。    文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="002第二节.初识APK文件结构、双开、汉化、基础修改">
+<meta property="og:url" content="http://example.com/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/index.html">
+<meta property="og:site_name" content="1ceC0la&#39;s blog">
+<meta property="og:description" content="课程目标 了解APK文件结构 双开APK，简单了解原理 汉化APK 简单修改APK名字、图标  使用到的工具 教程Demo MT管理器&#x2F;NP管理器 开发者助手 雷电模拟器  注意：使用NP管理器需要断网，因为联网后要强制更新，更新后有些功能要登陆才能使用 学习内容APK结构apk 全称 Android Package，它相当于一个压缩文件，只要在电脑上将apk后缀改为zip即可解压。    文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png">
+<meta property="article:published_time" content="2023-08-27T02:49:00.000Z">
+<meta property="article:modified_time" content="2023-08-27T02:49:00.000Z">
+<meta property="article:author" content="1ceC0la">
+<meta property="article:tag" content="re">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><link rel="shortcut icon" href="/img/avatar.gif"><link rel="canonical" href="http://example.com/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '002第二节.初识APK文件结构、双开、汉化、基础修改',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-27 10:49:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">1ceC0la's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/%E9%82%A3%E4%BA%9B%E5%B9%B4-%E6%88%91%E7%9C%8B%E8%BF%87%E7%9A%84%E7%94%B5%E5%BD%B1/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About me</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">002第二节.初识APK文件结构、双开、汉化、基础修改</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-27T02:49:00.000Z" title="发表于 2023-08-27 10:49:00">2023-08-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-27T02:49:00.000Z" title="更新于 2023-08-27 10:49:00">2023-08-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/">安卓逆向</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="002第二节.初识APK文件结构、双开、汉化、基础修改"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="课程目标"><a href="#课程目标" class="headerlink" title="课程目标"></a>课程目标</h2><ol>
+<li>了解APK文件结构</li>
+<li>双开APK，简单了解原理</li>
+<li>汉化APK</li>
+<li>简单修改APK名字、图标</li>
+</ol>
+<h2 id="使用到的工具"><a href="#使用到的工具" class="headerlink" title="使用到的工具"></a>使用到的工具</h2><ol>
+<li>教程Demo</li>
+<li>MT管理器/NP管理器</li>
+<li>开发者助手</li>
+<li>雷电模拟器</li>
+</ol>
+<p>注意：使用NP管理器需要断网，因为联网后要强制更新，更新后有些功能要登陆才能使用</p>
+<h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h2><h3 id="APK结构"><a href="#APK结构" class="headerlink" title="APK结构"></a>APK结构</h3><p>apk 全称 Android Package，它相当于一个压缩文件，只要在电脑上将apk后缀改为zip即可解压。</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">assets目录</td>
+<td align="left">存放APK的静态资源文件，比如视频，音频，图片等</td>
+</tr>
+<tr>
+<td align="left">lib 目录</td>
+<td align="left">armeabi-v7a基本通用所有android设备，arm64-v8a只适用于64位的android设备，x86常见用于android模拟器，其目录下的.so文件是c或c++编译的动态链接库文件</td>
+</tr>
+<tr>
+<td align="left">META-INF目录</td>
+<td align="left">保存应用的签名信息，签名信息可以验证APK文件的完整性，相当于APK的身份证(验证文件是否又被修改)</td>
+</tr>
+<tr>
+<td align="left">res目录</td>
+<td align="left">res目录存放资源文件，包括图片，字符串等等，APK的脸蛋（UI）由他的layout文件设计</td>
+</tr>
+<tr>
+<td align="left">AndroidMainfest.xml文件</td>
+<td align="left">APK的应用清单信息，它描述了应用的名字，版本，权限，引用的库文件等等信息</td>
+</tr>
+<tr>
+<td align="left">classes.dex文件</td>
+<td align="left">classes.dex是java源码编译后生成的java字节码文件，APK运行的主要逻辑</td>
+</tr>
+<tr>
+<td align="left">resources.arsc文件</td>
+<td align="left">resources.arsc是编译后的二进制资源文件，它是一个映射表，映射着资源和id，通过R文件中的id就可以找到对应的资源</td>
+</tr>
+</tbody></table>
+<p>案例apk解压后如下图（该图中无assets和lib目录，也就是说这两个目录不一定每个apk都有）</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906164848491.png" alt="image-20230906164848491"></p>
+<p>了解了上述的所展示的文件的作用后，以后我们在对apk进行修改时就能快速定位。比如要修改一个图片或音频，就应该从assets目录中去修改或替换；如果要修改apk的一个主要逻辑，就应该对.dex文件进行修改</p>
+<h3 id="双开及原理"><a href="#双开及原理" class="headerlink" title="双开及原理"></a>双开及原理</h3><p>双开：简单来说，就是手机同时运行两个或多个相同的应用，例如同时运行两个微信</p>
+<p>下述四种后三种对初学来说较为困难，故只复现第一种：修改包名。</p>
+<table>
+<thead>
+<tr>
+<th align="left">原理</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">修改包名</td>
+<td align="left">让手机系统认为这是2个APP，这样的话就能生成2个数据存储路径，此时的多开就等于你打开了两个互不干扰的APP</td>
+</tr>
+<tr>
+<td align="left">修改Framework</td>
+<td align="left">对于有系统修改权限的厂商，可以修改Framework来实现双开的目的，例如：小米自带多开</td>
+</tr>
+<tr>
+<td align="left">通过虚拟化技术实现</td>
+<td align="left">虚拟Framework层、虚拟文件系统、模拟Android对组件的管理、虚拟应用进程管理 等一整套虚拟技术，将APK复制一份到虚拟空间中运行，例如：平行空间</td>
+</tr>
+<tr>
+<td align="left">以插件机制运行</td>
+<td align="left">利用反射替换，动态代{过}{滤}理，hook了系统的大部分与system—server进程通讯的函数，以此作为“欺上瞒下”的目的，欺骗系统“以为”只有一个apk在运行，瞒过插件让其“认为”自己已经安装。例如：VirtualApp</td>
+</tr>
+</tbody></table>
+<p>使用np管理器对案例app进行安装包提取，提取后使用np管理器的APK共存功能，确定后</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906165954710.png" alt="image-20230906165954710"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906170047960.png" alt="image-20230906170047960"></p>
+<p>该方法的弊端：因为修改包名会导致签名信息发生变化，重新安装apk，若该apk校验了签名信息，则会发生闪退或崩溃的情况。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>对如下内容进行汉化</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172518014.png" alt="image-20230906172518014"></p>
+<p>外加修改app封面图标和app的名称</p>
+<h4 id="简单的逆向流程"><a href="#简单的逆向流程" class="headerlink" title="简单的逆向流程"></a>简单的逆向流程</h4><p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906170912371.png" alt="image-20230906170912371"></p>
+<h4 id="汉化APK"><a href="#汉化APK" class="headerlink" title="汉化APK"></a>汉化APK</h4><p>汉化：使用专门的工具对外文版的软件资源进行读取、翻译、修改、回写等一系列处理，使软件的菜单、对话框、提示等用户界面显示为中文，而程序的内核和功能保持不变，这个过程即为软件汉化</p>
+<h5 id="Xml汉化"><a href="#Xml汉化" class="headerlink" title="Xml汉化"></a>Xml汉化</h5><p>对”Hello 52pojie”进行汉化</p>
+<p><strong>搜索字符串定位</strong>：</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172601462.png" alt="image-20230906172601462"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172630363.png" alt="image-20230906172630363"></p>
+<p>反编译后进行修改</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172828496.png" alt="image-20230906172828496"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906172847282.png" alt="image-20230906172847282"></p>
+<h5 id="Arsc汉化"><a href="#Arsc汉化" class="headerlink" title="Arsc汉化"></a>Arsc汉化</h5><p>对”Я не могу поверить, что это работает, почему?”进行汉化</p>
+<p>需要借助“<strong>开发者助手</strong>”来复制字符串</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173141645.png" alt="image-20230906173141645"></p>
+<p>复制后进行<strong>搜索字符串定位</strong></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173230544.png" alt="image-20230906173230544"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173332494.png" alt="image-20230906173332494"></p>
+<p>点击该文件选择“翻译模式”</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173425442.png" alt="image-20230906173425442"></p>
+<p>进去后点击”[DEFAULT]”，然后过滤</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173559089.png" alt="image-20230906173559089"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906173639603.png" alt="image-20230906173639603"></p>
+<h5 id="Dex汉化"><a href="#Dex汉化" class="headerlink" title="Dex汉化"></a>Dex汉化</h5><p>对”   Reverse determines height,<br>development determines depth.”进行汉化</p>
+<p>搜索方法依旧采用搜索字符串就不再赘述</p>
+<p>搜索结果</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174118968.png" alt="image-20230906174118968"></p>
+<p>选择Dex编辑器++</p>
+<p>再搜索找到详细位置</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174259102.png" alt="image-20230906174259102"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174333275.png" alt="image-20230906174333275"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174456698.png" alt="image-20230906174456698"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174445633.png" alt="image-20230906174445633"></p>
+<h4 id="修改图片"><a href="#修改图片" class="headerlink" title="修改图片"></a>修改图片</h4><p>需要先找到res目录，找到该图片</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906174905186.png" alt="image-20230906174905186"></p>
+<p>重新换一个图片，然后改成一样的名字cf.jpg</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906175029874.png" alt="image-20230906175029874"></p>
+<h5 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h5><p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230906175125573.png" alt="image-20230906175125573"></p>
+<h4 id="修改app封面图标和app的名称"><a href="#修改app封面图标和app的名称" class="headerlink" title="修改app封面图标和app的名称"></a>修改app封面图标和app的名称</h4><p>使用np管理器中的”通用编辑”功能</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092428012.png" alt="image-20230907092428012"></p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092506831.png" alt="image-20230907092506831"></p>
+<p>修改好后安装即可</p>
+<p><img src="/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/image-20230907092534934.png" alt="image-20230907092534934"></p>
+<h3 id="初识AndroidManifest-xml"><a href="#初识AndroidManifest-xml" class="headerlink" title="初识AndroidManifest.xml"></a>初识AndroidManifest.xml</h3><p>AndroidManifest.xml文件是整个应用程序的信息描述文件，定义了应用程序中包含的Activity,Service,Content provider和BroadcastReceiver组件信息。每个应用程序在根目录下必须包含一个AndroidManifest.xml文件，且文件名不能修改。它描述了package中暴露的组件，他们各自的实现类，各种能被处理的数据和启动位置。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">定义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">versionCode</td>
+<td align="left">版本号，主要用来更新，例如:12</td>
+</tr>
+<tr>
+<td align="left">versionName</td>
+<td align="left">版本名，给用户看的，例如:1.2</td>
+</tr>
+<tr>
+<td align="left">package</td>
+<td align="left">包名，例如：com.zj.52pj.demo</td>
+</tr>
+<tr>
+<td align="left">uses-permission android:name=””</td>
+<td align="left">应用权限，例如：android.permission.INTERNET 代表网络权限</td>
+</tr>
+<tr>
+<td align="left">android:label=”@string/app_name”</td>
+<td align="left">应用名称</td>
+</tr>
+<tr>
+<td align="left">android:icon=”@mipmap/ic_launcher”</td>
+<td align="left">应用图标路径</td>
+</tr>
+<tr>
+<td align="left">android:debuggable=”true”</td>
+<td align="left">应用是否开启debug权限，动态调试时会用到的一个权限</td>
+</tr>
+</tbody></table>
+<p>对于第四个应用权限，uses-permission android:name=””，假如一款app在使用前向我们索要摄像头权限，若不给就会退出app。这时候我们可以反编译AndroidManifest.xml文件，找到关于摄像头权限的属性，将其注释掉就好了，相当于禁用了该权限。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1695796-1-1.html">《安卓逆向这档事》二、初识APK文件结构、双开、汉化、基础修</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV18G411j7gV/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d">https://www.bilibili.com/video/BV18G411j7gV/?spm_id_from=333.788&amp;vd_source=fb474708f246c21e5933eeb76372688d</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.aliyundrive.com/s/TJoKMK6du6x">https://www.aliyundrive.com/s/TJoKMK6du6x</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">1ceC0la</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/08/27/002%E7%AC%AC%E4%BA%8C%E8%8A%82.%E5%88%9D%E8%AF%86APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E3%80%81%E5%8F%8C%E5%BC%80%E3%80%81%E6%B1%89%E5%8C%96%E3%80%81%E5%9F%BA%E7%A1%80%E4%BF%AE%E6%94%B9/">http://example.com/2023/08/27/002第二节.初识APK文件结构、双开、汉化、基础修改/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">1ceC0la's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/re/">re</a><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/WeChatPay.png" target="_blank"><img class="post-qr-code-img" src="/img/WeChatPay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/27/RSA%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%20%E5%8F%8A%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%20%E5%8E%9F%E7%90%86/"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">RSA数字签名 及 数字证书 原理</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">001第一节.模拟器环境搭建</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/08/01/001%E7%AC%AC%E4%B8%80%E8%8A%82.%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="001第一节.模拟器环境搭建"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-01</div><div class="title">001第一节.模拟器环境搭建</div></div></a></div><div><a href="/2023/08/28/003%E7%AC%AC%E4%B8%89%E8%8A%82.%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/" title="003第三节.初识smali，vip终结者"><img class="cover" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.51tietu.net%2Fpic%2F2019-091301%2Fqz0koirn0u1qz0koirn0u1.jpg&refer=http%3A%2F%2Fimg9.51tietu.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644051487&t=d175a25b5fbdd3eed194511a7a170807" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-28</div><div class="title">003第三节.初识smali，vip终结者</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">课程目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">使用到的工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">学习内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#APK%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">APK结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%BC%80%E5%8F%8A%E5%8E%9F%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">双开及原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">3.3.</span> <span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E9%80%86%E5%90%91%E6%B5%81%E7%A8%8B"><span class="toc-number">3.3.1.</span> <span class="toc-text">简单的逆向流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%89%E5%8C%96APK"><span class="toc-number">3.3.2.</span> <span class="toc-text">汉化APK</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Xml%E6%B1%89%E5%8C%96"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">Xml汉化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Arsc%E6%B1%89%E5%8C%96"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">Arsc汉化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Dex%E6%B1%89%E5%8C%96"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">Dex汉化</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%9B%BE%E7%89%87"><span class="toc-number">3.3.3.</span> <span class="toc-text">修改图片</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-number">3.3.3.1.</span> <span class="toc-text">最终效果</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9app%E5%B0%81%E9%9D%A2%E5%9B%BE%E6%A0%87%E5%92%8Capp%E7%9A%84%E5%90%8D%E7%A7%B0"><span class="toc-number">3.3.4.</span> <span class="toc-text">修改app封面图标和app的名称</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E8%AF%86AndroidManifest-xml"><span class="toc-number">3.4.</span> <span class="toc-text">初识AndroidManifest.xml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">相关资源</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2023 By 1ceC0la</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
